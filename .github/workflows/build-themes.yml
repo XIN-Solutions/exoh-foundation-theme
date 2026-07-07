@@ -8,7 +8,9 @@ on:
         required: true
         type: choice
         options:
-          - "mx-tweaks"
+          - "master"
+          - "uat"
+          
 
 jobs:
   build-and-publish:
