@@ -1,0 +1,134 @@
+<section
+    class="
+        {{variant}}
+        {{spacingClass}}
+        {{spacingEdgeClasses}}
+    "
+    no-edit="children"
+    allowadd="no"
+    allowdelete="no"
+>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-sm-6 col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="0">
+                <div class="feature">
+                    <div class="font-container text-center" edit="item1IconHtml">
+                        {{#if item1IconHtml}}
+                            {{{item1IconHtml}}}
+                        {{else}}
+                            <i class="font-icon la la-shield-alt"></i>
+                        {{/if}}
+                    </div>
+                    <h3>
+                        <a href="{{?? item1Url '#'}}" edit="item1Title innerHTML, item1Url @href">{{{?? item1Title "Cras felis nunc"}}}</a>
+                    </h3>
+                    <p edit="item1Description innerHTML">
+                        {{{?? item1Description "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas cursus in lectus ut dignissim."}}}
+                    </p>
+                    <a class="more d-block"
+                       href="{{?? item1CtaUrl '#'}}"
+                       title="{{item1CtaTitle}}"
+                       target="{{item1CtaTarget}}"
+                       rel="{{item1CtaRel}}"
+                       edit="item1CtaLabel [data-cta-label], item1CtaUrl @href, item1CtaTitle @title, item1CtaRel @rel, item1CtaTarget @target"
+                    >
+                        <span data-cta-label>
+                            {{{?? item1CtaLabel "Read more"}}}
+                        </span>
+                        <i no-edit class="font-icon la la-chevron-circle-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="100">
+                <div class="feature">
+                    <div class="font-container text-center" edit="item2IconHtml">
+                        {{#if item2IconHtml}}
+                            {{{item2IconHtml}}}
+                        {{else}}
+                            <i class="font-icon la la-praying-hands"></i>
+                        {{/if}}
+                    </div>
+                    <h3>
+                        <a href="{{?? item2Url '#'}}" edit="item2Title innerHTML, item2Url @href">{{{?? item2Title "Cras felis nunc"}}}</a>
+                    </h3>
+                    <p edit="item2Description innerHTML">
+                        {{{?? item2Description "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas cursus in lectus ut dignissim."}}}
+                    </p>
+                    <a class="more d-block"
+                       href="{{?? item2CtaUrl '#'}}"
+                       title="{{item2CtaTitle}}"
+                       target="{{item2CtaTarget}}"
+                       rel="{{item2CtaRel}}"
+                       edit="item2CtaLabel [data-cta-label], item2CtaUrl @href, item2CtaTitle @title, item2CtaRel @rel, item2CtaTarget @target"
+                    >
+                        <span data-cta-label>
+                            {{{?? item2CtaLabel "Read more"}}}
+                        </span>
+                        <i no-edit class="font-icon la la-chevron-circle-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="200">
+                <div class="feature">
+                    <div class="font-container text-center" edit="item3IconHtml">
+                        {{#if item3IconHtml}}
+                            {{{item3IconHtml}}}
+                        {{else}}
+                            <i class="font-icon la la-shopping-cart"></i>
+                        {{/if}}
+                    </div>
+                    <h3>
+                        <a href="{{?? item3Url '#'}}" edit="item3Title innerHTML, item3Url @href">{{{?? item3Title "Cras felis nunc"}}}</a>
+                    </h3>
+                    <p edit="item3Description innerHTML">
+                        {{{?? item3Description "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas cursus in lectus ut dignissim."}}}
+                    </p>
+                    <a class="more d-block"
+                       href="{{?? item3CtaUrl '#'}}"
+                       title="{{item3CtaTitle}}"
+                       target="{{item3CtaTarget}}"
+                       rel="{{item3CtaRel}}"
+                       edit="item3CtaLabel [data-cta-label], item3CtaUrl @href, item3CtaTitle @title, item3CtaRel @rel, item3CtaTarget @target"
+                    >
+                        <span data-cta-label>
+                            {{{?? item3CtaLabel "Read more"}}}
+                        </span>
+                        <i no-edit class="font-icon la la-chevron-circle-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="300">
+                <div class="feature">
+                    <div class="font-container text-center" edit="item4IconHtml">
+                        {{#if item4IconHtml}}
+                            {{{item4IconHtml}}}
+                        {{else}}
+                            <i class="font-icon la la-globe-europe"></i>
+                        {{/if}}
+                    </div>
+                    <h3>
+                        <a href="{{?? item4Url '#'}}" edit="item4Title innerHTML, item4Url @href">{{{?? item4Title "Cras felis nunc"}}}</a>
+                    </h3>
+                    <p edit="item4Description innerHTML">
+                        {{{?? item4Description "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas cursus in lectus ut dignissim."}}}
+                    </p>
+                    <a class="more d-block"
+                       href="{{?? item4CtaUrl '#'}}"
+                       title="{{item4CtaTitle}}"
+                       target="{{item4CtaTarget}}"
+                       rel="{{item4CtaRel}}"
+                       edit="item4CtaLabel [data-cta-label], item4CtaUrl @href, item4CtaTitle @title, item4CtaRel @rel, item4CtaTarget @target"
+                    >
+                        <span data-cta-label>
+                            {{{?? item4CtaLabel "Read more"}}}
+                        </span>
+                        <i no-edit class="font-icon la la-chevron-circle-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

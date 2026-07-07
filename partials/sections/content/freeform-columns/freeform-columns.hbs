@@ -1,0 +1,62 @@
+{{let .
+      selectedColumns=(?? config.columns "four")
+      defaultColumnClasses=(map one='col-12' two='col-12 col-md-6' three='col-12 col-md-4' four='col-12 col-md-6 col-lg-3' five='col-12 col-md-6' six='col-12 col-md-6 col-lg-2')
+}}
+
+{{let . fallbackClass=(lookup defaultColumnClasses selectedColumns)}}
+
+<section
+    class="
+        {{?: config.useAltBackground 'bg--alternate' ''}}
+        spacing--{{?? config.spacing 'comfortable'}}
+        {{?: config.noTopSpacing 'spacing--no-top' ''}}
+        {{?: config.noBottomSpacing 'spacing--no-bottom' ''}}
+    "
+    no-edit="children"
+    allowadd="no"
+    allowdelete="no"
+>
+    <div class="container">
+        <div class="row">
+            {{#*inline "renderColumn"}}
+                <div class="{{?? classes fallbackClass}}" edit="{{classesEdit}}, {{contentEdit}} [data-freeform-column-content]">
+                    <div data-freeform-column-content
+                         allowadd="on"
+                         allowdelete="on"
+                    >
+                        {{#if content}}
+                            {{{content}}}
+                        {{else}}
+                            <p>Column</p>
+                        {{/if}}
+                    </div>
+                </div>
+            {{/inline}}
+
+            {{> renderColumn classes=col1Classes classesEdit="col1Classes @class" content=col1Content contentEdit="col1Content innerHTML"}}
+
+            {{#unless (eq selectedColumns "one")}}
+                {{> renderColumn classes=col2Classes classesEdit="col2Classes @class" content=col2Content contentEdit="col2Content innerHTML"}}
+            {{/unless}}
+
+            {{#if (eq selectedColumns "three")}}
+                {{> renderColumn classes=col3Classes classesEdit="col3Classes @class" content=col3Content contentEdit="col3Content innerHTML"}}
+            {{/if}}
+            {{#if (eq selectedColumns "four")}}
+                {{> renderColumn classes=col3Classes classesEdit="col3Classes @class" content=col3Content contentEdit="col3Content innerHTML"}}
+                {{> renderColumn classes=col4Classes classesEdit="col4Classes @class" content=col4Content contentEdit="col4Content innerHTML"}}
+            {{/if}}
+            {{#if (eq selectedColumns "five")}}
+                {{> renderColumn classes=col3Classes classesEdit="col3Classes @class" content=col3Content contentEdit="col3Content innerHTML"}}
+                {{> renderColumn classes=col4Classes classesEdit="col4Classes @class" content=col4Content contentEdit="col4Content innerHTML"}}
+                {{> renderColumn classes=col5Classes classesEdit="col5Classes @class" content=col5Content contentEdit="col5Content innerHTML"}}
+            {{/if}}
+            {{#if (eq selectedColumns "six")}}
+                {{> renderColumn classes=col3Classes classesEdit="col3Classes @class" content=col3Content contentEdit="col3Content innerHTML"}}
+                {{> renderColumn classes=col4Classes classesEdit="col4Classes @class" content=col4Content contentEdit="col4Content innerHTML"}}
+                {{> renderColumn classes=col5Classes classesEdit="col5Classes @class" content=col5Content contentEdit="col5Content innerHTML"}}
+                {{> renderColumn classes=col6Classes classesEdit="col6Classes @class" content=col6Content contentEdit="col6Content innerHTML"}}
+            {{/if}}
+        </div>
+    </div>
+</section>

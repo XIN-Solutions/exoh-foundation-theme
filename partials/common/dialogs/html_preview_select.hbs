@@ -1,0 +1,109 @@
+{{!--
+  Custom select with arbitrary HTML in each <option> (same pattern as svg_preview_select).
+
+  Params:
+  - model: Alpine x-model expression (string)
+  - class: extra class names (optional)
+  - includeStyle: emit CSS (optional; include once per dialog)
+  - onChange: JS handler string for @change (optional)
+--}}
+
+{{#if includeStyle}}
+<style>
+    .dialog-svg-select,
+    .dialog-svg-select::picker(select) {
+        appearance: base-select;
+    }
+
+    .dialog-svg-select button {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        width: 100%;
+        padding: 0.375rem 2.25rem 0.375rem 0.75rem;
+        background: transparent;
+        border: 0;
+        color: inherit;
+        font: inherit;
+        position: relative;
+    }
+
+    .dialog-svg-select selectedcontent {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        min-width: 0;
+    }
+
+    .dialog-svg-select::picker-icon {
+        position: absolute;
+        right: 0.75rem;
+        top: 50%;
+        transform: translateY(-50%);
+        pointer-events: none;
+    }
+
+    .dialog-svg-option {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.5rem 0.75rem;
+    }
+
+    .dialog-svg-option__label {
+        flex: 0 0 auto;
+        min-width: 12ch;
+        white-space: nowrap;
+    }
+
+    .dialog-svg-option__preview {
+        flex: 1 1 auto;
+        min-width: 0;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        opacity: 0.9;
+    }
+
+    .dialog-svg-option__svg {
+        width: 2rem;
+        height: 1.25em;
+        max-height: 100%;
+        display: block;
+        color: rgba(0, 0, 0, 0.4);
+        overflow: hidden;
+    }
+
+    .dialog-svg-option__svg--small {
+        width: 2rem;
+    }
+
+    .dialog-svg-option__svg svg {
+        display: block;
+        width: 100% !important;
+        height: 100% !important;
+        max-height: 100% !important;
+    }
+
+    .dialog-svg-select selectedcontent .dialog-svg-option__svg {
+        width: 2rem;
+        height: 1.1em;
+    }
+
+    .dialog-svg-option__svg--belt {
+        height: 2.35em;
+    }
+
+    .dialog-svg-select selectedcontent .dialog-svg-option__svg--belt {
+        height: 2em;
+    }
+</style>
+{{/if}}
+
+<select class="form-select dialog-svg-select {{class}}" x-model="{{model}}" {{#if onChange}}@change="{{onChange}}"{{/if}}>
+    <button type="button">
+        <selectedcontent></selectedcontent>
+    </button>
+
+    {{> @partial-block }}
+</select>

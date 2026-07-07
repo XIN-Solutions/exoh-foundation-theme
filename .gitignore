@@ -1,0 +1,11 @@
+.idea/
+dist/
+
+node_modules/
+
+editing/target/*
+
+# Ignore macOS system files
+.DS_Store
+**/.DS_Store
+assets/.DS_Store

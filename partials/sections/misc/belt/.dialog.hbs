@@ -1,0 +1,167 @@
+<form id="miscBeltConfigForm" class="config-form"
+      x-data="componentDialog({
+            defaultConfig: {
+                displayType: 'horizontal',
+                searchType: 'immediate',
+                sort: '-publishDate',
+                ctaLabel: 'Read more',
+                defaultImage: meta.theme.url + '/assets/img/empty.png',
+                limit: 0,
+            }
+      })"
+      @set="setConfig"
+      @get="getConfig"
+>
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" data-bs-toggle="tab" href="#misc-belt-component" role="tab">Component</a>
+        </li>
+        {{> common/dialogs/basic_nav }}
+    </ul>
+
+    <div class="tab-content tab-content--withBorder">
+        <div class="tab-pane fade show active" id="misc-belt-component" role="tabpanel">
+
+
+            <div class="mb-3">
+                <label class="form-label">Display as</label>
+                {{#> common/dialogs/html_preview_select includeStyle=true model="config.displayType"}}
+                    <option value="horizontal">
+                        <span class="dialog-svg-option">
+                            <span class="dialog-svg-option__preview" aria-hidden="true">
+                                <span class="dialog-svg-option__svg dialog-svg-option__svg--belt">
+                                    <svg viewBox="0 0 72 42" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+                                        <rect x="2" y="2" width="68" height="9" rx="1.5" fill="currentColor"/>
+                                        <rect x="2" y="16" width="68" height="9" rx="1.5" fill="currentColor"/>
+                                        <rect x="2" y="30" width="68" height="9" rx="1.5" fill="currentColor"/>
+                                    </svg>
+                                </span>
+                            </span>
+                            <span class="dialog-svg-option__label">Horizontal Cards</span>
+                        </span>
+                    </option>
+                    <option value="horizontal_alt">
+                        <span class="dialog-svg-option">
+                            <span class="dialog-svg-option__preview" aria-hidden="true">
+                                <span class="dialog-svg-option__svg dialog-svg-option__svg--belt">
+                                    <svg viewBox="0 0 72 42" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+                                        <rect x="2" y="3" width="44" height="9" rx="1.5" fill="currentColor"/>
+                                        <rect x="26" y="16" width="44" height="9" rx="1.5" fill="currentColor"/>
+                                        <rect x="2" y="29" width="44" height="9" rx="1.5" fill="currentColor"/>
+                                    </svg>
+                                </span>
+                            </span>
+                            <span class="dialog-svg-option__label">Horizontal Cards (alternating side)</span>
+                        </span>
+                    </option>
+                    <option value="3col">
+                        <span class="dialog-svg-option">
+                            <span class="dialog-svg-option__preview" aria-hidden="true">
+                                <span class="dialog-svg-option__svg dialog-svg-option__svg--belt">
+                                    <svg viewBox="0 0 72 42" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+                                        <rect x="3" y="6" width="18" height="30" rx="1.5" fill="currentColor"/>
+                                        <rect x="27" y="6" width="18" height="30" rx="1.5" fill="currentColor"/>
+                                        <rect x="51" y="6" width="18" height="30" rx="1.5" fill="currentColor"/>
+                                    </svg>
+                                </span>
+                            </span>
+                            <span class="dialog-svg-option__label">3 Cards per row</span>
+                        </span>
+                    </option>
+                    <option value="4col">
+                        <span class="dialog-svg-option">
+                            <span class="dialog-svg-option__preview" aria-hidden="true">
+                                <span class="dialog-svg-option__svg dialog-svg-option__svg--belt">
+                                    <svg viewBox="0 0 72 42" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+                                        <rect x="2" y="8" width="14" height="26" rx="1.5" fill="currentColor"/>
+                                        <rect x="19" y="8" width="14" height="26" rx="1.5" fill="currentColor"/>
+                                        <rect x="36" y="8" width="14" height="26" rx="1.5" fill="currentColor"/>
+                                        <rect x="53" y="8" width="14" height="26" rx="1.5" fill="currentColor"/>
+                                    </svg>
+                                </span>
+                            </span>
+                            <span class="dialog-svg-option__label">4 Cards per row</span>
+                        </span>
+                    </option>
+                {{/common/dialogs/html_preview_select}}
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Search type</label>
+                {{#> common/dialogs/html_preview_select model="config.searchType"}}
+                    <option value="immediate">
+                        <span class="dialog-svg-option">
+                            <span class="dialog-svg-option__preview" aria-hidden="true">
+                                <span class="dialog-svg-option__svg dialog-svg-option__svg--belt">
+                                    <svg viewBox="0 0 72 42" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+                                        <rect x="2" y="3" width="68" height="8" rx="1.5" fill="currentColor"/>
+                                        <rect x="2" y="17" width="68" height="8" rx="1.5" fill="currentColor"/>
+                                        <rect x="2" y="31" width="68" height="8" rx="1.5" fill="currentColor"/>
+                                    </svg>
+                                </span>
+                            </span>
+                            <span class="dialog-svg-option__label">Immediate Children</span>
+                        </span>
+                    </option>
+                    <option value="all">
+                        <span class="dialog-svg-option">
+                            <span class="dialog-svg-option__preview" aria-hidden="true">
+                                <span class="dialog-svg-option__svg dialog-svg-option__svg--belt">
+                                    <svg viewBox="0 0 72 42" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+                                        <rect x="2" y="3" width="64" height="7" rx="1.5" fill="currentColor"/>
+                                        <rect x="8" y="12" width="58" height="7" rx="1.5" fill="currentColor"/>
+                                        <rect x="14" y="21" width="52" height="7" rx="1.5" fill="currentColor"/>
+                                        <rect x="20" y="30" width="46" height="7" rx="1.5" fill="currentColor"/>
+                                    </svg>
+                                </span>
+                            </span>
+                            <span class="dialog-svg-option__label">All children</span>
+                        </span>
+                    </option>
+                {{/common/dialogs/html_preview_select}}
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Sort</label>
+                <select class="form-select" x-model="config.sort">
+                    <option value="name">A-Z</option>
+                    <option value="-name">Z-A</option>
+                    <option value="-publishDate">Recently published first</option>
+                    <option value="publishDate">Recently published last</option>
+                    <option x-show="config.searchType === 'immediate'" value="childOrdering">Child order</option>
+                    <option x-show="config.searchType === 'immediate'" value="-childOrdering">Reversed child order</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Max number of items</label>
+                <input class="form-control" x-model="config.limit" type="number" min="0">
+                <p x-show="config.limit === 0" class="mt-1 small text-muted">
+                    When set to zero, all items will be displayed.
+                </p>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Call to action label</label>
+                <input class="form-control" x-model="config.ctaLabel" type="text">
+
+                <p x-show="config.limit === 0" class="mt-1 small text-muted">
+                    The text shown in the link underneath the title and description.
+                </p>
+            </div>
+
+            {{> common/dialogs/image
+                field="config.defaultImage"
+                label="Default belt image"
+                hint="Used when a tile has no configured thumbnail."
+            }}
+
+
+            <p class="mb-3 alert alert-info bg-white">
+                The contents shown in the belt tiles is sourced from the page's description and image in its General tab.
+            </p>
+        </div>
+
+        {{> common/dialogs/basic_content }}
+    </div>
+</form>

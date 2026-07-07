@@ -1,0 +1,40 @@
+<div class="tab-pane fade {{?: active 'show active' ''}}" id="dialog-basic" role="tabpanel">
+    <div class="mb-3">
+        <label class="form-label">Section spacing</label>
+        <select class="form-select" x-model="config.spacing">
+            <option value="no_spacing">No spacing</option>
+            <option value="dense">Dense</option>
+            <option value="comfortable">Comfortable</option>
+            <option value="spacious">Spacious</option>
+        </select>
+        <p class="form-text text-muted mb-0 small">Adjusts padding above and below this section so it sits tighter or looser next to adjacent blocks.</p>
+    </div>
+
+    <div class="mb-3">
+        <div class="form-check">
+            <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" x-model="config.noTopSpacing">
+                No top spacing
+            </label>
+        </div>
+        <div class="form-check">
+            <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" x-model="config.noBottomSpacing">
+                No bottom spacing
+            </label>
+        </div>
+        <p class="form-text text-muted mb-0 small">Removes padding on that edge only; the spacing preset still applies on the other side.</p>
+    </div>
+
+    {{#unless hideAlternateBackground}}
+        <div class="mb-3">
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" x-model="config.useAltBackground">
+                    Use alternate background colour
+                </label>
+            </div>
+            <p class="form-text text-muted mb-0 small">Adds a light gray background behind this section.</p>
+        </div>
+    {{/unless}}
+</div>

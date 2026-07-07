@@ -1,0 +1,10 @@
+{{let .
+      spacingClass=(concat 'spacing--' (?? config.spacing 'comfortable'))
+      spacingEdgeClasses=(
+          concat
+          (?: config.noTopSpacing 'spacing--no-top ' '')
+          (?: config.noBottomSpacing 'spacing--no-bottom' '')
+      )
+}}
+
+{{> sections/content/column-showcase/standard }}

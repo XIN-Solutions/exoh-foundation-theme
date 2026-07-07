@@ -1,0 +1,139 @@
+.object-fit-cover {
+    object-fit: cover;
+}
+
+
+.is-editing .pe-skip,
+.is-editing [no-edit]:not([no-edit='children']) {
+    pointer-events: none !important;
+}
+
+.is-editing [no-edit='children'] {
+    pointer-events: initial;
+}
+
+.is-editing [no-edit='children'] * {
+    pointer-events: none;
+}
+
+
+
+.is-editing .pe-capture,
+.is-editing [editable],
+.is-editing [edit],
+.is-editing [no-edit='children'] [edit]
+{
+    pointer-events: initial;
+}
+
+
+.background-container img {
+    object-fit: cover;
+}
+
+.hero--compact > .container > div {
+    min-height: 600px !important;
+}
+
+/** adjust content upwards to compensate for 100px bottom */
+.hero--compact > .container > div > .row {
+    margin-top: -100px;
+}
+
+@media (max-width: 768px) {
+    .hero--compact > .container > div {
+        min-height: 400px !important;
+    }
+
+    .showcase-1 .container > .row, 
+    .showcase-2 .container > .row {
+        --bs-gutter-x: 0;
+    }
+}
+
+.ratio-1-1 {
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    width: 100%;
+}
+
+.ratio-4-3 {
+    aspect-ratio: 4/3;
+    object-fit: cover;
+    width: 100%;
+}
+
+.ratio-16-10 {
+    aspect-ratio: 16/10;
+    object-fit: cover;
+    width: 100%;
+}
+
+.navbar-toggler {
+    border: none;
+}
+
+nav.navigation-1 {
+    z-index: 1000;
+}
+
+.swiper .swiper-button-prev,
+.swiper .swiper-button-next {
+    width: 44px;
+    height: 44px;
+    margin-top: -22px;
+    background: rgba(0, 0, 0, 0.55);
+    color: #fff;
+    border-radius: 4px;
+}
+
+.swiper .swiper-button-prev:after,
+.swiper .swiper-button-next:after {
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+}
+
+.swiper .swiper-button-prev:hover,
+.swiper .swiper-button-next:hover {
+    background: rgba(0, 0, 0, 0.7);
+}
+
+.swiper .swiper-button-prev.swiper-button-disabled,
+.swiper .swiper-button-next.swiper-button-disabled {
+    opacity: 0.35;
+}
+
+.swiper .swiper-pagination-bullet {
+    width: 10px;
+    height: 10px;
+    background: rgba(0, 0, 0, 0.35);
+    opacity: 1;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+}
+
+.swiper .swiper-pagination-bullet-active {
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
+}
+
+.hero-5.hero--compact {
+    min-height: initial;
+    height: auto;
+
+    > .container > .row {
+      height: auto;
+    }
+}
+
+@media screen and (max-width: 1024px) {
+
+    .hero-3 > .container > .container--mobile-min-height {
+        min-height: 80vh;
+    }
+
+    .hero-3.hero--compact > .container > .container--mobile-min-height {
+        min-height: initial;
+    }
+
+}

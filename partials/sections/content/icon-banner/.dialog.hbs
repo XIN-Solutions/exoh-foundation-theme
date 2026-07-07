@@ -1,0 +1,22 @@
+<form id="iconBannerConfigForm" class="config-form"
+      x-data="componentDialog({
+            defaultConfig: {
+                useAltBackground: false,
+                spacing: 'comfortable',
+                noTopSpacing: false,
+                noBottomSpacing: false
+            }
+      })"
+      @set="setConfig"
+      @get="getConfig"
+>
+
+    <ul class="nav nav-tabs" role="tablist">
+        {{> common/dialogs/basic_nav active=true }}
+    </ul>
+
+    <div class="tab-content tab-content--withBorder">
+        {{> common/dialogs/basic_content active=true}}
+    </div>
+
+</form>

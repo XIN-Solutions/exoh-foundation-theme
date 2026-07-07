@@ -1,0 +1,46 @@
+{{let .
+      variant=(?? config.styleVariant "style3")
+      selectedColumnSetting=(?? config.columns 'four')
+      columnsMap=(map one='col-12 col-lg-10' two='col-12 col-lg-6' three='col-12 col-md-6 col-lg-4' four='col-12 col-md-6 col-lg-3')
+      selectedColumns=(lookup columnsMap selectedColumnSetting)
+      sectionClasses=(map style1='' style2='team-2' style3='' style4='' style5='')
+      selectedSectionClass=(lookup sectionClasses variant)
+}}
+
+<section
+    class="
+        {{#if selectedSectionClass}}{{selectedSectionClass}}{{/if}}
+        {{?: config.useAltBackground 'bg--alternate' ''}}
+        spacing--{{?? config.spacing 'comfortable'}}
+        {{?: config.noTopSpacing 'spacing--no-top' ''}}
+        {{?: config.noBottomSpacing 'spacing--no-bottom' ''}}
+    "
+    no-edit="children"
+    allowadd="no"
+    allowdelete="no"
+>
+    <div class="container">
+        {{#unless (and config.hideTitle config.hideDescription)}}
+            <div class="row justify-content-center mb-4">
+                <div class="col-md-7 text-center">
+                    {{#unless config.hideTitle}}
+                        <h2 class="mb-3 h2-all" edit="title innerHTML">{{{?? title "Meet Our Team"}}}</h2>
+                    {{/unless}}
+                    {{#unless config.hideDescription}}
+                        <h3 class="h3-all" edit="description innerHTML">{{{?? description "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas cursus in lectus ut dignissim."}}}</h3>
+                    {{/unless}}
+                </div>
+            </div>
+        {{/unless}}
+
+        {{#if (eq variant "style3")}}
+            {{> sections/misc/team/style3 columnsClass=selectedColumns columnSetting=selectedColumnSetting}}
+        {{/if}}
+        {{#if (eq variant "style4")}}
+            {{> sections/misc/team/style4 columnsClass=selectedColumns columnSetting=selectedColumnSetting}}
+        {{/if}}
+        {{#if (eq variant "style5")}}
+            {{> sections/misc/team/style5 columnsClass=selectedColumns columnSetting=selectedColumnSetting}}
+        {{/if}}
+    </div>
+</section>

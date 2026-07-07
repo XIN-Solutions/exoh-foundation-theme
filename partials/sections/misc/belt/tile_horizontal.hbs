@@ -1,0 +1,60 @@
+{{let . right=(not left)}}
+
+<div class="row wrap mb-5">
+
+    {{#if left}}
+        {{> image }}
+    {{/if}}
+
+    <div class="col-md-7 align-self-center">
+        <div class="max-box">
+
+            {{#if tile.title}}
+                <h3 class="mt-2 mt-md-0 h3-all">
+                    {{#if tile.url}}
+                        <a class="text-reset text-decoration-none" href="{{tile.url}}">{{tile.title}}</a>
+                    {{else}}
+                        {{tile.title}}
+                    {{/if}}
+                </h3>
+            {{/if}}
+
+            {{#if tile.description}}
+                <div class="mt-2 mt-md-4 p-all">
+                    {{{nl2br tile.description}}}
+                </div>
+            {{/if}}
+
+            {{#if tile.url}}
+                <a class="btn buttonColor-bg mt-2" href="{{tile.url}}" role="button">
+                    <span>{{tile.ctaLabel}}</span>
+                    <i no-edit class="la la-long-arrow-alt-right ms-1"></i>
+                </a>
+            {{/if}}
+        </div>
+    </div>
+
+
+    {{#if right}}
+        {{> image }}
+    {{/if}}
+
+</div>
+
+{{#*inline "image"}}
+    <div class="col-md-5 {{#if right}} order-first order-md-0{{/if}}">
+        {{#if tile.url}}
+            <a href="{{tile.url}}">
+                <img
+                    alt="" loading="lazy" class="img-fluid w-100 ratio-4-3"
+                    src="{{?? tile.thumbnail.url tile.defaultThumbnail }}" data-image-hint="width=768"
+                >
+            </a>
+        {{else}}
+            <img
+                alt="" loading="lazy" class="img-fluid w-100 ratio-4-3"
+                src="{{?? tile.thumbnail.url tile.defaultThumbnail }}" data-image-hint="width=768"
+            >
+        {{/if}}
+    </div>
+{{/inline}}

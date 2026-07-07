@@ -1,0 +1,38 @@
+<div class="mb-3">
+    <label class="form-label">{{label}}</label>
+    <div class="d-flex align-items-start gap-3 flex-wrap">
+        <div
+            class="rounded border bg-light overflow-hidden d-flex align-items-center justify-content-center flex-shrink-0"
+            style="width: 120px; height: 80px;"
+        >
+            <video
+                x-show="{{field}}"
+                :src="{{field}}"
+                alt=""
+                class="w-100 h-100"
+                playsinline loop muted autoplay
+                style="object-fit: cover;"
+            >
+            <span
+                x-show="!{{field}}"
+                class="text-muted small px-2 text-center"
+            >No video</span>
+        </div>
+        <div class="d-flex flex-column gap-2">
+            <button
+                type="button"
+                class="btn btn-primary btn-sm"
+                @click="(Vvveb.MediaModal || (Vvveb.MediaModal = new MediaModal(true))).open(null, (src) => { {{field}} = src })"
+            >Select video</button>
+            <button
+                type="button"
+                class="btn btn-outline-secondary btn-sm"
+                x-show="{{field}}"
+                @click="{{field}} = ''"
+            >Clear</button>
+        </div>
+    </div>
+    {{#if hint}}
+        <p class="form-text text-muted mb-0 small">{{hint}}</p>
+    {{/if}}
+</div>

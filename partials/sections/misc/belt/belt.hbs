@@ -1,0 +1,38 @@
+{{let . beltItems=data.children}}
+
+<section class="features-1 bg-alternate spacing--{{?? config.spacing 'comfortable'}} {{?: config.useAltBackground 'bg--alternate' ''}}" no-edit="children" allowadd="no" allowdelete="no">
+    <div class="container">
+        <div class="row wrap">
+            {{#if (empty beltItems)}}
+                <div class="col-12">
+                    <p>No child pages found for this section.</p>
+                </div>
+            {{else}}
+                {{#each beltItems as |child|}}
+                    {{let . tile=(map
+                        title=(?? child.content.forms.seo.metaTitle child.page.name)
+                        thumbnail=(?? child.content.forms.general.image child.content.forms.seo.thumbnail)
+                        defaultThumbnail=(?? ../config.defaultImage '/assets/img/empty.png')
+                        description=(?? child.content.forms.general.description child.content.forms.seo.metaDescription)
+                        url=child.page.url
+                        ctaLabel=(?? ../config.ctaLabel 'Read more')
+                    )}}
+
+                    {{#if (or (eq ../config.displayType 'horizontal') (not ../config.displayType)) }}
+                        {{> sections/misc/belt/tile_horizontal left=true }}
+                    {{else if (eq ../config.displayType 'horizontal_alt')}}
+                        {{> sections/misc/belt/tile_horizontal left=(eq (mod @index 2) 0) tile=tile}}
+                    {{else if (eq ../config.displayType '3col')}}
+                        {{> sections/misc/belt/tile_3col }}
+                    {{else if (eq ../config.displayType '4col')}}
+                        {{> sections/misc/belt/tile_4col }}
+                    {{/if}}
+
+
+
+                {{/each}}
+            {{/if}}
+
+        </div>
+    </div>
+</section>

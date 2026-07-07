@@ -1,0 +1,36 @@
+{{let .
+      localColumnsClass=(?? columnsClass 'col-12 col-lg-6')
+      localColumnSetting=(?? columnSetting 'four')
+}}
+
+<div class="row justify-content-center">
+    {{#*inline "teamItemStyle5"}}
+        <div class="{{localColumnsClass}} mb-4">
+            <div class="card shadow-sm border-1 p-0 h-100 overflow-hidden">
+                <div class="row no-gutters h-100">
+                    <div class="col-md-5">
+                        <img alt="{{imageAlt}}" src="{{imageSrc}}" data-image-hint="width=512" class="img-fluid w-100 h-100 object-fit-cover" loading="lazy" edit="{{imageEdit}}">
+                    </div>
+                    <div class="col-md-7">
+                        <div class="p-4">
+                            <h4 class="mb-3" edit="{{nameEdit}}">{{{name}}}</h4>
+                            <p edit="{{descriptionEdit}}">{{{description}}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {{/inline}}
+
+    {{> teamItemStyle5 imageSrc=(?? member1ImageSrc '/assets/img/empty.png') imageAlt=member1ImageAlt imageEdit='member1ImageSrc @src, member1ImageAlt @alt' name=(?? member1Name 'John Doe') nameEdit='member1Name innerHTML' description=(?? member1Description 'Phasellus ullamcorper, dui vitae ullamcorper rutrum.') descriptionEdit='member1Description innerHTML' socialHtml=member1SocialHtml socialEdit='member1SocialHtml innerHTML'}}
+    {{#unless (eq localColumnSetting 'one')}}
+        {{> teamItemStyle5 imageSrc=(?? member2ImageSrc '/assets/img/empty.png') imageAlt=member2ImageAlt imageEdit='member2ImageSrc @src, member2ImageAlt @alt' name=(?? member2Name 'John Doe') nameEdit='member2Name innerHTML' description=(?? member2Description 'Phasellus ullamcorper, dui vitae ullamcorper rutrum.') descriptionEdit='member2Description innerHTML' socialHtml=member2SocialHtml socialEdit='member2SocialHtml innerHTML'}}
+    {{/unless}}
+    {{#if (eq localColumnSetting 'three')}}
+        {{> teamItemStyle5 imageSrc=(?? member3ImageSrc '/assets/img/empty.png') imageAlt=member3ImageAlt imageEdit='member3ImageSrc @src, member3ImageAlt @alt' name=(?? member3Name 'John Doe') nameEdit='member3Name innerHTML' description=(?? member3Description 'Phasellus ullamcorper, dui vitae ullamcorper rutrum.') descriptionEdit='member3Description innerHTML' socialHtml=member3SocialHtml socialEdit='member3SocialHtml innerHTML'}}
+    {{/if}}
+    {{#if (eq localColumnSetting 'four')}}
+        {{> teamItemStyle5 imageSrc=(?? member3ImageSrc '/assets/img/empty.png') imageAlt=member3ImageAlt imageEdit='member3ImageSrc @src, member3ImageAlt @alt' name=(?? member3Name 'John Doe') nameEdit='member3Name innerHTML' description=(?? member3Description 'Phasellus ullamcorper, dui vitae ullamcorper rutrum.') descriptionEdit='member3Description innerHTML' socialHtml=member3SocialHtml socialEdit='member3SocialHtml innerHTML'}}
+        {{> teamItemStyle5 imageSrc=(?? member4ImageSrc '/assets/img/empty.png') imageAlt=member4ImageAlt imageEdit='member4ImageSrc @src, member4ImageAlt @alt' name=(?? member4Name 'John Doe') nameEdit='member4Name innerHTML' description=(?? member4Description 'Phasellus ullamcorper, dui vitae ullamcorper rutrum.') descriptionEdit='member4Description innerHTML' socialHtml=member4SocialHtml socialEdit='member4SocialHtml innerHTML'}}
+    {{/if}}
+</div>

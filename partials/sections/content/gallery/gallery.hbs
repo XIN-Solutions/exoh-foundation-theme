@@ -1,0 +1,79 @@
+{{let .
+      columnSize=(?? config.columnSize '12')
+      widthHint=(?: (eq columnSize '12') '1200'
+                (?: (eq columnSize '11') '1100'
+                (?: (eq columnSize '10') '1000'
+                (?: (eq columnSize '9') '900'
+                (?: (eq columnSize '8') '800'
+                (?: (eq columnSize '7') '700'
+                (?: (eq columnSize '6') '600'
+                (?: (eq columnSize '5') '520'
+                (?: (eq columnSize '4') '420'
+                (?: (eq columnSize '3') '320'
+                (?: (eq columnSize '2') '260'
+                (?: (eq columnSize '1') '200' '1200'))))))))))))
+}}
+
+<section
+    class="
+        {{?: config.useAltBackground 'bg--alternate' ''}}
+        spacing--{{?? config.spacing 'comfortable'}}
+        {{?: config.noTopSpacing 'spacing--no-top' ''}}
+        {{?: config.noBottomSpacing 'spacing--no-bottom' ''}}
+    "
+    no-edit="children"
+    allowadd="no"
+    allowdelete="no"
+>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-{{columnSize}} col-sm-12 mx-auto">
+                {{#if config.images.[0]}}
+                    {{#if config.images.[1]}}
+                        <div
+                            class="swiper"
+                            data-loop="true"
+                            {{#if config.autoplay}}
+                                data-autoplay='{"delay": {{?? config.switchAfterSeconds 5}}000}'
+                            {{/if}}
+                        >
+                            <div class="swiper-wrapper">
+                                {{#each config.images}}
+                                    <div class="swiper-slide">
+                                        <img
+                                            src="{{this}}"
+                                            alt=""
+                                            loading="lazy"
+                                            class="img-fluid w-100 rounded"
+                                            data-image-hint="width={{../widthHint}}"
+                                        >
+                                    </div>
+                                {{/each}}
+                            </div>
+
+                            {{#if config.showSlideDots}}
+                                <div class="swiper-pagination"></div>
+                            {{/if}}
+                            {{#if config.showNavigationArrows}}
+                                <div class="swiper-button-prev"></div>
+                                <div class="swiper-button-next"></div>
+                            {{/if}}
+                        </div>
+                    {{else}}
+                        <img
+                            src="{{config.images.[0]}}"
+                            alt=""
+                            loading="lazy"
+                            class="img-fluid w-100 rounded"
+                            data-image-hint="width={{widthHint}}"
+                        >
+                    {{/if}}
+                {{else}}
+                    <div class="alert alert-warning mb-0" role="alert">
+                        Please select one or more images.
+                    </div>
+                {{/if}}
+            </div>
+        </div>
+    </div>
+</section>

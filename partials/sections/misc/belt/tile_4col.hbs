@@ -1,0 +1,22 @@
+<div class="col-sm-6 col-md-6 col-lg-3">
+    <div class="mb-4">
+        <a href="{{?? tile.url '#'}}">
+            <img
+                alt=""
+                src="{{?? tile.thumbnail.url tile.defaultThumbnail}}"
+                loading="lazy" class="img-fluid ratio-4-3" data-image-hint="width=512"
+            >
+        </a>
+
+        <h3 class="mt-4 h4-all">
+            <a class="text-reset text-decoration-none" href="{{?? tile.url '#'}}">{{tile.title}}</a>
+        </h3>
+        <p>
+            {{{nl2br tile.description}}}
+        </p>
+        <a class="btn buttonColor-bg" href="{{?? tile.url '#'}}" role="button">
+            <span>{{tile.ctaLabel}}</span>
+            <i no-edit class="la la-long-arrow-alt-right ms-1"></i>
+        </a>
+    </div>
+</div>

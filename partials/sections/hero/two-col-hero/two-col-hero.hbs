@@ -1,0 +1,155 @@
+{{#*inline "imageColumn"}}
+    <div class="col-12 col-md-6 {{orderClass}}">
+        {{#if config.youtubeUrl}}
+            <a href="{{config.youtubeUrl}}"
+               class="video-wrap glightbox d-block position-relative"
+            >
+                <span
+                    class="play-button icon d-flex border-0 align-items-center justify-content-center bg-white text-dark shadow-lg rounded-circle"
+                    style="
+                        width:70px;
+                        height:70px;
+                        position: absolute;
+                        left: 50%;
+                        top: 50%;
+                        margin-top: -35px;
+                        margin-left: -35px;
+                    "
+                >
+                    <i class="la la-play"></i>
+                </span>
+                <img src="{{?? config.videoPoster '/assets/img/empty.png'}}"
+                     data-image-hint="width=600"
+                     loading="lazy"
+                     alt=""
+                     class="img-fluid"
+                >
+            </a>
+        {{else}}
+            <img src="{{?? config.videoPoster '/assets/img/empty.png'}}"
+                 data-image-hint="width=600"
+                 loading="lazy"
+                 alt=""
+                 class="img-fluid"
+            >
+        {{/if}}
+    </div>
+{{/inline}}
+
+<header
+    class="
+        hero-5
+        {{?: config.compact 'hero--compact' ''}}
+        spacing--{{?? config.spacing 'comfortable'}}
+        {{?: config.noTopSpacing 'spacing--no-top' ''}}
+        {{?: config.noBottomSpacing 'spacing--no-bottom' ''}}
+    "
+    no-edit="children"
+    allowadd="no"
+    allowdelete="no"
+>
+
+    <div class="container" style="z-index:2">
+        <div class="row align-items-center d-flex {{#if (eq config.imageColumnPosition 'hidden')}}justify-content-center{{else}}justify-content-between{{/if}}">
+            {{#unless (eq config.imageColumnPosition 'hidden')}}
+                {{#if (eq config.imageColumnPosition 'left')}}
+                    {{> imageColumn orderClass="order-sm-1 order-md-1"}}
+                {{/if}}
+            {{/unless}}
+
+            <div class="col-12 {{#if (eq config.imageColumnPosition 'hidden')}}col-lg-8 text-center{{else}}col-md-6{{/if}} pb-5 {{#if (eq config.imageColumnPosition 'left')}}order-2 order-sm-2{{else}}order-2 order-sm-2{{/if}}">
+
+                {{#unless config.hideTitle}}
+                    <h1
+                        edit="title, titleId @id, titleClass @class"
+                        {{#if titleId}} id="{{titleId}}"{{/if}}
+                        class="{{?? titleClass 'fw-bold mb-3 mt-5 display-3 h1-all'}}"
+                    >
+                        {{{?? title 'Lorem ipsum dolor sit amet.'}}}
+                    </h1>
+                {{/unless}}
+
+                {{#unless config.hideSubtitle}}
+                    <p
+                        edit="description, descriptionId @id, descriptionClass @class"
+                        class="{{?? descriptionClass 'lead p-all'}}"
+                        {{#if descriptionId}} id="{{descriptionId}}"{{/if}}
+                    >
+                        {{#if description}}
+                            {{{description}}}
+                        {{else}}
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas cursus in lectus ut dignissim.
+                        {{/if}}
+                    </p>
+                {{/unless}}
+
+                {{#unless config.hideButton}}
+                    <div class="d-flex mt-3 mb-1 {{#if (eq config.imageColumnPosition 'hidden')}}justify-content-center{{/if}}">
+                        <a edit="
+                                buttonUrl @href,
+                                buttonId @id,
+                                buttonClasses @class,
+                                buttonTitle @title,
+                                buttonTarget @target,
+                                buttonLabel span
+                            "
+                        href="{{buttonUrl}}"
+                        {{#if buttonId}}id="{{buttonId}}"{{/if}}
+                        title="{{buttonTitle}}"
+                        target="{{buttonTarget}}"
+                        role="button"
+                        class="{{?? buttonClasses 'btn btn-primary btn-lg mt-md-3 mx-0 '}}"
+                        >
+                            <span edit>{{{?? buttonLabel 'Read More'}}}</span>
+                        </a>
+                    </div>
+                {{/unless}}
+            </div>
+
+
+            {{#unless (eq config.imageColumnPosition 'hidden')}}
+                {{#unless (eq config.imageColumnPosition 'left')}}
+                    {{> imageColumn orderClass="order-sm-1 order-md-2"}}
+                {{/unless}}
+            {{/unless}}
+        </div>
+    </div>
+
+
+    {{#if config.setHeroSeparators}}
+        {{let .
+              topIdName=(?: config.separatorDifferentTopBottom config.separatorTopId (concat config.separatorPairBase '_top'))
+              bottomIdName=(?: config.separatorDifferentTopBottom config.separatorBottomId (concat config.separatorPairBase '_bottom'))
+        }}
+
+        {{#if topIdName}}
+            <div class="separator top {{?: config.reduceSeparator 'separator--reduced' ''}}">
+                {{> common/shapes/hero_separator_svgs
+                        border_type=topIdName
+                        fill='var(--bs-body-bg)'
+                }}
+            </div>
+        {{/if}}
+
+        {{#if bottomIdName}}
+            <div class="separator bottom {{?: config.reduceSeparator 'separator--reduced' ''}}">
+                {{> common/shapes/hero_separator_svgs
+                        border_type=bottomIdName
+                        fill='var(--bs-body-bg)'
+                }}
+            </div>
+        {{/if}}
+
+    {{/if}}
+
+    {{#unless config.hideOverlay}}
+        <div class="overlay" style="background-color: {{?? config.overlayColour '#000000'}}; opacity: {{?? config.overlayOpacity 0.7}}">
+        </div>
+    {{/unless}}
+
+    <div class="background-container">
+        <img src="{{?? config.backgroundImage '/assets/img/empty.png'}}" data-image-hint="width=1920" alt="">
+    </div>
+
+
+</header>

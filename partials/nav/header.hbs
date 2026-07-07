@@ -1,0 +1,108 @@
+{{let . site=(ancestor-of-type 'site')}}
+{{let . content=site.content}}
+{{let . siteSettings=content.forms.site}}
+{{let . navigation=content.expand.navigation}}
+{{let . footer=content.forms.footer}}
+
+<nav class="navigation-1 clearfix">
+
+  {{#if navigation.enableTopBar}}
+    <div id="top" class="top-nav clearfix">
+      <div class="container">
+        <div class="d-flex justify-content-between flex-md-row d-flex flex-column flex-md-row">
+          <div class="nav">
+            <ul class="list-inline">
+
+              {{#if footer.contactInfo.phone}}
+                <li class="list-inline-item">
+                  <a href="tel:{{footer.contactInfo.phone}}" class="p-2 p-md-0" title="Phone">
+                    <i class="la la-phone"></i>
+                    <span class="text-muted">{{footer.contactInfo.phone}}</span>
+                  </a>
+                </li>
+              {{/if}}
+
+              {{#if footer.contactInfo.email}}
+                <li class="list-inline-item">
+                  <a href="mailto:{{footer.contactInfo.email}}" class="p-2 p-md-0" title="Email">
+                    <i class="la la-envelope"></i>
+                    <span class=" text-muted">{{footer.contactInfo.email}}</span>
+                  </a>
+                </li>
+              {{/if}}
+            </ul>
+          </div>
+
+          <div class="nav">
+            <ul class="list-inline">
+              
+              <li class="list-inline-item">
+
+                <a id="color-theme-switch" class="p-2 p-md-0" href="javascript:void(0);" role="button" title="Switch sidebar color theme">
+                  <i class="la la-sun la-lg"></i>
+                </a>
+
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  {{/if}}
+  
+  <div class="navbar navbar-expand-md">
+
+    <div class="container">
+      <div>
+        <a class="navbar-brand" href="/">
+          <span class="visually-hidden">Logo</span>
+          {{#if navigation.logo}}
+            
+            {{let . 
+              navLogo=(image-url navigation.logo navigation.logo.file adjust=(array "height=50"))
+              navLogo2x=(image-url navigation.logo navigation.logo.file adjust=(array "height=100"))
+            }}
+
+            <img src="{{navLogo}}" srcset="{{navLogo2x}} 2x" alt="" loading="lazy" class="logo-default" style="max-height: 50px">
+            <img src="{{navLogo}}" srcset="{{navLogo2x}} 2x" alt="" loading="lazy" class="logo-default-dark" style="max-height: 50px">
+            <img src="{{navLogo}}" srcset="{{navLogo2x}} 2x" alt="" loading="lazy" class="logo-sticky" style="max-height: 50px">
+            <img src="{{navLogo}}" srcset="{{navLogo2x}} 2x" alt="" loading="lazy" class="logo-default-dark-sticky" style="max-height: 50px">
+          {{/if}}
+        </a>
+      </div>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbar">
+        <ul class="navbar-nav ms-auto">
+          {{#each navigation.items as |navItem|}}
+            <li class="nav-item">
+              <a class="nav-link" href="{{?: navItem.isExternal navItem.externalUrl navItem.pageUrl}}">
+                <span>{{navItem.label}}</span>
+              </a>
+            </li>
+          {{/each}}
+        </ul>
+
+        {{#if navigation.cta.enabled}}
+          <a class="btn btn-primary ms-lg-3 my-2 my-lg-0"
+             href="{{?: navigation.cta.isExternal navigation.cta.externalUrl navigation.cta.pageUrl}}">
+            <span>{{navigation.cta.label}}</span>
+          </a>
+        {{/if}}
+
+        {{#if navForm.enableSearch}}
+          <button class="btn btn-outline-secondary border-0" type="submit" title="Search" data-bs-toggle="modal" data-bs-target="#searchModal">
+            <div class="la-flip-horizontal">
+              <i class="la la-search la-lg" aria-hidden="true"></i>
+            </div>
+          </button>
+        {{/if}}
+
+      </div>
+
+    </div>
+  </div>
+</nav>

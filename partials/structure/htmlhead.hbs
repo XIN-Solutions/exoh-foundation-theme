@@ -1,0 +1,69 @@
+{{let . site=(ancestor-of-type 'site')}}
+{{let . siteSettings=site.content.forms.site}}
+{{let . hostSettings=site.content.forms.host}}
+{{let . seo=page.content.forms.seo}}
+{{let . pageTitle=(?? seo.metaTitle page.name)}}
+{{let . styleSettings=site.content.forms.styles}}
+{{let . googleFontFamilies=(json-parse (?? styleSettings.googleFonts '[]'))}}
+{{let . googleFontAxis='ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900'}}
+
+<script>
+    window.XC ??= {};
+    window.XC.PageId = "{{page.id}}";
+    {{#if editing}}
+
+        {{#if frontendPort}}
+            window.XC.FrontendPort = "{{frontendPort}}";
+            window.XC.FrontendSchema = "{{frontendSchema}}";
+        {{/if}}
+    {{/if}}
+
+</script>
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta charset="utf-8">
+
+<title>{{pageTitle}} - {{siteSettings.siteName}}</title>
+
+<meta name="description" content="{{ seo.metaDescription }}" />
+<meta name="keywords" content="{{ seo.metaTitle }}">
+<meta name="author" content="{{ seo.keywords }}">
+
+<meta property="og:title" content="{{pageTitle}} - {{siteSettings.siteName}}">
+<meta property="og:description" content="{{ seo.metaDescription }}">
+
+{{#if seo.thumbnail}}
+  <meta property="og:image" content="{{image-url seo.thumbnail seo.thumbnail.file}}">
+{{/if}}
+
+<meta property="og:type" content="article">
+
+<link href="{{theme.url}}/assets/libs/swiper/swiper-bundle.min.css" rel="stylesheet" media="screen">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css">
+<link href="{{theme.url}}/assets/css/style.bundle.css" rel="stylesheet" media="screen">
+<link href="{{theme.url}}/assets/css/custom.css" rel="stylesheet" media="screen">
+
+{{#unless (eq styleSettings.themeStylingEnabled 'no')}}
+    {{#if (has-items googleFontFamilies)}}
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        {{#each googleFontFamilies as |family|}}
+            <link rel="stylesheet" href="{{{concat 'https://fonts.googleapis.com/css2?family=' (url-encode family) ':' ../googleFontAxis '&display=swap'}}}">
+        {{/each}}
+    {{/if}}
+    <link href="{{?: inPreview previewUrl ''}}/index.css" rel="stylesheet" media="screen">
+{{/unless}}
+
+{{#if siteSettings.favicon}}
+  <link rel="icon" type="image/png" href="{{ image-url siteSettings.favicon siteSettings.favicon.file }}">
+{{/if}}
+
+{{#if content.blocks.customStyles}}
+  <style id="{{?: editing 'vvvebjs-styles' ''}}">
+    {{{content.blocks.customStyles}}}
+  </style>
+{{/if}} 
+
+{{#unless hideCustomScripts}}
+    {{{siteSettings.headScripts}}}
+{{/unless}}

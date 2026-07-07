@@ -1,0 +1,130 @@
+{{!--
+  Reusable customizable select with inline SVG preview.
+
+  Params:
+  - model: Alpine x-model expression (string)
+  - options: array of option ids/bases
+  - labels: map used with lookup
+  - mode: "single" | "pair" (pair renders _top and _bottom previews; option value is base)
+  - class: extra class names (optional)
+  - onChange: JS handler string for @change (optional)
+  - includeStyle: true to emit CSS (optional; include once per dialog)
+  - noneLabel: label for empty option (optional; when provided, adds option value="")
+--}}
+
+{{#if includeStyle}}
+<style>
+    .dialog-svg-select,
+    .dialog-svg-select::picker(select) {
+        appearance: base-select;
+    }
+
+    .dialog-svg-select button {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        width: 100%;
+        padding: 0.375rem 2.25rem 0.375rem 0.75rem;
+        background: transparent;
+        border: 0;
+        color: inherit;
+        font: inherit;
+        position: relative;
+    }
+
+    .dialog-svg-select selectedcontent {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        min-width: 0;
+    }
+
+    .dialog-svg-select::picker-icon {
+        position: absolute;
+        right: 0.75rem;
+        top: 50%;
+        transform: translateY(-50%);
+        pointer-events: none;
+    }
+
+    .dialog-svg-option {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.5rem 0.75rem;
+    }
+
+    .dialog-svg-option__label {
+        flex: 0 0 auto;
+        min-width: 12ch;
+        white-space: nowrap;
+    }
+
+    .dialog-svg-option__preview {
+        flex: 1 1 auto;
+        min-width: 0;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        opacity: 0.9;
+    }
+
+    .dialog-svg-option__svg {
+        width: 8rem;
+        height: 1.25em;
+        max-height: 100%;
+        display: block;
+        color: rgba(0, 0, 0, 0.65);
+        overflow: hidden;
+    }
+
+    .dialog-svg-option__svg--small {
+        width: 6.5rem;
+    }
+
+    .dialog-svg-option__svg svg {
+        display: block;
+        width: 100% !important;
+        height: 100% !important;
+        max-height: 100% !important;
+    }
+
+    .dialog-svg-select selectedcontent .dialog-svg-option__svg {
+        width: 6.5rem;
+        height: 1.1em;
+    }
+</style>
+{{/if}}
+
+<select class="form-select dialog-svg-select {{class}}" x-model="{{model}}" {{#if onChange}}@change="{{onChange}}"{{/if}}>
+    <button type="button">
+        <selectedcontent></selectedcontent>
+    </button>
+
+    {{#if noneLabel}}
+        <option value="">{{noneLabel}}</option>
+    {{/if}}
+
+    {{#each options as |opt|}}
+        <option value="{{opt}}">
+            <span class="dialog-svg-option">
+                <span class="dialog-svg-option__label">{{lookup ../labels opt}}</span>
+                <span class="dialog-svg-option__preview" aria-hidden="true">
+                    {{#if (eq ../mode "pair")}}
+                        <span class="dialog-svg-option__svg dialog-svg-option__svg--small">
+                            {{> common/shapes/hero_separator_svgs border_type=(concat opt '_top') fill='currentColor' }}
+                        </span>
+                        <span class="dialog-svg-option__svg dialog-svg-option__svg--small">
+                            {{> common/shapes/hero_separator_svgs border_type=(concat opt '_bottom') fill='currentColor' }}
+                        </span>
+                    {{else}}
+                        <span class="dialog-svg-option__svg">
+                            {{> common/shapes/hero_separator_svgs border_type=opt fill='currentColor' }}
+                        </span>
+                    {{/if}}
+                </span>
+            </span>
+        </option>
+    {{/each}}
+</select>
+

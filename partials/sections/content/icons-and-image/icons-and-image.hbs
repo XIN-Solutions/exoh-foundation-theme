@@ -1,0 +1,164 @@
+{{let .
+      isLeft=(eq config.imagePosition "left")
+      isRight=(eq (?? config.imagePosition "right") "right")
+}}
+
+<section
+    class="
+        features-3 bg-alternate
+        {{?: config.useAltBackground 'bg--alternate' ''}}
+        spacing--{{?? config.spacing 'comfortable'}}
+        {{?: config.noTopSpacing 'spacing--no-top' ''}}
+        {{?: config.noBottomSpacing 'spacing--no-bottom' ''}}
+    "
+    no-edit="children"
+    allowadd="no"
+    allowdelete="no"
+>
+    <div class="container">
+
+        <div class="row">
+
+            {{#if isLeft}}
+                {{> imageCol}}
+            {{/if}}
+
+            <div class="col-lg-6 d-flex align-items-center">
+                <div class="row">
+                
+                    <div class="col-md-12 mb-4">
+                        <div class="d-flex align-items-center">
+                            <div>
+                                <div>
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                         edit="
+                                            icon1Svg innerHTML,
+                                            item1ViewBox @viewBox,
+                                            item1Width @width,
+                                            item1Height @height
+                                         "
+                                         viewBox="{{?? item1ViewBox '0 0 512 512'}}"
+                                         width="{{?? item1Width 72}}"
+                                         height="{{?? item1Height 72}}"
+                                         color="var(--theme-tertiaryColor)"
+                                         fill="var(--theme-tertiaryColor)"
+                                    >
+                                        {{#if icon1Svg}}
+                                            {{{icon1Svg}}}
+                                        {{else}}
+                                            <polyline points="336 176 225.2 304 176 255.8" style="fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"></polyline><path d="M463.1,112.37C373.68,64.33,336.71,84.45,256,48,175.29,84.45,138.32,64.33,48.9,112.37,32.7,369.13,240.58,457.79,256,464,271.42,457.79,479.3,369.13,463.1,112.37Z" style="fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"></path>
+                                        {{/if}}
+                                    </svg>
+                                </div>
+                            </div>
+                            
+                            <div class="p-4">
+                                <h4 class="h4Color-text" edit="icon1Title">
+                                    {{{?? icon1Title 'Lorem ipsum dolor sit amet.' }}}
+                                </h4>
+                                <p class="mt-2 paragraphColor-text" edit="icon1Description">
+                                    {{{?? icon1Description 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas cursus in lectus ut dignissim.'}}}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 mb-4">
+                        <div class="d-flex align-items-center">
+                            <div>
+                                <div>
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                         edit="
+                                            icon2Svg innerHTML,
+                                            item2ViewBox @viewBox,
+                                            item2Width @width,
+                                            item2Height @height
+                                         "
+                                         viewBox="{{?? item2ViewBox '0 0 512 512'}}"
+                                         width="{{?? item2Width 72}}"
+                                         height="{{?? item2Height 72}}"
+                                         color="var(--theme-tertiaryColor)"
+                                         fill="var(--theme-tertiaryColor)"
+                                    >
+                                        {{#if icon2Svg}}
+                                            {{{icon2Svg}}}
+                                        {{else}}
+                                            <path d="M419.1,337.45a3.94,3.94,0,0,0-6.1,0c-10.5,12.4-45,46.55-45,77.66,0,27,21.5,48.89,48,48.89h0c26.5,0,48-22,48-48.89C464,384,429.7,349.85,419.1,337.45Z" style="fill:none;stroke:currentColor;stroke-miterlimit:10;stroke-width:32px"></path><path d="M387,287.9,155.61,58.36a36,36,0,0,0-51,0l-5.15,5.15a36,36,0,0,0,0,51l52.89,52.89,57-57L56.33,263.2a28,28,0,0,0,.3,40l131.2,126a28.05,28.05,0,0,0,38.9-.1c37.8-36.6,118.3-114.5,126.7-122.9,5.8-5.8,18.2-7.1,28.7-7.1h.3A6.53,6.53,0,0,0,387,287.9Z" style="fill:none;stroke:currentColor;stroke-miterlimit:10;stroke-width:32px"></path>
+                                        {{/if}}
+                                    </svg>
+                                </div>
+                            </div>
+                            
+                            <div class="p-4">
+                                <h4 class="h4Color-text" edit="icon2Title">
+                                    {{{?? icon2Title 'Lorem ipsum dolor sit amet.' }}}
+                                </h4>
+                                <p class="mt-2 paragraphColor-text" edit="icon2Description">
+                                    {{{?? icon2Description 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas cursus in lectus ut dignissim.'}}}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 mb-4">
+                        <div class="d-flex align-items-center">
+                            <div>
+                                <div>
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                         edit="
+                                            icon3Svg innerHTML,
+                                            item3ViewBox @viewBox,
+                                            item3Width @width,
+                                            item3Height @height
+                                         "
+                                         viewBox="{{?? item3ViewBox '0 0 512 512'}}"
+                                         width="{{?? item3Width 72}}"
+                                         height="{{?? item3Height 72}}"
+                                         color="var(--theme-tertiaryColor)"
+                                         fill="var(--theme-tertiaryColor)"
+                                    >
+                                        {{#if icon3Svg}}
+                                            {{{icon3Svg}}}
+                                        {{else}}
+                                            <path d="M304,384V360c0-29,31.54-56.43,52-76,28.84-27.57,44-64.61,44-108,0-80-63.73-144-144-144A143.6,143.6,0,0,0,112,176c0,41.84,15.81,81.39,44,108,20.35,19.21,52,46.7,52,76v24" style="fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"></path>
+                                            <line x1="224" y1="480" x2="288" y2="480" style="fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"></line>
+                                            <line x1="208" y1="432" x2="304" y2="432" style="fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"></line>
+                                            <line x1="256" y1="384" x2="256" y2="256" style="fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"></line>
+                                            <path d="M294,240s-21.51,16-38,16-38-16-38-16" style="fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"></path>
+                                        {{/if}}
+                                    </svg>
+                                </div>
+                            </div>
+
+                            <div class="p-4">
+                                <h4 class="h4Color-text" edit="icon3Title">
+                                    {{{?? icon3Title 'Lorem ipsum dolor sit amet.' }}}
+                                </h4>
+                                <p class="mt-2 paragraphColor-text" edit="icon3Description">
+                                    {{{?? icon3Description 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas cursus in lectus ut dignissim.'}}}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{#if isRight }}
+                {{> imageCol}}
+            {{/if}}
+
+        </div>
+    </div>
+</section>
+
+{{#*inline "imageCol"}}
+    <div class="col-lg-6">
+        <img
+            edit="imageAlt @alt, imageSrc @src, imageId @id"
+            {{#if imageId}} id="{{imageId}}" {{/if}}
+            alt="{{imageAlt}}"
+            src="{{?? imageSrc '/assets/img/empty.png' }}"
+            loading="lazy" class="img-fluid"  data-image-hint="width=768"
+        >
+    </div>
+{{/inline}}

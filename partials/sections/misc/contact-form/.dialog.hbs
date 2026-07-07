@@ -1,0 +1,131 @@
+<form id="miscContactFormConfigForm" class="config-form"
+      x-data="componentDialog({
+            defaultConfig: {
+                mapPosition: 'bottom',
+                hideMap: false,
+                contentPosition: 'top',
+                hideTitle: false,
+                hideDescription: false,
+                mapLat: '-36.8485',
+                mapLon: '174.7633',
+                nameLabel: 'Name',
+                emailLabel: 'Email Address',
+                subjectLabel: 'Subject',
+                messageLabel: 'How can we help?',
+                useAltBackground: false,
+                spacing: 'comfortable',
+                noTopSpacing: false,
+                noBottomSpacing: false
+            }
+      })"
+      @set="setConfig"
+      @get="getConfig"
+>
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" data-bs-toggle="tab" href="#misc-contact-component" role="tab">Component</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" href="#misc-contact-labels" role="tab">Labels</a>
+        </li>
+        {{> common/dialogs/basic_nav }}
+    </ul>
+
+    <div class="tab-content tab-content--withBorder">
+        <div class="tab-pane fade show active" id="misc-contact-component" role="tabpanel">
+            <div class="mb-3">
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" type="checkbox" x-model="config.hideTitle">
+                        Hide title
+                    </label>
+                </div>
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" type="checkbox" x-model="config.hideDescription">
+                        Hide description
+                    </label>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Content Position</label>
+                <select class="form-select" x-model="config.contentPosition">
+                    <option value="top">Top of form</option>
+                    <option value="bottom">Bottom of form</option>
+                    <option value="left">Left of form</option>
+                    <option value="right">Right of form</option>
+                </select>
+            </div>
+
+            <div class="mb-0">
+                <label class="form-label">Contact Email (hides when empty)</label>
+                <input type="text" class="form-control" x-model="config.email" placeholder="contact@example.com">
+            </div>
+
+            <div class="mb-0 mt-3">
+                <label class="form-label">Contact Phone (hides when empty)</label>
+                <input type="text" class="form-control" x-model="config.phone" placeholder="+64 22 4020 111">
+            </div>
+
+            <div class="mb-0 mt-4">
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" type="checkbox" x-model="config.hideMap">
+                        Hide map
+                    </label>
+                </div>
+            </div>
+
+            <div x-show="!config.hideMap" class="p-3 mb-3 bg-light border rounded">
+                <div class="mb-3">
+                    <label class="form-label">Map Position</label>
+                    <select class="form-select" x-model="config.mapPosition">
+                        <option value="top">Top</option>
+                        <option value="bottom">Bottom</option>
+                    </select>
+                </div>
+
+                <div class="row">
+                    <div class="col-6">
+                        <div class="mb-3">
+                            <label class="form-label">Map Latitude</label>
+                            <input type="text" class="form-control" x-model="config.mapLat" placeholder="-36.8485">
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="mb-3">
+                            <label class="form-label">Map Longitude</label>
+                            <input type="text" class="form-control" x-model="config.mapLon" placeholder="174.7633">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="tab-pane fade" id="misc-contact-labels" role="tabpanel">
+            <div class="mb-3">
+                <label class="form-label">Name Label</label>
+                <input type="text" class="form-control" x-model="config.nameLabel" placeholder="Name">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Email Label</label>
+                <input type="text" class="form-control" x-model="config.emailLabel" placeholder="Email Address">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Subject Label</label>
+                <input type="text" class="form-control" x-model="config.subjectLabel" placeholder="Subject">
+            </div>
+
+            <div class="mb-0">
+                <label class="form-label">Message Label</label>
+                <input type="text" class="form-control" x-model="config.messageLabel" placeholder="How can we help?">
+            </div>
+        </div>
+
+        {{> common/dialogs/basic_content }}
+    </div>
+</form>

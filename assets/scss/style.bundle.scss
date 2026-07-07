@@ -1,0 +1,61 @@
+// Active section styles — paired with partials under partials/sections/ (excluding disabled/)
+@import "sections/hero/hero-1";           // hero/video-hero
+@import "sections/hero/hero-3";           // hero/hero, hero/image-banner
+@import "sections/hero/hero-5";           // hero/two-col-hero
+@import "sections/features/features-1";    // misc/belt, content/text-and-image
+@import "sections/features/features-3";   // content/icons-and-image
+@import "sections/navigation/navigation-1"; // nav/header
+@import "sections/footer/footer-1";        // nav/footer
+@import "sections/testimonials/testimonials-1"; // misc/testimonials (+ standard_tile .testimonial)
+@import "sections/team/team-3";            // misc/team/style3
+@import "sections/team/team-4";            // misc/team/style4
+@import "sections/team/team-5";            // misc/team/style5 (.card.border-1)
+@import "sections/showcase/showcase-3";   // content/column-showcase/standard (.feature)
+
+// Unused section styles (original theme inventory — uncomment to re-enable)
+// @import "sections/features/features-2";
+// @import "sections/features/features-11";
+// @import "sections/hero/hero-2";
+// @import "sections/hero/hero-4";
+// @import "sections/hero/hero-6";
+// @import "sections/hero/hero-7";
+// @import "sections/hero/hero-slider";
+// @import "sections/navigation/navigation-2";
+// @import "sections/navigation/navigation-3";
+// @import "sections/navigation/navigation-4";
+// @import "sections/posts/posts-1";
+// @import "sections/posts/posts-3";
+// @import "sections/pricing-table/pricing-table-1";
+// @import "sections/pricing-table/pricing-table-2";
+// @import "sections/pricing-table/pricing-table-3";
+// @import "sections/pricing-table/pricing-table-4";
+// @import "sections/pricing-table/pricing-table-5";
+// @import "sections/pricing-table/pricing-table-6";
+// @import "sections/pricing-table/pricing-table-7";
+// @import "sections/pricing-table/pricing-table-8";
+// @import "sections/pricing-table/pricing-table-9";
+// @import "sections/pricing-table/pricing-table-10";
+// @import "sections/pricing-table/pricing-table-11";
+// @import "sections/pricing-table/pricing-table-12";
+// @import "sections/pricing-table/pricing-table-13";
+// @import "sections/pricing-table/pricing-table-14";
+// @import "sections/pricing-table/pricing-table-15";
+// @import "sections/pricing-table/pricing-table-16";
+// @import "sections/pricing-table/pricing-table-17";
+// @import "sections/products/products-1";
+// @import "sections/showcase/showcase-1";
+// @import "sections/showcase/showcase-4";   // column-showcase/disabled/flat
+// @import "sections/showcase/showcase-5";   // column-showcase/disabled/spacious
+// @import "sections/showcase/showcase-6";
+// @import "sections/showcase/showcase-7";
+// @import "sections/showcase/showcase-8";
+// @import "sections/showcase/showcase-12";  // column-showcase/disabled/borderless
+// @import "sections/team/team-1";
+// @import "sections/team/team-2";            // team style2 (not in dialog; legacy only)
+// @import "sections/team/team-6";
+// @import "sections/testimonials/testimonials-2";
+// @import "sections/testimonials/testimonials-3"; // misc/testimonials/disabled/style3
+// @import "sections/testimonials/testimonials-5";
+// @import "blocks/components/gallery";
+
+@import "style";

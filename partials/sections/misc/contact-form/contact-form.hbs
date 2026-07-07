@@ -1,0 +1,190 @@
+{{let .
+      isMapTop=(eq config.mapPosition "top")
+      isMapBottom=(eq (?? config.mapPosition "bottom") "bottom")
+      isContentLeft=(eq config.contentPosition "left")
+      isContentRight=(eq config.contentPosition "right")
+      isContentBottom=(eq config.contentPosition "bottom")
+      isContentTop=(eq (?? config.contentPosition "top") "top")
+      contactEmail=(?? config.email email)
+      contactPhone=(?? config.phone phone)
+}}
+
+<section
+    class="
+        contact-form-12
+        {{?: config.useAltBackground 'bg--alternate' ''}}
+        spacing--{{?? config.spacing 'comfortable'}}
+        {{?: config.noTopSpacing 'spacing--no-top' ''}}
+        {{?: config.noBottomSpacing 'spacing--no-bottom' ''}}
+    "
+    no-edit="children"
+    allowadd="no"
+    allowdelete="no"
+>
+    {{#if isMapTop}}
+        {{#unless config.hideMap}}
+            {{> mapBlock}}
+        {{/unless}}
+    {{/if}}
+
+    {{!-- content and form --}}
+    <div class="container py-5">
+        {{#if isContentTop}}
+            <div class="row text-center justify-content-center">
+                <div class="col-12 col-md-8 col-lg-7">
+                    <div class="mb-5">
+                        {{> contentBlock}}
+                    </div>
+                </div>
+            </div>
+
+            <div class="row-50"></div>
+
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-8 col-lg-7">
+                    {{> formBlock}}
+                </div>
+            </div>
+        {{/if}}
+
+        {{#if isContentBottom}}
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-8 col-lg-7">
+                    {{> formBlock}} 
+                </div>
+            </div>
+
+            <div class="row-50"></div>
+
+            <div class="row text-center justify-content-center">
+                <div class="col-12 col-md-8 col-lg-7">
+                    <div class="mt-5">
+                        {{> contentBlock}}
+                    </div>
+                </div>
+            </div>
+        {{/if}}
+
+        {{#if isContentLeft}}
+            <div class="row justify-content-center align-items-start gy-4">
+                <div class="col-12 col-lg-4">
+                    {{> contentBlock}}
+                </div>
+                <div class="col-12 col-lg-7">
+                    {{> formBlock}}
+                </div>
+            </div>
+        {{/if}}
+
+        {{#if isContentRight}}
+            <div class="row justify-content-center align-items-start gy-4">
+                <div class="col-12 col-lg-7">
+                    {{> formBlock}}
+                </div>
+                <div class="col-12 col-lg-4">
+                    {{> contentBlock}}
+                </div>
+            </div>
+        {{/if}}
+    </div>
+
+    {{#if isMapBottom}}
+        {{#unless config.hideMap}}
+            {{> mapBlock}}
+        {{/unless}}
+    {{/if}}
+</section>
+
+{{#*inline "formBlock"}}
+    <form hx-post="/contact" hx-disabled-elt="find button">
+        <div class="row">
+            <div class="col">
+                <label>{{?? config.nameLabel "Name"}}</label>
+                <input type="text" class="form-control" name="name" required>
+            </div>
+
+            <div class="col">
+                <label>{{?? config.emailLabel "Email Address"}}</label>
+                <input type="email" class="form-control" name="email" required>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col">
+                <label>{{?? config.subjectLabel "Subject"}}</label>
+                <input type="text" class="form-control" name="subject">
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col">
+                <label>{{?? config.messageLabel "How can we help?"}}</label>
+                <textarea class="form-control" name="message" rows="5" required></textarea>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col text-end">
+                <a
+                    type="submit"
+                    class="{{?? sendButtonClass 'btn btn-dark'}}"
+                    {{#if sendButtonId}}id="{{sendButtonId}}"{{/if}}
+                    edit="sendButtonText innerHTML, sendButtonClass @class, sendButtonId @id"
+                >
+                    {{?? sendButtonText "Send"}}
+                </a>
+            </div>
+        </div>
+    </form>
+{{/inline}}
+
+{{#*inline "contentBlock"}}
+    {{#unless config.hideTitle}}
+        <h3
+            id="{{titleId}}"
+            class="{{titleClasses}}"
+            edit="title innerHTML, titleId @id, titleClasses @class"
+        >{{{?? title "Contact Us"}}}</h3>
+    {{/unless}}
+
+    {{#unless config.hideDescription}}
+        <p
+            id="{{descriptionId}}"
+            class="{{?? descriptionClasses 'fw-light'}}"
+            edit="description innerHTML, descriptionId @id, descriptionClasses @class"
+        >
+            {{{?? description "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas cursus in lectus ut dignissim."}}}
+        </p>
+    {{/unless}}
+
+    {{#if contactEmail}}
+        <p class="mt-4 mb-2">
+            <span><i no-edit class="la la-lg la-envelope opacity-50"></i> Email:</span>
+            <a href="mailto:{{contactEmail}}">{{contactEmail}}</a>
+        </p>
+    {{/if}}
+
+    {{#if contactPhone}}
+        <p class="mb-0">
+            <span><i no-edit class="la la-lg la-phone opacity-50"></i> Phone:</span>
+            <a href="tel:{{contactPhone}}">{{contactPhone}}</a>
+        </p>
+    {{/if}}
+{{/inline}}
+
+{{#*inline "mapBlock"}}
+    <div class="container-fluid p-0">
+        <div style="height:300px; overflow:hidden;">
+            <iframe
+                loading="lazy"
+                frameborder="0"
+                title="map"
+                src="https://maps.google.com/maps?q={{?? config.mapLat '-36.8485'}},{{?? config.mapLon '174.7633'}}&z=15&t=q&key=&output=embed"
+                width="100%"
+                height="100%"
+                style="width:100%;height:100%;left:0px"
+            >
+            </iframe>
+        </div>
+    </div>
+{{/inline}}

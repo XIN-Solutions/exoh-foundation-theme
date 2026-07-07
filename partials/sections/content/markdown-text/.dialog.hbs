@@ -1,0 +1,79 @@
+<form id="markdownTextConfigForm" class="config-form"
+      x-data="componentDialog({
+            defaultConfig: {
+                markdown: '',
+                textColumns: '1',
+                columnSize: '8',
+                textAlignment: 'left',
+                useAltBackground: false,
+                spacing: 'comfortable',
+                noTopSpacing: false,
+                noBottomSpacing: false
+            }
+      })"
+      @set="setConfig"
+      @get="getConfig"
+>
+
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" data-bs-toggle="tab" href="#markdown-text-component" role="tab">Markdown</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" href="#markdown-text-settings" role="tab">Layout</a>
+        </li>
+        {{> common/dialogs/basic_nav}}
+    </ul>
+
+    <div class="tab-content tab-content--withBorder">
+        <div class="tab-pane fade show active" id="markdown-text-component" role="tabpanel">
+            <div class="mb-3">
+                <label class="form-label">Markdown</label>
+                <textarea data-markdown-editor x-model="config.markdown" rows="20" style="width: 100%"></textarea>
+            </div>
+        </div>
+
+        <div class="tab-pane fade" id="markdown-text-settings" role="tabpanel">
+            <div class="mb-3">
+                <label class="form-label">Text columns</label>
+                <select class="form-select" x-model="config.textColumns">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Column size</label>
+                <select class="form-select" x-model="config.columnSize">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Text alignment</label>
+                <select class="form-select" x-model="config.textAlignment">
+                    <option value="left">Left</option>
+                    <option value="center">Center</option>
+                    <option value="right">Right</option>
+                    <option value="justified">Justified</option>
+                </select>
+            </div>
+        </div>
+
+        {{> common/dialogs/basic_content }}
+    </div>
+
+</form>

@@ -1,0 +1,13 @@
+{
+  // one or more extensions to render
+  "extensions": [
+    {
+      "extType": "css",
+      "pageType": "site",
+      "contentType": "text/css",
+      "template": "theme_styles_css"
+    }
+  ]
+
+
+}

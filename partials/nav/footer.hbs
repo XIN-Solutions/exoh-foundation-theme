@@ -1,0 +1,84 @@
+{{let . site=(ancestor-of-type 'site')}}
+{{let . footer=site.content.expand.footer}}
+{{let . siteName=site.content.forms.site.siteName}}
+{{let . basicInfo=footer.basicInfo}}
+
+<footer class="footer-1">
+  <div class="container">
+
+    <div class="row">
+
+      <div class="col-md">
+
+        {{#if basicInfo.footerImage}}
+          <div>
+            {{let . footerImage=(image-url 
+                basicInfo.footerImage 
+                basicInfo.footerImage.file
+                adjust=(array "height=50")  
+              )
+            }}
+            <img src="{{footerImage}}" alt="Site logo" loading="lazy" class="logo-default mb-1" height="50">
+            <img src="{{footerImage}}" alt="Site logo" loading="lazy" class="logo-default-dark mb-1" height="50">
+            {{#if basicInfo.slogan}}
+              <p>
+                <strong>{{?? basicInfo.footerTitle siteName}}</strong><br>
+                <small class="text-muted">{{basicInfo.slogan}}</small>
+              </p>
+            {{/if}}
+          </div>
+        {{/if}}
+
+      </div>
+
+      {{#if (has-items footer.firstColumn)}}
+        <div class="col-md-2">
+          {{#if footer.firstColumnTitle}}
+            <div class="h6">{{footer.firstColumnTitle}}</div>
+          {{/if}}
+          <nav>
+            {{#each footer.firstColumn as |link|}}
+              {{let . url=(?: link.isExternal link.externalUrl link.pageUrl)}}
+              <div>
+                <a href="{{url}}">
+                  <span>{{link.label}}</span>
+                </a>
+              </div>
+            {{/each}}
+          </nav>
+        </div>
+      {{/if}}
+
+      {{#if (has-items footer.secondColumn)}}
+        <div class="col-md-2">
+          {{#if footer.secondColumnTitle}}
+            <div class="h6">{{footer.secondColumnTitle}}</div>
+          {{/if}}
+          <nav>
+            {{#each footer.secondColumn as |link|}}
+              {{let . url=(?: link.isExternal link.externalUrl link.pageUrl)}}
+              <div>
+                <a href="{{url}}">
+                  <span>{{link.label}}</span>
+                </a>
+              </div>
+            {{/each}}
+          </nav>
+        </div>
+      {{/if}}
+    </div>
+
+  </div>
+
+  <div class="footer-copyright">
+    <div class="container">
+      <div class="d-flex flex-column flex-md-row">
+        
+        <div class="text-muted">
+          {{footer.basicInfo.copyrightMessage}}
+        </div>
+      </div>
+    </div>
+  </div>
+
+</footer>

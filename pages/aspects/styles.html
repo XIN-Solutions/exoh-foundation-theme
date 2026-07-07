@@ -1,0 +1,2055 @@
+<div class="nk-block theme-editor" x-init="themeEditorAttach($data)">
+    <input type="hidden" name="styles[googleFonts]" x-model="googleFonts">
+    <input type="hidden" name="styles[h1FontFamily]" x-model="h1FontFamily">
+    <input type="hidden" name="styles[h2FontFamily]" x-model="h2FontFamily">
+    <input type="hidden" name="styles[h3FontFamily]" x-model="h3FontFamily">
+    <input type="hidden" name="styles[h4FontFamily]" x-model="h4FontFamily">
+    <input type="hidden" name="styles[h5FontFamily]" x-model="h5FontFamily">
+    <template x-if="googleFontsHref"><link rel="stylesheet" :href="googleFontsHref"></template>
+    <div class="nk-block-head nk-block-head-sm nk-block-between">
+        <div class="nk-block-head-content">
+            <h5 class="nk-block-title">Theme Editor</h5>
+            <div class="nk-block-des">
+                <p class="text-soft">Customize the colours, typography, and appearance of this site.</p>
+            </div>
+        </div>
+        <div class="nk-block-head-content">
+            <ul class="nk-block-tools g-2 align-items-center">
+                <li x-show="isDirty" x-cloak>
+                    <span class="badge badge-dim bg-warning">Unsaved changes</span>
+                </li>
+                <li>
+                    <button type="button" class="btn btn-dim btn-outline-light" @click="resetToSaved()">
+                        <em class="icon ni ni-reload"></em>
+                        <span>Reset</span>
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="nk-block">
+        <div class="row g-gs">
+        <!-- Controls -->
+        <div class="col-lg-5 order-2 order-lg-1">
+            <div class="card card-bordered">
+                <div class="card-inner">
+            <div class="form-group mb-3">
+                <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="themeStylingEnabledInp"
+                        :checked="themeStylingEnabled === 'yes'"
+                        @change="themeStylingEnabled = $event.target.checked ? 'yes' : 'no'">
+                    <label class="custom-control-label" for="themeStylingEnabledInp">Enable theme styling</label>
+                </div>
+                <input type="hidden" name="styles[themeStylingEnabled]" x-model="themeStylingEnabled">
+            </div>
+            <div class="form-group mb-4">
+                <label class="form-label" for="stylePresetInp">Style preset</label>
+                <div class="form-control-wrap">
+                <select class="form-select" id="stylePresetInp" x-model="selectedStylePreset" @change="applyStylePreset(selectedStylePreset)">
+                    <option value="">Custom</option>
+                    <optgroup label="Light themes">
+                        <option value="kidsActivities">Kids Activities</option>
+                        <option value="cleanSaas">Clean SaaS</option>
+                        <option value="boldStartup">Bold Startup</option>
+                        <option value="editorial">Editorial</option>
+                        <option value="luxury">Luxury</option>
+                        <option value="minimal">Minimal</option>
+                        <option value="playful">Playful</option>
+                        <option value="highContrast">High Contrast</option>
+                    </optgroup>
+                    <optgroup label="Dark themes">
+                        <option value="midnightOasis">Midnight Oasis</option>
+                        <option value="neonNoir">Neon Noir</option>
+                        <option value="emberVault">Ember Vault</option>
+                        <option value="arcticVoid">Arctic Void</option>
+                        <option value="velvetDusk">Velvet Dusk</option>
+                        <option value="copperFoundry">Copper Foundry</option>
+                        <option value="forestCanopy">Forest Canopy</option>
+                    </optgroup>
+                </select>
+                </div>
+                <div class="form-note">Applies fonts, colours, and type scale. You can still tweak individual settings after.</div>
+            </div>
+            <div class="accordion" id="themeEditorControls">
+                <!-- Brand -->
+                <div class="accordion-item">
+                    <a href="#" class="accordion-head" data-bs-toggle="collapse" data-bs-target="#teBrand">
+                        <h6 class="title"><em class="icon ni ni-palette me-1"></em> Brand</h6>
+                        <span class="accordion-icon"></span>
+                    </a>
+                    <div class="accordion-body collapse show" id="teBrand" data-bs-parent="#themeEditorControls">
+                        <div class="accordion-inner">
+                            <div class="form-note mb-3">Core colours used across buttons, links, and sections.</div>
+                            <div class="theme-editor__swatches">
+                                <label class="theme-editor__swatch">
+                                    <span class="theme-editor__swatch-label">Brand</span>
+                                    <input type="color" class="theme-editor__swatch-input" id="primaryColorInp" name="styles[primaryColor]" x-model="primaryColor">
+                                    <span class="theme-editor__swatch-hex" x-text="primaryColor || '—'"></span>
+                                </label>
+                                <label class="theme-editor__swatch">
+                                    <span class="theme-editor__swatch-label">Secondary</span>
+                                    <input type="color" class="theme-editor__swatch-input" id="secondaryColorInp" name="styles[secondaryColor]" x-model="secondaryColor">
+                                    <span class="theme-editor__swatch-hex" x-text="secondaryColor || '—'"></span>
+                                </label>
+                                <label class="theme-editor__swatch">
+                                    <span class="theme-editor__swatch-label">Accent</span>
+                                    <input type="color" class="theme-editor__swatch-input" id="tertiaryColorInp" name="styles[tertiaryColor]" x-model="tertiaryColor">
+                                    <span class="theme-editor__swatch-hex" x-text="tertiaryColor || '—'"></span>
+                                </label>
+                                <label class="theme-editor__swatch">
+                                    <span class="theme-editor__swatch-label">Page background</span>
+                                    <input type="color" class="theme-editor__swatch-input" id="backgroundColorInp" name="styles[backgroundColor]" x-model="backgroundColor">
+                                    <span class="theme-editor__swatch-hex" x-text="backgroundColor || '—'"></span>
+                                </label>
+                                <label class="theme-editor__swatch">
+                                    <span class="theme-editor__swatch-label">Section background</span>
+                                    <input type="color" class="theme-editor__swatch-input" id="altBackgroundColorInp" name="styles[altBackgroundColor]" x-model="altBackgroundColor">
+                                    <span class="theme-editor__swatch-hex" x-text="altBackgroundColor || '—'"></span>
+                                </label>
+                            </div>
+                            <div class="d-flex align-items-center gap-2 mt-3">
+                                <button type="button" class="btn btn-sm btn-outline-light" @click="randomizeBrandColors()">
+                                    <em class="icon ni ni-update"></em>
+                                    <span>Randomize colours</span>
+                                </button>
+                            </div>
+                            <div class="form-note mt-2">Generates a harmonious brand and typography palette for the current light/dark mode.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Typography -->
+                <div class="accordion-item">
+                    <a href="#" class="accordion-head collapsed" data-bs-toggle="collapse" data-bs-target="#teTypography">
+                        <h6 class="title"><em class="icon ni ni-text-a me-1"></em> Typography</h6>
+                        <span class="accordion-icon"></span>
+                    </a>
+                    <div class="accordion-body collapse" id="teTypography" data-bs-parent="#themeEditorControls">
+                        <div class="accordion-inner">
+                            <div class="form-group">
+                                <label class="form-label" for="headingFontInp">Heading font</label>
+                                <div class="form-control-wrap">
+                                <select class="form-select" id="headingFontInp" x-model="headingFont" @change="onHeadingFontChange($event.target.value)"></select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="bodyFontInp">Body font</label>
+                                <div class="form-control-wrap">
+                                <select class="form-select" id="bodyFontInp" name="styles[paragraphFontFamily]" x-model="paragraphFontFamily" @change="onFontFamilyChange()"></select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="typeScaleInp">Type scale</label>
+                                <div class="form-control-wrap">
+                                <select class="form-select" id="typeScaleInp" x-model="typeScale" @change="applyTypeScale(typeScale)">
+                                    <option value="compact">Compact</option>
+                                    <option value="default">Default</option>
+                                    <option value="large">Large</option>
+                                </select>
+                                </div>
+                                <div class="form-note">Adjusts heading and body sizes together.</div>
+                            </div>
+                            <div class="theme-editor__swatches">
+                                <label class="theme-editor__swatch">
+                                    <span class="theme-editor__swatch-label">Heading</span>
+                                    <input type="color" class="theme-editor__swatch-input" id="headingColorInp" :value="headingColor" @input="setHeadingColors($event.target.value)">
+                                    <span class="theme-editor__swatch-hex" x-text="headingColor || '—'"></span>
+                                </label>
+                                <label class="theme-editor__swatch">
+                                    <span class="theme-editor__swatch-label">Body</span>
+                                    <input type="color" class="theme-editor__swatch-input" id="paragraphColorSimpleInp" name="styles[paragraphColor]" x-model="paragraphColor">
+                                    <span class="theme-editor__swatch-hex" x-text="paragraphColor || '—'"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Appearance -->
+                <div class="accordion-item">
+                    <a href="#" class="accordion-head collapsed" data-bs-toggle="collapse" data-bs-target="#teAppearance">
+                        <h6 class="title"><em class="icon ni ni-moon me-1"></em> Appearance</h6>
+                        <span class="accordion-icon"></span>
+                    </a>
+                    <div class="accordion-body collapse" id="teAppearance" data-bs-parent="#themeEditorControls">
+                        <div class="accordion-inner">
+                            <div class="form-group">
+                                <label class="form-label" for="cardBorderRadiusInp">Card roundedness</label>
+                                <div class="form-control-wrap">
+                                <select class="form-select" id="cardBorderRadiusInp" name="styles[cardBorderRadius]" x-model="cardBorderRadius">
+                                    <option value="none">Square</option>
+                                    <option value="sm">Slightly rounded</option>
+                                    <option value="default">Default</option>
+                                    <option value="lg">Rounded</option>
+                                    <option value="xl">Very rounded</option>
+                                    <option value="pill">Pill</option>
+                                </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="buttonBorderRadiusInp">Button roundedness</label>
+                                <div class="form-control-wrap">
+                                <select class="form-select" id="buttonBorderRadiusInp" name="styles[buttonBorderRadius]" x-model="buttonBorderRadius">
+                                    <option value="none">Square</option>
+                                    <option value="sm">Slightly rounded</option>
+                                    <option value="default">Default</option>
+                                    <option value="lg">Rounded</option>
+                                    <option value="xl">Very rounded</option>
+                                    <option value="pill">Pill</option>
+                                </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="imageBorderRadiusInp">Image roundedness</label>
+                                <div class="form-control-wrap">
+                                <select class="form-select" id="imageBorderRadiusInp" name="styles[imageBorderRadius]" x-model="imageBorderRadius">
+                                    <option value="none">Square</option>
+                                    <option value="sm">Slightly rounded</option>
+                                    <option value="default">Default</option>
+                                    <option value="lg">Rounded</option>
+                                    <option value="xl">Very rounded</option>
+                                    <option value="pill">Pill</option>
+                                </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="cardShadowInp">Card shadow</label>
+                                <div class="form-control-wrap">
+                                <select class="form-select" id="cardShadowInp" name="styles[cardShadow]" x-model="cardShadow">
+                                    <option value="none">None</option>
+                                    <option value="sm">Small</option>
+                                    <option value="default">Medium</option>
+                                    <option value="lg">Large</option>
+                                    <option value="wide">Wide / soft</option>
+                                </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="buttonColorSourceInp">Button background colour</label>
+                                <div class="form-control-wrap">
+                                <select class="form-select" id="buttonColorSourceInp" name="styles[buttonColorSource]" x-model="buttonColorSource">
+                                    <option value="primary">Brand</option>
+                                    <option value="secondary">Secondary</option>
+                                    <option value="tertiary">Accent</option>
+                                    <option value="custom">Custom</option>
+                                </select>
+                                </div>
+                                <div class="form-note">Used for Learn more and Read more buttons across content sections.</div>
+                            </div>
+                            <div class="form-group" x-show="buttonColorSource === 'custom'" x-cloak>
+                                <label class="form-label" for="buttonColorCustomInp">Custom button colour</label>
+                                <div class="form-control-wrap">
+                                    <input type="color" class="form-control form-control-color w-100" id="buttonColorCustomInp" name="styles[buttonColorCustom]" x-model="buttonColorCustom">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="darkModeSwitch" role="switch"
+                                        :checked="darkMode === 'yes'"
+                                        @change="darkMode = $event.target.checked ? 'yes' : 'no'">
+                                    <label class="form-check-label" for="darkModeSwitch">Dark mode</label>
+                                </div>
+                                <input type="hidden" name="styles[darkMode]" x-model="darkMode">
+                                <div class="form-note mt-2">Applies <code>data-bs-theme="dark"</code> on the live site.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navigation -->
+                <div class="accordion-item">
+                    <a href="#" class="accordion-head collapsed" data-bs-toggle="collapse" data-bs-target="#teNavigation">
+                        <h6 class="title"><em class="icon ni ni-menu me-1"></em> Navigation</h6>
+                        <span class="accordion-icon"></span>
+                    </a>
+                    <div class="accordion-body collapse" id="teNavigation" data-bs-parent="#themeEditorControls">
+                        <div class="accordion-inner">
+                            <div class="form-group mb-3">
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input" id="menuStylingEnabledInp"
+                                        :checked="menuStylingEnabled === 'yes'"
+                                        @change="menuStylingEnabled = $event.target.checked ? 'yes' : 'no'">
+                                    <label class="custom-control-label" for="menuStylingEnabledInp">Enable menu styling</label>
+                                </div>
+                                <input type="hidden" name="styles[menuStylingEnabled]" x-model="menuStylingEnabled">
+                            </div>
+                            <div x-show="menuStylingEnabled === 'yes'" x-cloak>
+                                <div class="form-note mb-3">Override navigation menu colours and typography. Section buttons are not affected.</div>
+                                <div class="theme-editor__swatches">
+                                    <label class="theme-editor__swatch">
+                                        <span class="theme-editor__swatch-label">Menu item</span>
+                                        <input type="color" class="theme-editor__swatch-input" id="menuItemColorInp" name="styles[menuItemColor]" x-model="menuItemColor">
+                                        <span class="theme-editor__swatch-hex" x-text="menuItemColor || '—'"></span>
+                                    </label>
+                                    <label class="theme-editor__swatch">
+                                        <span class="theme-editor__swatch-label">Menu CTA</span>
+                                        <input type="color" class="theme-editor__swatch-input" id="menuCtaColorInp" name="styles[menuCtaColor]" x-model="menuCtaColor">
+                                        <span class="theme-editor__swatch-hex" x-text="menuCtaColor || '—'"></span>
+                                    </label>
+                                    <label class="theme-editor__swatch">
+                                        <span class="theme-editor__swatch-label">Menu CTA text</span>
+                                        <input type="color" class="theme-editor__swatch-input" id="menuCtaTextColorInp" name="styles[menuCtaTextColor]" x-model="menuCtaTextColor">
+                                        <span class="theme-editor__swatch-hex" x-text="menuCtaTextColor || '—'"></span>
+                                    </label>
+                                </div>
+                                <div class="form-group mt-3">
+                                    <label class="form-label" for="menuFontInp">Menu font</label>
+                                    <div class="form-control-wrap">
+                                        <select class="form-select" id="menuFontInp" x-model="menuFontFamily" @change="onMenuFontChange()">
+                                            <option value="">Default</option>
+                                        </select>
+                                    </div>
+                                    <input type="hidden" name="styles[menuFontFamily]" x-model="menuFontFamily">
+                                </div>
+                                <div class="row g-3">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label class="form-label" for="menuFontSizeInp">Menu font size</label>
+                                            <div class="form-control-wrap">
+                                                <select class="form-select" id="menuFontSizeInp" name="styles[menuFontSize]" x-model="menuFontSize">
+                                                    <option value="">Default</option>
+                                                    <option value="12px">12px</option>
+                                                    <option value="14px">14px</option>
+                                                    <option value="15px">15px</option>
+                                                    <option value="16px">16px</option>
+                                                    <option value="18px">18px</option>
+                                                    <option value="20px">20px</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label class="form-label" for="menuFontWeightInp">Menu font weight</label>
+                                            <div class="form-control-wrap">
+                                                <select class="form-select" id="menuFontWeightInp" name="styles[menuFontWeight]" x-model="menuFontWeight">
+                                                    <option value="">Default</option>
+                                                    <option value="100">100 - Thin</option>
+                                                    <option value="200">200 - Extra Light</option>
+                                                    <option value="300">300 - Light</option>
+                                                    <option value="400">400 - Normal</option>
+                                                    <option value="500">500 - Medium</option>
+                                                    <option value="600">600 - Semi Bold</option>
+                                                    <option value="700">700 - Bold</option>
+                                                    <option value="800">800 - Extra Bold</option>
+                                                    <option value="900">900 - Black</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                </div>
+            </div>
+
+            <h6 class="card-title mt-4 mb-2"><em class="icon ni ni-setting me-1"></em> Advanced</h6>
+            <div class="card card-bordered">
+                <div class="card-inner">
+                    <div class="form-note mb-3">Overrides simple typography settings for individual levels.</div>
+                    <div class="accordion" id="themeEditorAdvancedLevels">
+                                <!-- H1 -->
+                                <div class="accordion-item">
+                                    <a href="#" class="accordion-head collapsed" data-bs-toggle="collapse" data-bs-target="#teAdvH1">
+                                        <h6 class="title">H1</h6>
+                                        <span class="accordion-icon"></span>
+                                    </a>
+                                    <div class="accordion-body collapse" id="teAdvH1" data-bs-parent="#themeEditorAdvancedLevels">
+                                        <div class="accordion-inner">
+                                            <div class="row gy-3">
+                                                <div class="col-6">
+                                                    <label class="form-label" for="h1ColorInp">Colour</label>
+                                                    <input type="color" class="form-control form-control-color" id="h1ColorInp" name="styles[h1Color]" x-model="h1Color">
+                                                </div>
+                                                <div class="col-6">
+                                                    <label class="form-label" for="h1FontInp">Font family</label>
+                                                    <select class="form-select" id="h1FontInp" x-model="h1FontFamily" @change="onAdvancedHeadingFontChange()"></select>
+                                                </div>
+                                                <div class="col-6">
+                                                    <label class="form-label" for="h1WeightInp">Weight</label>
+                                                    <select class="form-select" id="h1WeightInp" name="styles[h1FontWeight]" x-model="h1FontWeight">
+                                                        <option value="">Default</option>
+                                                        <option value="100">100 - Thin</option>
+                                                        <option value="200">200 - Extra Light</option>
+                                                        <option value="300">300 - Light</option>
+                                                        <option value="400">400 - Normal</option>
+                                                        <option value="500">500 - Medium</option>
+                                                        <option value="600">600 - Semi Bold</option>
+                                                        <option value="700">700 - Bold</option>
+                                                        <option value="800">800 - Extra Bold</option>
+                                                        <option value="900">900 - Black</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-6">
+                                                    <label class="form-label" for="h1SizeInp">Size</label>
+                                                    <select class="form-select" id="h1SizeInp" name="styles[h1FontSize]" x-model="h1FontSize" @change="inferTypeScaleFromSizes()">
+                                                        <option value="">Default</option>
+                                                        <option value="24px">24px</option>
+                                                        <option value="28px">28px</option>
+                                                        <option value="32px">32px</option>
+                                                        <option value="36px">36px</option>
+                                                        <option value="40px">40px</option>
+                                                        <option value="48px">48px</option>
+                                                        <option value="56px">56px</option>
+                                                        <option value="64px">64px</option>
+                                                        <option value="72px">72px</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- H2 -->
+                                <div class="accordion-item">
+                                    <a href="#" class="accordion-head collapsed" data-bs-toggle="collapse" data-bs-target="#teAdvH2">
+                                        <h6 class="title">H2</h6>
+                                        <span class="accordion-icon"></span>
+                                    </a>
+                                    <div class="accordion-body collapse" id="teAdvH2" data-bs-parent="#themeEditorAdvancedLevels">
+                                        <div class="accordion-inner">
+                                            <div class="row gy-3">
+                                                <div class="col-6">
+                                                    <label class="form-label" for="h2ColorInp">Colour</label>
+                                                    <input type="color" class="form-control form-control-color" id="h2ColorInp" name="styles[h2Color]" x-model="h2Color">
+                                                </div>
+                                                <div class="col-6">
+                                                    <label class="form-label" for="h2FontInp">Font family</label>
+                                                    <select class="form-select" id="h2FontInp" x-model="h2FontFamily" @change="onAdvancedHeadingFontChange()"></select>
+                                                </div>
+                                                <div class="col-6">
+                                                    <label class="form-label" for="h2WeightInp">Weight</label>
+                                                    <select class="form-select" id="h2WeightInp" name="styles[h2FontWeight]" x-model="h2FontWeight">
+                                                        <option value="">Default</option>
+                                                        <option value="100">100 - Thin</option>
+                                                        <option value="200">200 - Extra Light</option>
+                                                        <option value="300">300 - Light</option>
+                                                        <option value="400">400 - Normal</option>
+                                                        <option value="500">500 - Medium</option>
+                                                        <option value="600">600 - Semi Bold</option>
+                                                        <option value="700">700 - Bold</option>
+                                                        <option value="800">800 - Extra Bold</option>
+                                                        <option value="900">900 - Black</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-6">
+                                                    <label class="form-label" for="h2SizeInp">Size</label>
+                                                    <select class="form-select" id="h2SizeInp" name="styles[h2FontSize]" x-model="h2FontSize" @change="inferTypeScaleFromSizes()">
+                                                        <option value="">Default</option>
+                                                        <option value="20px">20px</option>
+                                                        <option value="24px">24px</option>
+                                                        <option value="28px">28px</option>
+                                                        <option value="32px">32px</option>
+                                                        <option value="36px">36px</option>
+                                                        <option value="40px">40px</option>
+                                                        <option value="48px">48px</option>
+                                                        <option value="56px">56px</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- H3 -->
+                                <div class="accordion-item">
+                                    <a href="#" class="accordion-head collapsed" data-bs-toggle="collapse" data-bs-target="#teAdvH3">
+                                        <h6 class="title">H3</h6>
+                                        <span class="accordion-icon"></span>
+                                    </a>
+                                    <div class="accordion-body collapse" id="teAdvH3" data-bs-parent="#themeEditorAdvancedLevels">
+                                        <div class="accordion-inner">
+                                            <div class="row gy-3">
+                                                <div class="col-6">
+                                                    <label class="form-label" for="h3ColorInp">Colour</label>
+                                                    <input type="color" class="form-control form-control-color" id="h3ColorInp" name="styles[h3Color]" x-model="h3Color">
+                                                </div>
+                                                <div class="col-6">
+                                                    <label class="form-label" for="h3FontInp">Font family</label>
+                                                    <select class="form-select" id="h3FontInp" x-model="h3FontFamily" @change="onAdvancedHeadingFontChange()"></select>
+                                                </div>
+                                                <div class="col-6">
+                                                    <label class="form-label" for="h3WeightInp">Weight</label>
+                                                    <select class="form-select" id="h3WeightInp" name="styles[h3FontWeight]" x-model="h3FontWeight">
+                                                        <option value="">Default</option>
+                                                        <option value="100">100 - Thin</option>
+                                                        <option value="200">200 - Extra Light</option>
+                                                        <option value="300">300 - Light</option>
+                                                        <option value="400">400 - Normal</option>
+                                                        <option value="500">500 - Medium</option>
+                                                        <option value="600">600 - Semi Bold</option>
+                                                        <option value="700">700 - Bold</option>
+                                                        <option value="800">800 - Extra Bold</option>
+                                                        <option value="900">900 - Black</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-6">
+                                                    <label class="form-label" for="h3SizeInp">Size</label>
+                                                    <select class="form-select" id="h3SizeInp" name="styles[h3FontSize]" x-model="h3FontSize" @change="inferTypeScaleFromSizes()">
+                                                        <option value="">Default</option>
+                                                        <option value="16px">16px</option>
+                                                        <option value="18px">18px</option>
+                                                        <option value="20px">20px</option>
+                                                        <option value="24px">24px</option>
+                                                        <option value="28px">28px</option>
+                                                        <option value="32px">32px</option>
+                                                        <option value="36px">36px</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- H4 -->
+                                <div class="accordion-item">
+                                    <a href="#" class="accordion-head collapsed" data-bs-toggle="collapse" data-bs-target="#teAdvH4">
+                                        <h6 class="title">H4</h6>
+                                        <span class="accordion-icon"></span>
+                                    </a>
+                                    <div class="accordion-body collapse" id="teAdvH4" data-bs-parent="#themeEditorAdvancedLevels">
+                                        <div class="accordion-inner">
+                                            <div class="row gy-3">
+                                                <div class="col-6">
+                                                    <label class="form-label" for="h4ColorInp">Colour</label>
+                                                    <input type="color" class="form-control form-control-color" id="h4ColorInp" name="styles[h4Color]" x-model="h4Color">
+                                                </div>
+                                                <div class="col-6">
+                                                    <label class="form-label" for="h4FontInp">Font family</label>
+                                                    <select class="form-select" id="h4FontInp" x-model="h4FontFamily" @change="onAdvancedHeadingFontChange()"></select>
+                                                </div>
+                                                <div class="col-6">
+                                                    <label class="form-label" for="h4WeightInp">Weight</label>
+                                                    <select class="form-select" id="h4WeightInp" name="styles[h4FontWeight]" x-model="h4FontWeight">
+                                                        <option value="">Default</option>
+                                                        <option value="100">100 - Thin</option>
+                                                        <option value="200">200 - Extra Light</option>
+                                                        <option value="300">300 - Light</option>
+                                                        <option value="400">400 - Normal</option>
+                                                        <option value="500">500 - Medium</option>
+                                                        <option value="600">600 - Semi Bold</option>
+                                                        <option value="700">700 - Bold</option>
+                                                        <option value="800">800 - Extra Bold</option>
+                                                        <option value="900">900 - Black</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-6">
+                                                    <label class="form-label" for="h4SizeInp">Size</label>
+                                                    <select class="form-select" id="h4SizeInp" name="styles[h4FontSize]" x-model="h4FontSize" @change="inferTypeScaleFromSizes()">
+                                                        <option value="">Default</option>
+                                                        <option value="14px">14px</option>
+                                                        <option value="16px">16px</option>
+                                                        <option value="18px">18px</option>
+                                                        <option value="20px">20px</option>
+                                                        <option value="24px">24px</option>
+                                                        <option value="28px">28px</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- H5 -->
+                                <div class="accordion-item">
+                                    <a href="#" class="accordion-head collapsed" data-bs-toggle="collapse" data-bs-target="#teAdvH5">
+                                        <h6 class="title">H5</h6>
+                                        <span class="accordion-icon"></span>
+                                    </a>
+                                    <div class="accordion-body collapse" id="teAdvH5" data-bs-parent="#themeEditorAdvancedLevels">
+                                        <div class="accordion-inner">
+                                            <div class="row gy-3">
+                                                <div class="col-6">
+                                                    <label class="form-label" for="h5ColorInp">Colour</label>
+                                                    <input type="color" class="form-control form-control-color" id="h5ColorInp" name="styles[h5Color]" x-model="h5Color">
+                                                </div>
+                                                <div class="col-6">
+                                                    <label class="form-label" for="h5FontInp">Font family</label>
+                                                    <select class="form-select" id="h5FontInp" x-model="h5FontFamily" @change="onAdvancedHeadingFontChange()"></select>
+                                                </div>
+                                                <div class="col-6">
+                                                    <label class="form-label" for="h5WeightInp">Weight</label>
+                                                    <select class="form-select" id="h5WeightInp" name="styles[h5FontWeight]" x-model="h5FontWeight">
+                                                        <option value="">Default</option>
+                                                        <option value="100">100 - Thin</option>
+                                                        <option value="200">200 - Extra Light</option>
+                                                        <option value="300">300 - Light</option>
+                                                        <option value="400">400 - Normal</option>
+                                                        <option value="500">500 - Medium</option>
+                                                        <option value="600">600 - Semi Bold</option>
+                                                        <option value="700">700 - Bold</option>
+                                                        <option value="800">800 - Extra Bold</option>
+                                                        <option value="900">900 - Black</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-6">
+                                                    <label class="form-label" for="h5SizeInp">Size</label>
+                                                    <select class="form-select" id="h5SizeInp" name="styles[h5FontSize]" x-model="h5FontSize" @change="inferTypeScaleFromSizes()">
+                                                        <option value="">Default</option>
+                                                        <option value="12px">12px</option>
+                                                        <option value="14px">14px</option>
+                                                        <option value="16px">16px</option>
+                                                        <option value="18px">18px</option>
+                                                        <option value="20px">20px</option>
+                                                        <option value="24px">24px</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Body -->
+                                <div class="accordion-item">
+                                    <a href="#" class="accordion-head collapsed" data-bs-toggle="collapse" data-bs-target="#teAdvBody">
+                                        <h6 class="title">Body</h6>
+                                        <span class="accordion-icon"></span>
+                                    </a>
+                                    <div class="accordion-body collapse" id="teAdvBody" data-bs-parent="#themeEditorAdvancedLevels">
+                                        <div class="accordion-inner">
+                                            <div class="row gy-3">
+                                                <div class="col-6">
+                                                    <label class="form-label" for="paragraphColorInp">Colour</label>
+                                                    <input type="color" class="form-control form-control-color" id="paragraphColorInp" x-model="paragraphColor">
+                                                </div>
+                                                <div class="col-6">
+                                                    <label class="form-label" for="paragraphFontInp">Font family</label>
+                                                    <select class="form-select" id="paragraphFontInp" x-model="paragraphFontFamily" @change="onFontFamilyChange()"></select>
+                                                </div>
+                                                <div class="col-6">
+                                                    <label class="form-label" for="paragraphWeightInp">Weight</label>
+                                                    <select class="form-select" id="paragraphWeightInp" name="styles[paragraphFontWeight]" x-model="paragraphFontWeight">
+                                                        <option value="">Default</option>
+                                                        <option value="100">100 - Thin</option>
+                                                        <option value="200">200 - Extra Light</option>
+                                                        <option value="300">300 - Light</option>
+                                                        <option value="400">400 - Normal</option>
+                                                        <option value="500">500 - Medium</option>
+                                                        <option value="600">600 - Semi Bold</option>
+                                                        <option value="700">700 - Bold</option>
+                                                        <option value="800">800 - Extra Bold</option>
+                                                        <option value="900">900 - Black</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-6">
+                                                    <label class="form-label" for="paragraphSizeInp">Size</label>
+                                                    <select class="form-select" id="paragraphSizeInp" name="styles[paragraphFontSize]" x-model="paragraphFontSize" @change="inferTypeScaleFromSizes()">
+                                                        <option value="">Default</option>
+                                                        <option value="12px">12px</option>
+                                                        <option value="14px">14px</option>
+                                                        <option value="16px">16px</option>
+                                                        <option value="18px">18px</option>
+                                                        <option value="20px">20px</option>
+                                                        <option value="22px">22px</option>
+                                                        <option value="24px">24px</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Preview -->
+        <div class="col-lg-7 order-1 order-lg-2">
+            <div class="theme-editor__preview-sticky">
+                <div class="card card-bordered">
+                    <div class="card-inner">
+                        <h6 class="card-title mb-3"><em class="icon ni ni-eye me-1"></em> Live preview</h6>
+                        <div class="theme-editor__preview"
+                            :data-bs-theme="darkMode === 'yes' ? 'dark' : null"
+                            :style="previewThemeStyle()">
+                            <div class="theme-editor__preview-nav-section" x-show="menuStylingEnabled === 'yes'" x-cloak :style="previewPageSectionStyle()">
+                                <p class="theme-editor__preview-section-label">Navigation</p>
+                                <div class="theme-editor__preview-nav d-flex flex-wrap align-items-center gap-x-2 px-3 py-2"
+                                     :style="previewMenuStyle()">
+                                    <a href="#" class="nav-link px-2 py-1 theme-editor__sample-nav-link" @click.prevent>Home</a>
+                                    <a href="#" class="nav-link px-2 py-1 theme-editor__sample-nav-link" @click.prevent>About</a>
+                                    <a href="#" class="nav-link px-2 py-1 theme-editor__sample-nav-link" @click.prevent>Contact</a>
+                                    <a href="#" class="btn btn-primary btn-sm theme-editor__sample-nav-cta ms-auto" @click.prevent>Book now</a>
+                                </div>
+                            </div>
+                            <div class="theme-editor__preview-page-section" :style="previewPageSectionStyle()">
+                                <p class="theme-editor__preview-section-label">Page background</p>
+                                <div class="theme-editor__preview-typography">
+                                    <h1 :style="{ color: h1Color || '#212529', fontFamily: h1FontFamily || 'inherit', fontWeight: h1FontWeight || 'inherit', fontSize: h1FontSize || 'inherit' }">This is an H1 heading</h1>
+                                    <h2 :style="{ color: h2Color || '#495057', fontFamily: h2FontFamily || 'inherit', fontWeight: h2FontWeight || 'inherit', fontSize: h2FontSize || 'inherit' }">This is an H2 heading</h2>
+                                    <h3 :style="{ color: h3Color || '#6c757d', fontFamily: h3FontFamily || 'inherit', fontWeight: h3FontWeight || 'inherit', fontSize: h3FontSize || 'inherit' }">This is an H3 heading</h3>
+                                    <h4 :style="{ color: h4Color || '#6c757d', fontFamily: h4FontFamily || 'inherit', fontWeight: h4FontWeight || 'inherit', fontSize: h4FontSize || 'inherit' }">This is an H4 heading</h4>
+                                    <h5 :style="{ color: h5Color || '#6c757d', fontFamily: h5FontFamily || 'inherit', fontWeight: h5FontWeight || 'inherit', fontSize: h5FontSize || 'inherit' }">This is an H5 heading</h5>
+                                    <p class="mb-0" :style="{ color: paragraphColor || '#212529', fontFamily: paragraphFontFamily || 'inherit', fontWeight: paragraphFontWeight || 'inherit', fontSize: paragraphFontSize || 'inherit' }">This is body text showing how your typography and colours work together on a real page.</p>
+                                </div>
+                                <div class="theme-editor__preview-components">
+                                    <div class="d-flex flex-wrap gap-2 align-items-center">
+                                        <button type="button" class="btn btn-primary btn-sm theme-editor__sample-btn">Primary</button>
+                                        <button type="button" class="btn btn-secondary btn-sm theme-editor__sample-btn">Secondary</button>
+                                        <button type="button" class="btn btn-outline-primary btn-sm theme-editor__sample-btn">Outline</button>
+                                        <button type="button" class="btn btn-link btn-sm theme-editor__sample-btn">Link</button>
+                                        <button type="button" class="btn btn-sm btn-primary theme-editor__sample-btn">Default</button>
+                                        <button type="button" class="btn buttonColor-bg btn-sm theme-editor__sample-btn">CTA button style</button>
+                                    </div>
+
+                                    <div class="theme-editor__preview-image-wrap mt-4">
+                                        <p class="theme-editor__preview-section-label mb-2">Sample image</p>
+                                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='180' viewBox='0 0 320 180'%3E%3Crect width='320' height='180' fill='%23dee2e6'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%236c757d' font-family='sans-serif' font-size='14'%3EImage%3C/text%3E%3C/svg%3E"
+                                             alt=""
+                                             class="theme-editor__sample-image img-fluid w-100"
+                                             :style="previewImageStyle()">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="theme-editor__preview-section" :style="previewAltSectionStyle()">
+                                <p class="theme-editor__preview-section-label">Section background</p>
+                                <div class="theme-editor__preview-typography">
+                                    <h1 :style="{ color: h1Color || '#212529', fontFamily: h1FontFamily || 'inherit', fontWeight: h1FontWeight || 'inherit', fontSize: h1FontSize || 'inherit' }">This is an H1 heading</h1>
+                                    <h2 :style="{ color: h2Color || '#495057', fontFamily: h2FontFamily || 'inherit', fontWeight: h2FontWeight || 'inherit', fontSize: h2FontSize || 'inherit' }">This is an H2 heading</h2>
+                                    <h3 :style="{ color: h3Color || '#6c757d', fontFamily: h3FontFamily || 'inherit', fontWeight: h3FontWeight || 'inherit', fontSize: h3FontSize || 'inherit' }">This is an H3 heading</h3>
+                                    <h4 :style="{ color: h4Color || '#6c757d', fontFamily: h4FontFamily || 'inherit', fontWeight: h4FontWeight || 'inherit', fontSize: h4FontSize || 'inherit' }">This is an H4 heading</h4>
+                                    <h5 :style="{ color: h5Color || '#6c757d', fontFamily: h5FontFamily || 'inherit', fontWeight: h5FontWeight || 'inherit', fontSize: h5FontSize || 'inherit' }">This is an H5 heading</h5>
+                                    <p class="mb-0" :style="{ color: paragraphColor || '#212529', fontFamily: paragraphFontFamily || 'inherit', fontWeight: paragraphFontWeight || 'inherit', fontSize: paragraphFontSize || 'inherit' }">This is body text showing how your typography and colours work together on a real page.</p>
+                                </div>
+
+                                <div class="theme-editor__preview-components">
+                                    <div class="card theme-editor__sample-card mt-2" :style="previewCardStyle()">
+                                        <div class="card-body">
+                                            <h6 class="card-title mb-2">Sample card</h6>
+                                            <p class="card-text small text-body-secondary mb-0">Cards and buttons use your roundedness and shadow settings.</p>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex flex-wrap gap-2 align-items-center my-2">
+                                        <button type="button" class="btn btn-primary btn-sm theme-editor__sample-btn">Primary</button>
+                                        <button type="button" class="btn btn-secondary btn-sm theme-editor__sample-btn">Secondary</button>
+                                        <button type="button" class="btn btn-outline-primary btn-sm theme-editor__sample-btn">Outline</button>
+                                        <button type="button" class="btn btn-link btn-sm theme-editor__sample-btn">Link</button>
+                                        <button type="button" class="btn btn-sm btn-primary theme-editor__sample-btn">Default</button>
+                                        <button type="button" class="btn buttonColor-bg btn-sm theme-editor__sample-btn">CTA button style</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</div>
+
+<style>
+[x-cloak] { display: none !important; }
+
+
+.theme-editor__swatches {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.theme-editor__swatch {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.35rem;
+    cursor: pointer;
+    margin: 0;
+    min-width: 4.5rem;
+}
+
+.theme-editor__swatch-label {
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-align: center;
+    color: var(--bs-secondary-color);
+}
+
+.theme-editor__swatch-input {
+    width: 3rem;
+    height: 3rem;
+    padding: 0.15rem;
+    border: 2px solid #dbdfea;
+    border-radius: 0.5rem;
+    cursor: pointer;
+}
+
+.theme-editor__swatch-hex {
+    font-size: 0.6875rem;
+    font-family: ui-monospace, monospace;
+    color: var(--bs-secondary-color);
+    text-transform: uppercase;
+}
+
+.theme-editor__preview-sticky {
+    position: sticky;
+    top: 1.5rem;
+}
+
+.theme-editor__preview {
+    border: 1px solid #dbdfea;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.theme-editor__preview-page-section,
+.theme-editor__preview-section,
+.theme-editor__preview-nav-section {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.theme-editor__preview-nav-section {
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    gap: 0.75rem;
+}
+
+.theme-editor__preview-nav {
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 0.375rem;
+    background: rgba(255, 255, 255, 0.6);
+}
+
+.theme-editor__preview[data-bs-theme="dark"] .theme-editor__preview-nav-section {
+    border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+.theme-editor__preview[data-bs-theme="dark"] .theme-editor__preview-nav {
+    border-color: rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.theme-editor__preview-section {
+    gap: 2rem;
+}
+
+.theme-editor__preview-section-label {
+    margin: 0;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    opacity: 0.55;
+}
+
+.theme-editor__preview-components {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    padding-bottom: 24px;
+}
+
+.theme-editor__preview-typography {
+    display: flex;
+    flex-direction: column;
+    gap: 0.875rem;
+}
+
+.theme-editor__preview-typography h1,
+.theme-editor__preview-typography h2,
+.theme-editor__preview-typography h3,
+.theme-editor__preview-typography h4,
+.theme-editor__preview-typography h5,
+.theme-editor__preview-typography p {
+    margin: 0;
+}
+
+.theme-editor__sample-card {
+    overflow: hidden;
+}
+
+.theme-editor__sample-image {
+    display: block;
+    max-width: 280px;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+}
+
+.theme-editor__preview-nav .theme-editor__sample-nav-link {
+    text-decoration: none;
+    color: var(--te-menu-link-color, inherit);
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+}
+
+.theme-editor__preview-nav .theme-editor__sample-nav-cta {
+    border-radius: var(--te-btn-radius);
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    color: var(--te-menu-cta-color, #fff);
+    background-color: var(--te-menu-cta-bg, var(--theme-brand-color));
+    border-color: var(--te-menu-cta-border, var(--theme-brand-color));
+}
+
+.theme-editor__preview .theme-editor__sample-btn.btn.buttonColor-bg {
+    --te-btn-color: #fff;
+    --te-btn-bg: var(--theme-button-color);
+    --te-btn-border-color: var(--theme-button-color);
+    --te-btn-hover-color: #fff;
+    --te-btn-hover-bg: var(--theme-button-color);
+    --te-btn-hover-border-color: var(--theme-button-color);
+    color: var(--te-btn-color);
+    background-color: var(--te-btn-bg);
+    border-color: var(--te-btn-border-color);
+}
+
+.theme-editor__preview .theme-editor__sample-btn.btn.buttonColor-bg:hover,
+.theme-editor__preview .theme-editor__sample-btn.btn.buttonColor-bg:focus-visible {
+    color: var(--te-btn-hover-color);
+    background-color: var(--te-btn-hover-bg);
+    border-color: var(--te-btn-hover-border-color);
+    filter: brightness(0.92);
+}
+
+.theme-editor__preview .theme-editor__sample-btn.btn {
+    border-radius: var(--te-btn-radius);
+}
+
+.theme-editor__preview .theme-editor__sample-btn.btn-primary {
+    --te-btn-color: #fff;
+    --te-btn-bg: var(--theme-brand-color);
+    --te-btn-border-color: var(--theme-brand-color);
+    --te-btn-hover-color: #fff;
+    --te-btn-hover-bg: var(--theme-brand-color);
+    --te-btn-hover-border-color: var(--theme-brand-color);
+    --te-btn-active-color: #fff;
+    --te-btn-active-bg: var(--theme-brand-color);
+    --te-btn-active-border-color: var(--theme-brand-color);
+    color: var(--te-btn-color);
+    background-color: var(--te-btn-bg);
+    border-color: var(--te-btn-border-color);
+}
+
+.theme-editor__preview .theme-editor__sample-btn.btn-primary:hover,
+.theme-editor__preview .theme-editor__sample-btn.btn-primary:focus-visible {
+    color: var(--te-btn-hover-color);
+    background-color: var(--te-btn-hover-bg);
+    border-color: var(--te-btn-hover-border-color);
+}
+
+.theme-editor__preview .theme-editor__sample-btn.btn-primary:active,
+.theme-editor__preview .theme-editor__sample-btn.btn-primary.active {
+    color: var(--te-btn-active-color);
+    background-color: var(--te-btn-active-bg);
+    border-color: var(--te-btn-active-border-color);
+}
+
+.theme-editor__preview .theme-editor__sample-btn.btn-outline-primary {
+    --te-btn-color: var(--theme-brand-color);
+    --te-btn-bg: transparent;
+    --te-btn-border-color: var(--theme-brand-color);
+    --te-btn-hover-color: #fff;
+    --te-btn-hover-bg: var(--theme-brand-color);
+    --te-btn-hover-border-color: var(--theme-brand-color);
+    --te-btn-active-color: #fff;
+    --te-btn-active-bg: var(--theme-brand-color);
+    --te-btn-active-border-color: var(--theme-brand-color);
+    color: var(--te-btn-color);
+    background-color: var(--te-btn-bg);
+    border-color: var(--te-btn-border-color);
+}
+
+.theme-editor__preview .theme-editor__sample-btn.btn-outline-primary:hover,
+.theme-editor__preview .theme-editor__sample-btn.btn-outline-primary:focus-visible {
+    color: var(--te-btn-hover-color);
+    background-color: var(--te-btn-hover-bg);
+    border-color: var(--te-btn-hover-border-color);
+}
+
+.theme-editor__preview .theme-editor__sample-btn.btn-outline-primary:active,
+.theme-editor__preview .theme-editor__sample-btn.btn-outline-primary.active {
+    color: var(--te-btn-active-color);
+    background-color: var(--te-btn-active-bg);
+    border-color: var(--te-btn-active-border-color);
+}
+
+.theme-editor__preview .theme-editor__sample-btn.btn-secondary {
+    --te-btn-color: #fff;
+    --te-btn-bg: var(--theme-secondary-color);
+    --te-btn-border-color: var(--theme-secondary-color);
+    --te-btn-hover-color: #fff;
+    --te-btn-hover-bg: var(--theme-secondary-color);
+    --te-btn-hover-border-color: var(--theme-secondary-color);
+    --te-btn-active-color: #fff;
+    --te-btn-active-bg: var(--theme-secondary-color);
+    --te-btn-active-border-color: var(--theme-secondary-color);
+    color: var(--te-btn-color);
+    background-color: var(--te-btn-bg);
+    border-color: var(--te-btn-border-color);
+}
+
+.theme-editor__preview .theme-editor__sample-btn.btn-secondary:hover,
+.theme-editor__preview .theme-editor__sample-btn.btn-secondary:focus-visible {
+    color: var(--te-btn-hover-color);
+    background-color: var(--te-btn-hover-bg);
+    border-color: var(--te-btn-hover-border-color);
+}
+
+.theme-editor__preview .theme-editor__sample-btn.btn-secondary:active,
+.theme-editor__preview .theme-editor__sample-btn.btn-secondary.active {
+    color: var(--te-btn-active-color);
+    background-color: var(--te-btn-active-bg);
+    border-color: var(--te-btn-active-border-color);
+}
+
+.theme-editor__preview .theme-editor__sample-btn.btn-link {
+    --te-btn-color: var(--theme-accent-color);
+    --te-btn-bg: transparent;
+    --te-btn-border-color: transparent;
+    --te-btn-hover-color: var(--theme-accent-color);
+    --te-btn-hover-bg: transparent;
+    --te-btn-hover-border-color: transparent;
+    color: var(--te-btn-color);
+    background-color: var(--te-btn-bg);
+    border-color: var(--te-btn-border-color);
+    text-decoration: none;
+}
+
+.theme-editor__preview .theme-editor__sample-btn.btn-link:hover,
+.theme-editor__preview .theme-editor__sample-btn.btn-link:focus-visible {
+    color: var(--te-btn-hover-color);
+    background-color: var(--te-btn-hover-bg);
+    border-color: var(--te-btn-hover-border-color);
+}
+
+@media (max-width: 991.98px) {
+    .theme-editor__preview-sticky {
+        position: static;
+    }
+
+    .theme-editor__swatches {
+        justify-content: flex-start;
+    }
+}
+</style>
+
+<script>
+(function() {
+    const STYLE_KEYS = [
+        'themeStylingEnabled',
+        'darkMode',
+        'primaryColor', 'secondaryColor', 'tertiaryColor', 'backgroundColor', 'altBackgroundColor',
+        'h1Color', 'h1FontFamily', 'h1FontWeight', 'h1FontSize',
+        'h2Color', 'h2FontFamily', 'h2FontWeight', 'h2FontSize',
+        'h3Color', 'h3FontFamily', 'h3FontWeight', 'h3FontSize',
+        'h4Color', 'h4FontFamily', 'h4FontWeight', 'h4FontSize',
+        'h5Color', 'h5FontFamily', 'h5FontWeight', 'h5FontSize',
+        'paragraphColor', 'paragraphFontFamily', 'paragraphFontWeight', 'paragraphFontSize',
+        'cardBorderRadius', 'buttonBorderRadius', 'imageBorderRadius', 'cardShadow',
+        'buttonColorSource', 'buttonColorCustom',
+        'menuStylingEnabled', 'menuItemColor', 'menuCtaColor', 'menuCtaTextColor',
+        'menuFontFamily', 'menuFontSize', 'menuFontWeight'
+    ];
+
+    const BORDER_RADIUS_VALUES = {
+        none: '0',
+        sm: '0.25rem',
+        default: '0.375rem',
+        lg: '0.5rem',
+        xl: '1rem',
+        pill: '50rem'
+    };
+
+    const CARD_SHADOW_VALUES = {
+        none: 'none',
+        sm: '0 0.125rem 0.25rem rgba(0, 0, 0, 0.075)',
+        default: '0 0.5rem 1rem rgba(0, 0, 0, 0.15)',
+        lg: '0 1rem 3rem rgba(0, 0, 0, 0.175)',
+        wide: '0 0.35rem 1.25rem rgba(0, 0, 0, 0.1), 0 1.25rem 2.5rem rgba(0, 0, 0, 0.08)'
+    };
+
+    function borderRadiusValue(key) {
+        return BORDER_RADIUS_VALUES[key] || BORDER_RADIUS_VALUES.default;
+    }
+
+    function cardShadowValue(key) {
+        return CARD_SHADOW_VALUES[key] || CARD_SHADOW_VALUES.sm;
+    }
+
+    function resolveButtonColor(ctx) {
+        const source = ctx.buttonColorSource || 'tertiary';
+        if (source === 'primary') {
+            return ctx.primaryColor || '#007bff';
+        }
+        if (source === 'secondary') {
+            return ctx.secondaryColor || '#6c757d';
+        }
+        if (source === 'custom') {
+            return ctx.buttonColorCustom || ctx.primaryColor || '#007bff';
+        }
+        return ctx.tertiaryColor || '#28a745';
+    }
+
+    const FONT_FAMILY_KEYS = [
+        'h1FontFamily', 'h2FontFamily', 'h3FontFamily', 'h4FontFamily', 'h5FontFamily', 'paragraphFontFamily',
+        'menuFontFamily'
+    ];
+
+    const SYSTEM_FONTS = [
+        { label: 'Default', css: '', googleFamily: null },
+        { label: 'Arial', css: 'Arial, sans-serif', googleFamily: null },
+        { label: 'Georgia', css: 'Georgia, serif', googleFamily: null },
+        { label: 'Times New Roman', css: "'Times New Roman', Times, serif", googleFamily: null },
+        { label: 'Verdana', css: 'Verdana, sans-serif', googleFamily: null },
+        { label: 'System UI', css: 'system-ui, sans-serif', googleFamily: null }
+    ];
+
+    const GOOGLE_FONTS = [
+        { label: 'Inter', css: "'Inter', sans-serif", googleFamily: 'Inter' },
+        { label: 'Roboto', css: "'Roboto', sans-serif", googleFamily: 'Roboto' },
+        { label: 'Open Sans', css: "'Open Sans', sans-serif", googleFamily: 'Open Sans' },
+        { label: 'Lato', css: "'Lato', sans-serif", googleFamily: 'Lato' },
+        { label: 'Montserrat', css: "'Montserrat', sans-serif", googleFamily: 'Montserrat' },
+        { label: 'Poppins', css: "'Poppins', sans-serif", googleFamily: 'Poppins' },
+        { label: 'Raleway', css: "'Raleway', sans-serif", googleFamily: 'Raleway' },
+        { label: 'Source Sans 3', css: "'Source Sans 3', sans-serif", googleFamily: 'Source Sans 3' },
+        { label: 'DM Sans', css: "'DM Sans', sans-serif", googleFamily: 'DM Sans' },
+        { label: 'Work Sans', css: "'Work Sans', sans-serif", googleFamily: 'Work Sans' },
+        { label: 'Outfit', css: "'Outfit', sans-serif", googleFamily: 'Outfit' },
+        { label: 'Nunito', css: "'Nunito', sans-serif", googleFamily: 'Nunito' },
+        { label: 'Lexend', css: "'Lexend', sans-serif", googleFamily: 'Lexend' },
+        { label: 'Fredoka', css: "'Fredoka', sans-serif", googleFamily: 'Fredoka' },
+        { label: 'Space Grotesk', css: "'Space Grotesk', sans-serif", googleFamily: 'Space Grotesk' },
+        { label: 'IBM Plex Sans', css: "'IBM Plex Sans', sans-serif", googleFamily: 'IBM Plex Sans' },
+        { label: 'Oswald', css: "'Oswald', sans-serif", googleFamily: 'Oswald' },
+        { label: 'Playfair Display', css: "'Playfair Display', serif", googleFamily: 'Playfair Display' },
+        { label: 'Source Serif 4', css: "'Source Serif 4', serif", googleFamily: 'Source Serif 4' },
+        { label: 'Cormorant Garamond', css: "'Cormorant Garamond', serif", googleFamily: 'Cormorant Garamond' },
+        { label: 'Lora', css: "'Lora', serif", googleFamily: 'Lora' },
+        { label: 'Merriweather', css: "'Merriweather', serif", googleFamily: 'Merriweather' }
+    ];
+
+    const MONO_COMMON_FONTS = [
+        { label: 'Courier New', css: "'Courier New', Courier, monospace", googleFamily: null },
+        { label: 'Roboto Mono', css: "'Roboto Mono', monospace", googleFamily: 'Roboto Mono' },
+        { label: 'Source Code Pro', css: "'Source Code Pro', monospace", googleFamily: 'Source Code Pro' },
+        { label: 'IBM Plex Mono', css: "'IBM Plex Mono', monospace", googleFamily: 'IBM Plex Mono' },
+        { label: 'JetBrains Mono', css: "'JetBrains Mono', monospace", googleFamily: 'JetBrains Mono' },
+        { label: 'Fira Code', css: "'Fira Code', monospace", googleFamily: 'Fira Code' },
+        { label: 'Ubuntu Mono', css: "'Ubuntu Mono', monospace", googleFamily: 'Ubuntu Mono' },
+        { label: 'PT Mono', css: "'PT Mono', monospace", googleFamily: 'PT Mono' }
+    ];
+
+    const MONO_HEADING_FONTS = [
+        { label: 'Space Mono', css: "'Space Mono', monospace", googleFamily: 'Space Mono' },
+        { label: 'Major Mono Display', css: "'Major Mono Display', monospace", googleFamily: 'Major Mono Display' },
+        { label: 'Chakra Petch', css: "'Chakra Petch', monospace", googleFamily: 'Chakra Petch' },
+        { label: 'Share Tech Mono', css: "'Share Tech Mono', monospace", googleFamily: 'Share Tech Mono' },
+        { label: 'Rubik Mono One', css: "'Rubik Mono One', monospace", googleFamily: 'Rubik Mono One' },
+        { label: 'B612 Mono', css: "'B612 Mono', monospace", googleFamily: 'B612 Mono' },
+        { label: 'Azeret Mono', css: "'Azeret Mono', monospace", googleFamily: 'Azeret Mono' }
+    ];
+
+    const MONO_BADGE_FONTS = [
+        { label: 'Overpass Mono', css: "'Overpass Mono', monospace", googleFamily: 'Overpass Mono' },
+        { label: 'DM Mono', css: "'DM Mono', monospace", googleFamily: 'DM Mono' },
+        { label: 'Inconsolata', css: "'Inconsolata', monospace", googleFamily: 'Inconsolata' },
+        { label: 'Red Hat Mono', css: "'Red Hat Mono', monospace", googleFamily: 'Red Hat Mono' },
+        { label: 'Anonymous Pro', css: "'Anonymous Pro', monospace", googleFamily: 'Anonymous Pro' },
+        { label: 'Martian Mono', css: "'Martian Mono', monospace", googleFamily: 'Martian Mono' },
+        { label: 'Fragment Mono', css: "'Fragment Mono', monospace", googleFamily: 'Fragment Mono' },
+        { label: 'Nova Mono', css: "'Nova Mono', monospace", googleFamily: 'Nova Mono' }
+    ];
+
+    const FONT_OPTION_GROUPS = [
+        { label: 'System fonts', fonts: SYSTEM_FONTS },
+        { label: 'Google Fonts', fonts: GOOGLE_FONTS },
+        { label: 'Monospace — common', fonts: MONO_COMMON_FONTS },
+        { label: 'Monospace — headings', fonts: MONO_HEADING_FONTS },
+        { label: 'Monospace — badges & small text', fonts: MONO_BADGE_FONTS }
+    ];
+
+    const ALL_THEME_FONTS = [
+        ...SYSTEM_FONTS,
+        ...GOOGLE_FONTS,
+        ...MONO_COMMON_FONTS,
+        ...MONO_HEADING_FONTS,
+        ...MONO_BADGE_FONTS
+    ];
+
+    const CSS_TO_GOOGLE = {};
+    ALL_THEME_FONTS.forEach((font) => {
+        if (font.googleFamily) {
+            CSS_TO_GOOGLE[font.css] = font.googleFamily;
+        }
+    });
+
+    function primaryFamilyFromCss(css) {
+        if (!css || typeof css !== 'string') {
+            return '';
+        }
+        const trimmed = css.trim();
+        const quoted = trimmed.match(/^['"]([^'"]+)['"]/);
+        if (quoted) {
+            return quoted[1];
+        }
+        const first = trimmed.split(',')[0].trim();
+        return first.replace(/^['"]|['"]$/g, '');
+    }
+
+    function normalizeFontFamily(css) {
+        if (!css || typeof css !== 'string') {
+            return '';
+        }
+        const trimmed = css.trim();
+        const exact = ALL_THEME_FONTS.find((font) => font.css === trimmed);
+        if (exact) {
+            return exact.css;
+        }
+        const primary = primaryFamilyFromCss(trimmed).toLowerCase();
+        if (!primary) {
+            return trimmed;
+        }
+        const byPrimary = ALL_THEME_FONTS.find((font) => {
+            return font.css && primaryFamilyFromCss(font.css).toLowerCase() === primary;
+        });
+        return byPrimary ? byPrimary.css : trimmed;
+    }
+
+    function normalizeFontFamilies(ctx) {
+        FONT_FAMILY_KEYS.forEach((key) => {
+            ctx[key] = normalizeFontFamily(ctx[key]);
+        });
+    }
+
+    function escapeHtmlAttr(value) {
+        return String(value)
+            .replace(/&/g, '&amp;')
+            .replace(/"/g, '&quot;');
+    }
+
+    let fontSelectOptionsHtml = null;
+
+    function getFontSelectOptionsHtml() {
+        if (fontSelectOptionsHtml) {
+            return fontSelectOptionsHtml;
+        }
+        let html = '';
+        FONT_OPTION_GROUPS.forEach((group) => {
+            html += '<optgroup label="' + escapeHtmlAttr(group.label) + '">';
+            group.fonts.forEach((font) => {
+                html += '<option value="' + escapeHtmlAttr(font.css) + '">' + escapeHtmlAttr(font.label) + '</option>';
+            });
+            html += '</optgroup>';
+        });
+        fontSelectOptionsHtml = html;
+        return html;
+    }
+
+    const FONT_SELECT_BINDINGS = {
+        headingFontInp: 'headingFont',
+        bodyFontInp: 'paragraphFontFamily',
+        h1FontInp: 'h1FontFamily',
+        h2FontInp: 'h2FontFamily',
+        h3FontInp: 'h3FontFamily',
+        h4FontInp: 'h4FontFamily',
+        h5FontInp: 'h5FontFamily',
+        paragraphFontInp: 'paragraphFontFamily',
+        menuFontInp: 'menuFontFamily'
+    };
+
+    function syncFontSelectElements(ctx) {
+        const html = getFontSelectOptionsHtml();
+        Object.entries(FONT_SELECT_BINDINGS).forEach(([id, prop]) => {
+            const el = document.getElementById(id);
+            if (!el) {
+                return;
+            }
+            if (!el.dataset.fontOptionsMounted) {
+                el.innerHTML = html;
+                el.dataset.fontOptionsMounted = '1';
+            }
+            const value = ctx[prop] ?? '';
+            if (el.value !== value) {
+                el.value = value;
+            }
+        });
+    }
+
+    function googleFamilyFromCss(css) {
+        if (!css) {
+            return null;
+        }
+        return CSS_TO_GOOGLE[css] || null;
+    }
+
+    function collectGoogleFamilies(ctx) {
+        const names = new Set();
+        HEADING_LEVELS.forEach((level) => {
+            const family = googleFamilyFromCss(ctx[level + 'FontFamily']);
+            if (family) {
+                names.add(family);
+            }
+        });
+        const bodyFamily = googleFamilyFromCss(ctx.paragraphFontFamily);
+        if (bodyFamily) {
+            names.add(bodyFamily);
+        }
+        if (ctx.menuStylingEnabled === 'yes') {
+            const menuFamily = googleFamilyFromCss(ctx.menuFontFamily);
+            if (menuFamily) {
+                names.add(menuFamily);
+            }
+        }
+        return [...names];
+    }
+
+    function buildGoogleFontsUrl(families) {
+        if (!families.length) {
+            return '';
+        }
+        const axis = 'ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900';
+        const params = families.map((name) => {
+            return 'family=' + encodeURIComponent(name).replace(/%20/g, '+') + ':' + axis;
+        }).join('&');
+        return 'https://fonts.googleapis.com/css2?' + params + '&display=swap';
+    }
+
+    const TYPE_SCALES = {
+        compact: {
+            h1FontSize: '40px', h2FontSize: '32px', h3FontSize: '24px', h4FontSize: '18px', h5FontSize: '14px',
+            paragraphFontSize: '14px',
+            h1FontWeight: '700', h2FontWeight: '600', h3FontWeight: '600', h4FontWeight: '500', h5FontWeight: '500',
+            paragraphFontWeight: '400'
+        },
+        default: {
+            h1FontSize: '48px', h2FontSize: '36px', h3FontSize: '28px', h4FontSize: '20px', h5FontSize: '16px',
+            paragraphFontSize: '16px',
+            h1FontWeight: '700', h2FontWeight: '600', h3FontWeight: '600', h4FontWeight: '500', h5FontWeight: '500',
+            paragraphFontWeight: '400'
+        },
+        large: {
+            h1FontSize: '56px', h2FontSize: '40px', h3FontSize: '32px', h4FontSize: '24px', h5FontSize: '18px',
+            paragraphFontSize: '18px',
+            h1FontWeight: '700', h2FontWeight: '600', h3FontWeight: '600', h4FontWeight: '500', h5FontWeight: '500',
+            paragraphFontWeight: '400'
+        }
+    };
+
+    const HEADING_LEVELS = ['h1', 'h2', 'h3', 'h4', 'h5'];
+
+    const STYLE_PRESETS = {
+        cleanSaas: {
+            darkMode: 'no',
+            headingFont: "'Inter', sans-serif",
+            paragraphFontFamily: "'Inter', sans-serif",
+            primaryColor: '#4F46E5',
+            secondaryColor: '#64748B',
+            tertiaryColor: '#06B6D4',
+            backgroundColor: '#FFFFFF',
+            altBackgroundColor: '#F8FAFC',
+            headingColor: '#0F172A',
+            paragraphColor: '#334155',
+            typeScale: 'default',
+            cardBorderRadius: 'default',
+            buttonBorderRadius: 'default',
+            imageBorderRadius: 'default',
+            cardShadow: 'sm'
+        },
+        boldStartup: {
+            darkMode: 'no',
+            headingFont: "'Space Grotesk', sans-serif",
+            paragraphFontFamily: "'DM Sans', sans-serif",
+            primaryColor: '#7C3AED',
+            secondaryColor: '#1E293B',
+            tertiaryColor: '#F59E0B',
+            backgroundColor: '#FFFFFF',
+            altBackgroundColor: '#F5F3FF',
+            headingColor: '#0F172A',
+            paragraphColor: '#1E293B',
+            typeScale: 'large',
+            cardBorderRadius: 'lg',
+            buttonBorderRadius: 'lg',
+            imageBorderRadius: 'lg',
+            cardShadow: 'lg'
+        },
+        editorial: {
+            darkMode: 'no',
+            headingFont: "'Playfair Display', serif",
+            paragraphFontFamily: "'Source Serif 4', serif",
+            primaryColor: '#1C1917',
+            secondaryColor: '#57534E',
+            tertiaryColor: '#B45309',
+            backgroundColor: '#FFFBF7',
+            altBackgroundColor: '#F5F0E8',
+            headingColor: '#1C1917',
+            paragraphColor: '#44403C',
+            typeScale: 'default',
+            cardBorderRadius: 'sm',
+            buttonBorderRadius: 'sm',
+            imageBorderRadius: 'sm',
+            cardShadow: 'wide'
+        },
+        luxury: {
+            darkMode: 'no',
+            headingFont: "'Cormorant Garamond', serif",
+            paragraphFontFamily: "'Lora', serif",
+            primaryColor: '#1A1A1A',
+            secondaryColor: '#8C7853',
+            tertiaryColor: '#C9A962',
+            backgroundColor: '#FAFAF8',
+            altBackgroundColor: '#F0EDE8',
+            headingColor: '#1A1A1A',
+            paragraphColor: '#3D3D3D',
+            typeScale: 'large',
+            cardBorderRadius: 'sm',
+            buttonBorderRadius: 'default',
+            imageBorderRadius: 'sm',
+            cardShadow: 'wide'
+        },
+        minimal: {
+            darkMode: 'no',
+            headingFont: "'Outfit', sans-serif",
+            paragraphFontFamily: "'Work Sans', sans-serif",
+            primaryColor: '#18181B',
+            secondaryColor: '#71717A',
+            tertiaryColor: '#18181B',
+            backgroundColor: '#FFFFFF',
+            altBackgroundColor: '#FAFAFA',
+            headingColor: '#18181B',
+            paragraphColor: '#52525B',
+            typeScale: 'compact',
+            cardBorderRadius: 'none',
+            buttonBorderRadius: 'none',
+            imageBorderRadius: 'none',
+            cardShadow: 'none'
+        },
+        playful: {
+            darkMode: 'no',
+            headingFont: "'Fredoka', sans-serif",
+            paragraphFontFamily: "'Nunito', sans-serif",
+            primaryColor: '#EC4899',
+            secondaryColor: '#8B5CF6',
+            tertiaryColor: '#14B8A6',
+            backgroundColor: '#FFFBFE',
+            altBackgroundColor: '#FDF4FF',
+            headingColor: '#831843',
+            paragraphColor: '#4A044E',
+            typeScale: 'default',
+            cardBorderRadius: 'xl',
+            buttonBorderRadius: 'pill',
+            imageBorderRadius: 'xl',
+            cardShadow: 'lg'
+        },
+        kidsActivities: {
+            darkMode: 'no',
+            headingFont: "'Lexend', sans-serif",
+            paragraphFontFamily: 'system-ui, sans-serif',
+            primaryColor: '#401D6E',
+            secondaryColor: '#7C3092',
+            tertiaryColor: '#FF7B31',
+            backgroundColor: '#FFFFFF',
+            altBackgroundColor: '#F2EFF6',
+            headingColor: '#401D6E',
+            paragraphColor: '#3D3D3D',
+            typeScale: 'default',
+            cardBorderRadius: 'xl',
+            buttonBorderRadius: 'pill',
+            imageBorderRadius: 'xl',
+            cardShadow: 'lg',
+            menuStylingEnabled: 'yes',
+            menuItemColor: '#742f86',
+            menuFontFamily: "'Lexend', sans-serif",
+            menuFontSize: '16px',
+            menuFontWeight: '600'
+        },
+        highContrast: {
+            darkMode: 'no',
+            headingFont: "'Oswald', sans-serif",
+            paragraphFontFamily: "'IBM Plex Sans', sans-serif",
+            primaryColor: '#000000',
+            secondaryColor: '#404040',
+            tertiaryColor: '#E11D48',
+            backgroundColor: '#FFFFFF',
+            altBackgroundColor: '#F4F4F5',
+            headingColor: '#000000',
+            paragraphColor: '#171717',
+            typeScale: 'large',
+            cardBorderRadius: 'none',
+            buttonBorderRadius: 'none',
+            imageBorderRadius: 'none',
+            cardShadow: 'none'
+        },
+        midnightOasis: {
+            darkMode: 'yes',
+            headingFont: "'Inter', sans-serif",
+            paragraphFontFamily: "'Inter', sans-serif",
+            primaryColor: '#22D3EE',
+            secondaryColor: '#64748B',
+            tertiaryColor: '#38BDF8',
+            backgroundColor: '#0F172A',
+            altBackgroundColor: '#1E293B',
+            headingColor: '#F8FAFC',
+            paragraphColor: '#CBD5E1',
+            typeScale: 'default',
+            cardBorderRadius: 'lg',
+            buttonBorderRadius: 'lg',
+            imageBorderRadius: 'lg',
+            cardShadow: 'lg'
+        },
+        neonNoir: {
+            darkMode: 'yes',
+            headingFont: "'Space Grotesk', sans-serif",
+            paragraphFontFamily: "'DM Sans', sans-serif",
+            primaryColor: '#E879F9',
+            secondaryColor: '#6B7280',
+            tertiaryColor: '#22D3EE',
+            backgroundColor: '#09090B',
+            altBackgroundColor: '#18181B',
+            headingColor: '#FAFAFA',
+            paragraphColor: '#D4D4D8',
+            typeScale: 'large',
+            cardBorderRadius: 'pill',
+            buttonBorderRadius: 'pill',
+            imageBorderRadius: 'xl',
+            cardShadow: 'wide'
+        },
+        emberVault: {
+            darkMode: 'yes',
+            headingFont: "'Playfair Display', serif",
+            paragraphFontFamily: "'Source Serif 4', serif",
+            primaryColor: '#FB923C',
+            secondaryColor: '#78716C',
+            tertiaryColor: '#FBBF24',
+            backgroundColor: '#1C1917',
+            altBackgroundColor: '#292524',
+            headingColor: '#FAFAF9',
+            paragraphColor: '#D6D3D1',
+            typeScale: 'default',
+            cardBorderRadius: 'sm',
+            buttonBorderRadius: 'default',
+            imageBorderRadius: 'sm',
+            cardShadow: 'wide'
+        },
+        arcticVoid: {
+            darkMode: 'yes',
+            headingFont: "'Outfit', sans-serif",
+            paragraphFontFamily: "'Work Sans', sans-serif",
+            primaryColor: '#93C5FD',
+            secondaryColor: '#475569',
+            tertiaryColor: '#60A5FA',
+            backgroundColor: '#0C1222',
+            altBackgroundColor: '#151D2E',
+            headingColor: '#EFF6FF',
+            paragraphColor: '#BFDBFE',
+            typeScale: 'default',
+            cardBorderRadius: 'default',
+            buttonBorderRadius: 'lg',
+            imageBorderRadius: 'default',
+            cardShadow: 'sm'
+        },
+        velvetDusk: {
+            darkMode: 'yes',
+            headingFont: "'Cormorant Garamond', serif",
+            paragraphFontFamily: "'Lora', serif",
+            primaryColor: '#C084FC',
+            secondaryColor: '#7E22CE',
+            tertiaryColor: '#E879F9',
+            backgroundColor: '#1A1025',
+            altBackgroundColor: '#2D1B3D',
+            headingColor: '#FAF5FF',
+            paragraphColor: '#E9D5FF',
+            typeScale: 'large',
+            cardBorderRadius: 'sm',
+            buttonBorderRadius: 'sm',
+            imageBorderRadius: 'sm',
+            cardShadow: 'lg'
+        },
+        copperFoundry: {
+            darkMode: 'yes',
+            headingFont: "'Oswald', sans-serif",
+            paragraphFontFamily: "'IBM Plex Sans', sans-serif",
+            primaryColor: '#F59E0B',
+            secondaryColor: '#52525B',
+            tertiaryColor: '#D97706',
+            backgroundColor: '#18181B',
+            altBackgroundColor: '#27272A',
+            headingColor: '#FAFAFA',
+            paragraphColor: '#A1A1AA',
+            typeScale: 'large',
+            cardBorderRadius: 'none',
+            buttonBorderRadius: 'none',
+            imageBorderRadius: 'none',
+            cardShadow: 'default'
+        },
+        forestCanopy: {
+            darkMode: 'yes',
+            headingFont: "'Merriweather', serif",
+            paragraphFontFamily: "'Lora', serif",
+            primaryColor: '#34D399',
+            secondaryColor: '#4B5563',
+            tertiaryColor: '#6EE7B7',
+            backgroundColor: '#0F1A14',
+            altBackgroundColor: '#1A2E21',
+            headingColor: '#ECFDF5',
+            paragraphColor: '#A7F3D0',
+            typeScale: 'default',
+            cardBorderRadius: 'lg',
+            buttonBorderRadius: 'default',
+            imageBorderRadius: 'lg',
+            cardShadow: 'sm'
+        }
+    };
+
+    function sizesMatchScale(scaleName, data) {
+        const scale = TYPE_SCALES[scaleName];
+        if (!scale) {
+            return false;
+        }
+        for (const level of HEADING_LEVELS) {
+            if (data[level + 'FontSize'] !== scale[level + 'FontSize']) {
+                return false;
+            }
+        }
+        if (data.paragraphFontSize !== scale.paragraphFontSize) {
+            return false;
+        }
+        return true;
+    }
+
+    function clamp(value, min, max) {
+        return Math.min(max, Math.max(min, value));
+    }
+
+    function wrapHue(h) {
+        return ((h % 360) + 360) % 360;
+    }
+
+    function randBetween(min, max) {
+        return min + Math.random() * (max - min);
+    }
+
+    function hexToHsl(hex) {
+        const raw = hex.replace(/^#/, '');
+        const full = raw.length === 3
+            ? raw.split('').map((c) => c + c).join('')
+            : raw;
+        const n = parseInt(full, 16);
+        const r = ((n >> 16) & 255) / 255;
+        const g = ((n >> 8) & 255) / 255;
+        const b = (n & 255) / 255;
+        const max = Math.max(r, g, b);
+        const min = Math.min(r, g, b);
+        let h = 0;
+        let s = 0;
+        const l = (max + min) / 2;
+        if (max !== min) {
+            const d = max - min;
+            s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+            switch (max) {
+                case r:
+                    h = (g - b) / d + (g < b ? 6 : 0);
+                    break;
+                case g:
+                    h = (b - r) / d + 2;
+                    break;
+                default:
+                    h = (r - g) / d + 4;
+                    break;
+            }
+            h /= 6;
+        }
+        return { h: h * 360, s: s * 100, l: l * 100 };
+    }
+
+    function hslToHex(h, s, l) {
+        h = wrapHue(h);
+        s = clamp(s, 0, 100) / 100;
+        l = clamp(l, 0, 100) / 100;
+        const c = (1 - Math.abs(2 * l - 1)) * s;
+        const x = c * (1 - Math.abs((h / 60) % 2 - 1));
+        const m = l - c / 2;
+        let r = 0;
+        let g = 0;
+        let b = 0;
+        if (h < 60) {
+            r = c;
+            g = x;
+        }
+        else if (h < 120) {
+            r = x;
+            g = c;
+        }
+        else if (h < 180) {
+            g = c;
+            b = x;
+        }
+        else if (h < 240) {
+            g = x;
+            b = c;
+        }
+        else if (h < 300) {
+            r = x;
+            b = c;
+        }
+        else {
+            r = c;
+            b = x;
+        }
+        const toHex = (v) => {
+            const n = Math.round((v + m) * 255);
+            return n.toString(16).padStart(2, '0');
+        };
+        return '#' + toHex(r) + toHex(g) + toHex(b);
+    }
+
+    const HARMONY_TYPES = ['analogous', 'complementary', 'triadic', 'splitComplementary'];
+
+    function accentHueFromHarmony(baseHue, harmonyType) {
+        switch (harmonyType) {
+            case 'analogous':
+                return wrapHue(baseHue + 28);
+            case 'complementary':
+                return wrapHue(baseHue + 180);
+            case 'triadic':
+                return wrapHue(baseHue + (Math.random() < 0.5 ? 120 : 240));
+            case 'splitComplementary':
+                return wrapHue(baseHue + (Math.random() < 0.5 ? 150 : 210));
+            default:
+                return wrapHue(baseHue + 28);
+        }
+    }
+
+    function generateBrandPalette(isDark) {
+        const baseHue = Math.floor(Math.random() * 360);
+        const harmonyType = HARMONY_TYPES[Math.floor(Math.random() * HARMONY_TYPES.length)];
+        const accentHue = accentHueFromHarmony(baseHue, harmonyType);
+
+        if (isDark) {
+            return {
+                primaryColor: hslToHex(baseHue, randBetween(70, 85), randBetween(58, 68)),
+                secondaryColor: hslToHex(baseHue, randBetween(15, 25), randBetween(55, 68)),
+                tertiaryColor: hslToHex(accentHue, randBetween(80, 95), randBetween(60, 72)),
+                backgroundColor: hslToHex(baseHue, randBetween(8, 15), randBetween(8, 12)),
+                altBackgroundColor: hslToHex(baseHue, randBetween(10, 18), randBetween(14, 18)),
+                headingColor: hslToHex(baseHue, randBetween(8, 18), randBetween(96, 99)),
+                paragraphColor: hslToHex(baseHue, randBetween(15, 25), randBetween(78, 88))
+            };
+        }
+        return {
+            primaryColor: hslToHex(baseHue, randBetween(65, 80), randBetween(42, 52)),
+            secondaryColor: hslToHex(baseHue, randBetween(18, 30), randBetween(38, 48)),
+            tertiaryColor: hslToHex(accentHue, randBetween(75, 90), randBetween(45, 55)),
+            backgroundColor: hslToHex(baseHue, randBetween(5, 12), randBetween(96, 99)),
+            altBackgroundColor: hslToHex(baseHue, randBetween(8, 14), randBetween(92, 95)),
+            headingColor: hslToHex(baseHue, randBetween(20, 35), randBetween(8, 14)),
+            paragraphColor: hslToHex(baseHue, randBetween(12, 22), randBetween(28, 38))
+        };
+    }
+
+    function themeEditorAttach(ctx) {
+        ctx.isDirty = false;
+        ctx.savedSnapshot = null;
+        ctx.typeScale = 'default';
+        ctx.headingColor = '#212529';
+        ctx.googleFonts = ctx.googleFonts || '[]';
+        ctx.googleFontsHref = '';
+        ctx.selectedStylePreset = '';
+        ctx._applyingPreset = false;
+
+        ctx.applyLoadedThemeState = function(options) {
+            normalizeFontFamilies(ctx);
+            ctx.syncHeadingFontFromLevels();
+            ctx.syncHeadingColorFromLevels();
+            ctx.inferTypeScaleFromSizes();
+            ctx.refreshGoogleFonts();
+            syncFontSelectElements(ctx);
+            if (options && options.markSaved) {
+                ctx.savedSnapshot = ctx.captureState();
+            }
+        };
+
+        ctx.syncFontSelectElements = function() {
+            syncFontSelectElements(ctx);
+        };
+
+        ctx.previewThemeStyle = function() {
+            const btnRadius = borderRadiusValue(ctx.buttonBorderRadius);
+            const brandColor = ctx.primaryColor || '#007bff';
+            const secondaryColor = ctx.secondaryColor || '#6c757d';
+            const accentColor = ctx.tertiaryColor || '#28a745';
+            return {
+                color: ctx.paragraphColor || '#212529',
+                '--theme-brand-color': brandColor,
+                '--theme-secondary-color': secondaryColor,
+                '--theme-accent-color': accentColor,
+                '--theme-button-color': resolveButtonColor(ctx),
+                '--te-btn-radius': btnRadius
+            };
+        };
+
+        ctx.previewPageSectionStyle = function() {
+            return {
+                background: ctx.backgroundColor || '#ffffff'
+            };
+        };
+
+        ctx.previewAltSectionStyle = function() {
+            return {
+                background: ctx.altBackgroundColor || '#f8f9fa'
+            };
+        };
+
+        ctx.previewCardStyle = function() {
+            return {
+                borderRadius: borderRadiusValue(ctx.cardBorderRadius),
+                boxShadow: cardShadowValue(ctx.cardShadow),
+                backgroundColor: ctx.backgroundColor || '#ffffff',
+                border: '1px solid rgba(0, 0, 0, 0.08)'
+            };
+        };
+
+        ctx.previewImageStyle = function() {
+            return {
+                borderRadius: borderRadiusValue(ctx.imageBorderRadius)
+            };
+        };
+
+        ctx.previewMenuStyle = function() {
+            const style = {};
+            if (ctx.menuStylingEnabled !== 'yes') {
+                return style;
+            }
+            if (ctx.menuItemColor) {
+                style.color = ctx.menuItemColor;
+                style['--te-menu-link-color'] = ctx.menuItemColor;
+            }
+            if (ctx.menuFontFamily) {
+                style.fontFamily = ctx.menuFontFamily;
+            }
+            if (ctx.menuFontSize) {
+                style.fontSize = ctx.menuFontSize;
+            }
+            if (ctx.menuFontWeight) {
+                style.fontWeight = ctx.menuFontWeight;
+            }
+            if (ctx.menuCtaColor) {
+                style['--te-menu-cta-bg'] = ctx.menuCtaColor;
+                style['--te-menu-cta-border'] = ctx.menuCtaColor;
+            }
+            if (ctx.menuCtaTextColor) {
+                style['--te-menu-cta-color'] = ctx.menuCtaTextColor;
+            }
+            return style;
+        };
+
+        ctx.captureState = function() {
+            const state = {};
+            STYLE_KEYS.forEach((key) => {
+                state[key] = ctx[key];
+            });
+            return state;
+        };
+
+        ctx.checkDirty = function() {
+            if (!ctx.savedSnapshot) {
+                return;
+            }
+            ctx.isDirty = STYLE_KEYS.some((key) => ctx[key] !== ctx.savedSnapshot[key]);
+        };
+
+        ctx.clearStylePreset = function() {
+            if (!ctx._applyingPreset) {
+                ctx.selectedStylePreset = '';
+            }
+        };
+
+        ctx.randomizeBrandColors = function() {
+            const palette = generateBrandPalette(ctx.darkMode === 'yes');
+            ctx.primaryColor = palette.primaryColor;
+            ctx.secondaryColor = palette.secondaryColor;
+            ctx.tertiaryColor = palette.tertiaryColor;
+            ctx.backgroundColor = palette.backgroundColor;
+            ctx.altBackgroundColor = palette.altBackgroundColor;
+            ctx.setHeadingColors(palette.headingColor);
+            ctx.paragraphColor = palette.paragraphColor;
+            ctx.clearStylePreset();
+        };
+
+        ctx.refreshGoogleFonts = function() {
+            const families = collectGoogleFamilies(ctx);
+            ctx.googleFonts = JSON.stringify(families);
+            ctx.googleFontsHref = families.length ? buildGoogleFontsUrl(families) : '';
+        };
+
+        ctx.resetToSaved = function() {
+            if (!ctx.savedSnapshot) {
+                return;
+            }
+            STYLE_KEYS.forEach((key) => {
+                ctx[key] = ctx.savedSnapshot[key];
+            });
+            ctx.applyLoadedThemeState();
+            ctx.selectedStylePreset = '';
+            ctx.isDirty = false;
+            ctx.savedSnapshot = ctx.captureState();
+        };
+
+        ctx.setHeadingFont = function(value) {
+            ctx.headingFont = value;
+            HEADING_LEVELS.forEach((level) => {
+                ctx[level + 'FontFamily'] = value;
+            });
+            syncFontSelectElements(ctx);
+        };
+
+        ctx.onHeadingFontChange = function(value) {
+            ctx.setHeadingFont(value);
+            ctx.refreshGoogleFonts();
+            ctx.clearStylePreset();
+        };
+
+        ctx.onFontFamilyChange = function() {
+            ctx.refreshGoogleFonts();
+            ctx.clearStylePreset();
+        };
+
+        ctx.onMenuFontChange = function() {
+            ctx.refreshGoogleFonts();
+            ctx.clearStylePreset();
+        };
+
+        ctx.onAdvancedHeadingFontChange = function() {
+            ctx.syncHeadingFontFromLevels();
+            ctx.syncFontSelectElements();
+            ctx.refreshGoogleFonts();
+            ctx.clearStylePreset();
+        };
+
+        ctx.syncHeadingFontFromLevels = function() {
+            const fonts = HEADING_LEVELS.map((level) => ctx[level + 'FontFamily']);
+            const unique = [...new Set(fonts)];
+            ctx.headingFont = unique.length === 1 ? (unique[0] || '') : (ctx.h1FontFamily || '');
+        };
+
+        ctx.setHeadingColors = function(value) {
+            ctx.headingColor = value;
+            HEADING_LEVELS.forEach((level) => {
+                ctx[level + 'Color'] = value;
+            });
+            ctx.clearStylePreset();
+        };
+
+        ctx.syncHeadingColorFromLevels = function() {
+            const colors = HEADING_LEVELS.map((level) => ctx[level + 'Color']).filter(Boolean);
+            const unique = [...new Set(colors)];
+            ctx.headingColor = unique.length === 1 ? unique[0] : (ctx.h1Color || '#212529');
+        };
+
+        ctx.applyTypeScale = function(preset) {
+            const scale = TYPE_SCALES[preset];
+            if (!scale) {
+                return;
+            }
+            Object.keys(scale).forEach((key) => {
+                ctx[key] = scale[key];
+            });
+        };
+
+        ctx.applyStylePreset = function(presetId) {
+            if (!presetId) {
+                return;
+            }
+            const preset = STYLE_PRESETS[presetId];
+            if (!preset) {
+                return;
+            }
+            ctx._applyingPreset = true;
+            ctx.darkMode = preset.darkMode === 'yes' ? 'yes' : 'no';
+            ctx.setHeadingFont(preset.headingFont);
+            ctx.paragraphFontFamily = preset.paragraphFontFamily;
+            ctx.primaryColor = preset.primaryColor;
+            ctx.secondaryColor = preset.secondaryColor;
+            ctx.tertiaryColor = preset.tertiaryColor;
+            ctx.backgroundColor = preset.backgroundColor;
+            ctx.altBackgroundColor = preset.altBackgroundColor;
+            ctx.setHeadingColors(preset.headingColor);
+            ctx.paragraphColor = preset.paragraphColor;
+            if (preset.cardBorderRadius) {
+                ctx.cardBorderRadius = preset.cardBorderRadius;
+            }
+            if (preset.buttonBorderRadius) {
+                ctx.buttonBorderRadius = preset.buttonBorderRadius;
+            }
+            if (preset.imageBorderRadius) {
+                ctx.imageBorderRadius = preset.imageBorderRadius;
+            }
+            if (preset.buttonColorSource) {
+                ctx.buttonColorSource = preset.buttonColorSource;
+            }
+            else {
+                ctx.buttonColorSource = 'tertiary';
+            }
+            ctx.buttonColorCustom = preset.buttonColorCustom || '';
+            if (preset.cardShadow) {
+                ctx.cardShadow = preset.cardShadow;
+            }
+            if (preset.menuStylingEnabled) {
+                ctx.menuStylingEnabled = preset.menuStylingEnabled === 'yes' ? 'yes' : 'no';
+            }
+            else {
+                ctx.menuStylingEnabled = 'no';
+            }
+            ctx.menuItemColor = preset.menuItemColor || '';
+            ctx.menuCtaColor = preset.menuCtaColor || '';
+            ctx.menuCtaTextColor = preset.menuCtaTextColor || '';
+            ctx.menuFontFamily = preset.menuFontFamily || '';
+            ctx.menuFontSize = preset.menuFontSize || '';
+            ctx.menuFontWeight = preset.menuFontWeight || '';
+            ctx.applyTypeScale(preset.typeScale);
+            ctx.typeScale = preset.typeScale;
+            ctx.syncHeadingFontFromLevels();
+            ctx.syncHeadingColorFromLevels();
+            ctx.inferTypeScaleFromSizes();
+            ctx.refreshGoogleFonts();
+            syncFontSelectElements(ctx);
+            ctx.selectedStylePreset = presetId;
+            ctx._applyingPreset = false;
+            ctx.checkDirty();
+        };
+
+        ctx.inferTypeScaleFromSizes = function() {
+            for (const name of ['compact', 'default', 'large']) {
+                if (sizesMatchScale(name, ctx)) {
+                    ctx.typeScale = name;
+                    return;
+                }
+            }
+        };
+
+        ctx.applyLoadedThemeState();
+        if (typeof ctx.$nextTick === 'function') {
+            ctx.$nextTick(() => ctx.applyLoadedThemeState());
+        }
+        setTimeout(() => ctx.applyLoadedThemeState({ markSaved: true }), 50);
+        setTimeout(() => ctx.applyLoadedThemeState({ markSaved: true }), 300);
+
+        STYLE_KEYS.forEach((key) => {
+            ctx.$watch(key, () => {
+                ctx.checkDirty();
+                ctx.clearStylePreset();
+            });
+        });
+
+        FONT_FAMILY_KEYS.forEach((key) => {
+            ctx.$watch(key, () => {
+                ctx.syncHeadingFontFromLevels();
+                ctx.refreshGoogleFonts();
+                syncFontSelectElements(ctx);
+            });
+        });
+
+        ctx.$watch('typeScale', () => ctx.clearStylePreset());
+
+        ctx.$watch('menuStylingEnabled', () => {
+            ctx.refreshGoogleFonts();
+        });
+    }
+
+    window.themeEditorAttach = themeEditorAttach;
+})();
+</script>

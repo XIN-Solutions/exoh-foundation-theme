@@ -1,0 +1,35 @@
+{{let .
+      textAlignment=(map left='left' center='center' right='right' justified='justify')
+}}
+
+{{let .
+      selectedTextAlignment=(lookup textAlignment (?? config.textAlignment 'left'))
+}}
+
+<section
+    class="
+        {{?: config.useAltBackground 'bg--alternate' ''}}
+        spacing--{{?? config.spacing 'comfortable'}}
+        {{?: config.noTopSpacing 'spacing--no-top' ''}}
+        {{?: config.noBottomSpacing 'spacing--no-bottom' ''}}
+    "
+    no-edit="children"
+    allowadd="no"
+    allowdelete="no"
+>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-{{?? config.columnSize '12'}} col-sm-12 mx-auto">
+                {{#if config.markdown}}
+                    <div style="column-count: {{?? config.textColumns '1'}}; text-align: {{selectedTextAlignment}};">
+                        {{{markdown-to-html config.markdown}}}
+                    </div>
+                {{else}}
+                    <div class="alert alert-warning" role="alert">
+                        Please enter some markdown text.
+                    </div>
+                {{/if}}
+            </div>
+        </div>
+    </div>
+</section>

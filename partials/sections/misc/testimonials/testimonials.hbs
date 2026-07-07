@@ -1,0 +1,39 @@
+{{let .
+      isStyle1=(eq (?? config.styleVariant "style1") "style1")
+      isStyle3=(eq config.styleVariant "style3")
+      selectedColumnSetting=(?? config.columns 'four')
+      columnsMap=(map one='col-12 col-lg-8' two='col-12 col-md-6' three='col-12 col-md-6 col-lg-4' four='col-12 col-sm-6 col-xl-3')
+      selectedColumns=(lookup columnsMap selectedColumnSetting)
+}}
+
+<section
+    class="
+        testimonials-1 bg-alternate
+        {{?: config.useAltBackground 'bg--alternate' ''}}
+        spacing--{{?? config.spacing 'comfortable'}}
+        {{?: config.noTopSpacing 'spacing--no-top' ''}}
+        {{?: config.noBottomSpacing 'spacing--no-bottom' ''}}
+    "
+    no-edit="children"
+    allowadd="no"
+    allowdelete="no"
+>
+    <div class="container">
+        <div class="row justify-content-center mb-4">
+            <div class="col-md-7 text-center">
+                {{#unless config.hideTitle}}
+                    <h2 class="mb-3 h2-all" edit="title innerHTML">{{{?? title "Testimonials"}}}</h2>
+                {{/unless}}
+                {{#unless config.hideDescription}}
+                    <h3 class="lead mb-3 h3-all" edit="description innerHTML">{{{?? description "Hear what our users have to say"}}}</h3>
+                {{/unless}}
+            </div>
+        </div>
+
+        {{> sections/misc/testimonials/standard_tile
+                columnsClass=selectedColumns
+                columnSetting=selectedColumnSetting
+                useAltBackground=config.useAltBackground
+        }}
+    </div>
+</section>

@@ -1,0 +1,36 @@
+.posts-1 {
+	padding:3rem;
+
+	.row {
+		display: flex;
+		flex-wrap: wrap;
+	}
+
+	.col-12.col-lg-4 {
+		display: flex;
+	}
+
+	.card {
+		display: flex;
+		flex-direction: column;
+		width: 100%;
+		margin-bottom: 20px;
+
+		img {
+			aspect-ratio: 16/10;
+			object-fit: cover;
+		}
+
+		.card-body {
+			flex: 1 0 auto;
+			display: flex;
+			flex-direction: column;
+
+			.card-text {
+				flex-grow: 1;
+			}
+
+		}
+	}
+
+}

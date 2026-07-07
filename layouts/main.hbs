@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+{{let . site=(ancestor-of-type 'site')}}
+{{let . siteSettings=site.content.forms.site}}
+{{let . styleSettings=site.content.forms.styles}}
+{{let . isDarkMode=(eq styleSettings.darkMode 'yes')}}
+
+<html lang="en" {{{?: isDarkMode 'data-bs-theme="dark"' ''}}}>
+
+    <head>
+        {{> structure/htmlhead }}
+    </head>
+
+
+    <body class="page">
+
+        {{> nav/header }}
+
+        {{{body}}}
+
+        {{> nav/footer }}
+
+        {{> structure/alerts}}
+        {{> structure/modal }}
+        {{> structure/footerscripts }}
+
+    </body>
+
+</html>

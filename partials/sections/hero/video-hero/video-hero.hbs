@@ -1,0 +1,64 @@
+<header
+    class="
+        hero-1
+        spacing--{{?? config.spacing 'comfortable'}}
+        {{?: config.noTopSpacing 'spacing--no-top' ''}}
+        {{?: config.noBottomSpacing 'spacing--no-bottom' ''}}
+    "
+    no-edit="children"
+    allowadd="no"
+    allowdelete="no"
+>
+    <div class="container">
+        <div class="heading">
+            {{#unless config.hideTitle}}
+                <h1 class="display-1 h1Color-text h1-all" edit="title">
+                    {{{?? title 'Lorem ipsum dolor sit amet.'}}}
+                </h1>
+            {{/unless}}
+
+            {{#unless config.hideSubtitle}}
+                <h2 class="fs-3 h2Color-text h2FontFamily" edit="subtitle">
+                    {{{?? subtitle
+                          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas cursus in lectus ut dignissim.'}}}
+                </h2>
+            {{/unless}}
+
+            {{#unless config.hideButton}}
+                <div class="btns">
+                    <a edit="buttonLabel span, buttonUrl @href, buttonTitle @title, buttonClasses @class, buttonRel @rel, buttonTarget @target"
+                       class="{{?? buttonClasses 'btn buttonColor-bg'}}"
+                       href="{{?? buttonUrl '#'}}"
+                       title="{{?? buttonTitle ''}}"
+                       target="{{buttonTarget}}" rel="{{buttonRel}}"
+                       role="button"
+                    >
+                        <span>{{?? buttonLabel 'Read More'}}</span>
+                        <b no-edit>›</b>
+                    </a>
+
+                </div>
+            {{/unless}}
+        </div>
+
+        {{#unless config.hideVideo}}
+            <div class="frame mx-auto">
+                <video edit="videoSrc @src, posterSrc @poster"
+                       loading="lazy"
+                       muted loop controls
+                       src="{{?? videoSrc '/assets/video/particles.mp4'}}"
+                       poster="{{?? posterSrc '/assets/video/particle-poster.jpg'}}"
+                       data-image-hint="width=1024"
+                ></video>
+            </div>
+        {{/unless}}
+    </div>
+
+    <div class="overlay">
+    </div>
+
+    <div class="background-container">
+        <img src="/assets/img/background.svg" data-image-hint="width=1920" alt="Hero background" loading="lazy">
+    </div>
+
+</header>

@@ -1,0 +1,20 @@
+{
+    "name": "Belt",
+    "enableConfig": true,
+    "priority": 10,
+
+    "loaders": {
+        "children": {
+            "loader": "pages",
+            "params": {
+                "basePageId": "{{page.id}}",
+                "sort": "{{?? config.sort '-publishDate'}}",
+                "allResults": "{{?: (eq config.limit 0) 'true' 'false'}}",
+                "withContent": true,
+                "deep": "{{?: (equals config.searchType 'all') 'true' 'false'}}",
+                "limit": "{{?? config.limit 1000}}",
+                "filter": "{{mode}}.forms.general.hideInLists != true"
+            }
+        }
+    }
+}

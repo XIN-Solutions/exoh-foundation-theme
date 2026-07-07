@@ -1,0 +1,36 @@
+{{let .
+      localColumnsClass=(?? columnsClass 'col-12 col-md-6 col-lg-4')
+      localColumnSetting=(?? columnSetting 'four')
+}}
+
+<div class="row justify-content-center">
+    {{#*inline "teamItemStyle4"}}
+        <div class="{{localColumnsClass}} mb-4">
+            <div class="row">
+                <div class="col-md-12">
+                    <img alt="{{imageAlt}}" src="{{imageSrc}}" data-image-hint="width=512" class="img-fluid ratio-1-1" loading="lazy" edit="{{imageEdit}}">
+                </div>
+                <div class="col-md-12">
+                    <div class="px-4">
+                        <h5 class="mt-4 mb-0" edit="{{nameEdit}}">{{{name}}}</h5>
+                        <h6 class="text-muted mb-3" edit="{{roleEdit}}">{{{role}}}</h6>
+                        <p class="mt-3" edit="{{descriptionEdit}}">{{{description}}}</p>
+                       
+                    </div>
+                </div>
+            </div>
+        </div>
+    {{/inline}}
+
+    {{> teamItemStyle4 imageSrc=(?? member1ImageSrc '/assets/img/empty.png') imageAlt=member1ImageAlt imageEdit='member1ImageSrc @src, member1ImageAlt @alt' name=(?? member1Name 'John Doe') nameEdit='member1Name innerHTML' role=(?? member1Role 'CSO - Financial') roleEdit='member1Role innerHTML' description=(?? member1Description 'We are a group of professionals dedicated to their work') descriptionEdit='member1Description innerHTML' socialHtml=member1SocialHtml socialEdit='member1SocialHtml innerHTML'}}
+    {{#unless (eq localColumnSetting 'one')}}
+        {{> teamItemStyle4 imageSrc=(?? member2ImageSrc '/assets/img/empty.png') imageAlt=member2ImageAlt imageEdit='member2ImageSrc @src, member2ImageAlt @alt' name=(?? member2Name 'John Doe') nameEdit='member2Name innerHTML' role=(?? member2Role 'CSO - Financial') roleEdit='member2Role innerHTML' description=(?? member2Description 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas cursus in lectus ut dignissim.') descriptionEdit='member2Description innerHTML' socialHtml=member2SocialHtml socialEdit='member2SocialHtml innerHTML'}}
+    {{/unless}}
+    {{#if (eq localColumnSetting 'three')}}
+        {{> teamItemStyle4 imageSrc=(?? member3ImageSrc '/assets/img/empty.png') imageAlt=member3ImageAlt imageEdit='member3ImageSrc @src, member3ImageAlt @alt' name=(?? member3Name 'John Doe') nameEdit='member3Name innerHTML' role=(?? member3Role 'CSO - Financial') roleEdit='member3Role innerHTML' description=(?? member3Description 'Phasellus ullamcorper, dui vitae ullamcorper rutrum.') descriptionEdit='member3Description innerHTML' socialHtml=member3SocialHtml socialEdit='member3SocialHtml innerHTML'}}
+    {{/if}}
+    {{#if (eq localColumnSetting 'four')}}
+        {{> teamItemStyle4 imageSrc=(?? member3ImageSrc '/assets/img/empty.png') imageAlt=member3ImageAlt imageEdit='member3ImageSrc @src, member3ImageAlt @alt' name=(?? member3Name 'John Doe') nameEdit='member3Name innerHTML' role=(?? member3Role 'CSO - Financial') roleEdit='member3Role innerHTML' description=(?? member3Description 'Phasellus ullamcorper, dui vitae ullamcorper rutrum.') descriptionEdit='member3Description innerHTML' socialHtml=member3SocialHtml socialEdit='member3SocialHtml innerHTML'}}
+        {{> teamItemStyle4 imageSrc=(?? member4ImageSrc '/assets/img/empty.png') imageAlt=member4ImageAlt imageEdit='member4ImageSrc @src, member4ImageAlt @alt' name=(?? member4Name 'John Doe') nameEdit='member4Name innerHTML' role=(?? member4Role 'CSO - Financial') roleEdit='member4Role innerHTML' description=(?? member4Description 'Phasellus ullamcorper, dui vitae ullamcorper rutrum.') descriptionEdit='member4Description innerHTML' socialHtml=member4SocialHtml socialEdit='member4SocialHtml innerHTML'}}
+    {{/if}}
+</div>

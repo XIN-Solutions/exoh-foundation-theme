@@ -1,0 +1,26 @@
+<form id="showcase3ConfigForm" class="config-form"
+      x-data="componentDialog({
+            defaultConfig: {
+                styleVariant: 'standard',
+                useAltBackground: false,
+                spacing: 'comfortable',
+                noTopSpacing: false,
+                noBottomSpacing: false
+            }
+      })"
+      @set="setConfig"
+      @get="getConfig"
+>
+    <ul class="nav nav-tabs" role="tablist">
+        {{!--
+            <li class="nav-item">
+                <a class="nav-link active" data-bs-toggle="tab" href="#showcase3-component" role="tab">Component</a>
+            </li>
+        --}}
+        {{> common/dialogs/basic_nav active=true }}
+    </ul>
+
+    <div class="tab-content tab-content--withBorder">
+        {{> common/dialogs/basic_content active=true}}
+    </div>
+</form>

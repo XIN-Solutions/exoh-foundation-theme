@@ -1,0 +1,39 @@
+{
+    "name": "Testimonials",
+    "enableConfig": true,
+    "defaults": {
+        "config": {
+            "styleVariant": "style1",
+            "columns": "four",
+            "hideTitle": false,
+            "hideDescription": false,
+            "spacing": "comfortable"
+        },
+        "title": "Some of our users",
+        "description": "Hear what our users have to say",
+        "testimonial1Text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam eu sem tempor, varius quam at, luctus dui.",
+        "testimonial1Author": "John Doe",
+        "testimonial1Role": "Company Inc.",
+        "testimonial1ImageSrc": "/assets/img/empty.png",
+        "testimonial1ImageAlt": "team",
+        "testimonial1QuoteSvg": "",
+        "testimonial2Text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam eu sem tempor, varius quam at, luctus dui.",
+        "testimonial2Author": "Jane Doe",
+        "testimonial2Role": "Company Inc.",
+        "testimonial2ImageSrc": "/assets/img/empty.png",
+        "testimonial2ImageAlt": "team",
+        "testimonial2QuoteSvg": "",
+        "testimonial3Text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam eu sem tempor, varius quam at, luctus dui.",
+        "testimonial3Author": "John Doe",
+        "testimonial3Role": "Company Inc.",
+        "testimonial3ImageSrc": "/assets/img/empty.png",
+        "testimonial3ImageAlt": "team",
+        "testimonial3QuoteSvg": "",
+        "testimonial4Text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam eu sem tempor, varius quam at, luctus dui.",
+        "testimonial4Author": "Jane Doe",
+        "testimonial4Role": "Company Inc.",
+        "testimonial4ImageSrc": "/assets/img/empty.png",
+        "testimonial4ImageAlt": "team",
+        "testimonial4QuoteSvg": ""
+    }
+}

@@ -1,0 +1,210 @@
+{{let .
+      isThreeColumns=(eq (?? config.columns "three") "three")
+      isFourColumns=(eq config.columns "four")
+      isImageBelow=(eq config.imagePosition "below")
+}}
+
+<section
+    class="
+        info-tiles info-tiles bg-alternate
+        {{?: isImageBelow 'info-tiles--image-below' ''}}
+        {{?: config.useAltBackground 'bg--alternate' ''}}
+        spacing--{{?? config.spacing 'comfortable'}}
+        {{?: config.noTopSpacing 'spacing--no-top' ''}}
+        {{?: config.noBottomSpacing 'spacing--no-bottom' ''}}
+    "
+    no-edit="children"
+    allowadd="no"
+    allowdelete="no"
+>
+    <div class="container">
+        {{#unless config.hideTitle}}
+            <div class="row text-center">
+                <div class="col-12">
+                    <h2 edit="title">{{{?? title 'Lorem ipsum dolor sit amet.'}}}</h2>
+                </div>
+            </div>
+        {{/unless}}
+
+        <div class="row g-4 {{?: config.centerTileText 'text-center' 'text-start'}} justify-content-center">
+            <div class="col-12 {{#if isThreeColumns}}col-md-6 col-lg-4{{else}}col-sm-6 col-md-6 col-lg-3{{/if}}">
+                <div>
+                    {{#unless isImageBelow}}
+                        <img
+                            edit="tile1ImageSrc @src, tile1ImageId @id, tile1ImageAlt @alt"
+                            {{#if tile1ImageId}}id="{{tile1ImageId}}"{{/if}}
+                            alt="{{?? tile1ImageAlt ''}}"
+                            src="{{?? tile1ImageSrc '/assets/img/empty.png'}}"
+                            loading="lazy"
+                            class="img-fluid"
+                            data-image-hint="width=512"
+                        >
+                    {{/unless}}
+                    <h3 edit="tile1Title" class="{{#unless isImageBelow}}mt-4{{/unless}}">{{{?? tile1Title 'Cras felis nunc'}}}</h3>
+                    <p class="text-muted mt-2 {{#if isImageBelow}}mb-0{{else}}mb-4{{/if}} paragraphColor-text fw-300" edit="tile1Description">
+                        {{{?? tile1Description 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas cursus in lectus ut dignissim.'}}}
+                    </p>
+                    {{#if isImageBelow}}
+                        <img
+                            edit="tile1ImageSrc @src, tile1ImageId @id, tile1ImageAlt @alt"
+                            {{#if tile1ImageId}}id="{{tile1ImageId}}"{{/if}}
+                            alt="{{?? tile1ImageAlt ''}}"
+                            src="{{?? tile1ImageSrc '/assets/img/empty.png'}}"
+                            loading="lazy"
+                            class="img-fluid mt-4"
+                            data-image-hint="width=512"
+                        >
+                    {{/if}}
+                    {{#unless config.hideCta}}
+                        <a
+                            class="btn buttonColor-bg d-inline-block{{#if isImageBelow}} mt-4{{/if}}"
+                            edit="tile1LinkText span, tile1LinkUrl @href, tile1LinkTarget @target, tile1LinkRel @rel"
+                            href="{{?? tile1LinkUrl '#'}}"
+                            {{#if tile1LinkTarget}}target="{{tile1LinkTarget}}"{{/if}}
+                            {{#if tile1LinkRel}}rel="{{tile1LinkRel}}"{{/if}}
+                            role="button"
+                        >
+                            <span>{{{?? tile1LinkText 'Learn More'}}}</span>
+                            <i no-edit class="la la-long-arrow-alt-right ms-1"></i>
+                        </a>
+                    {{/unless}}
+                </div>
+            </div>
+
+            <div class="col-12 {{#if isThreeColumns}}col-md-6 col-lg-4{{else}}col-sm-6 col-md-6 col-lg-3{{/if}}">
+                <div>
+                    {{#unless isImageBelow}}
+                        <img
+                            edit="tile2ImageSrc @src, tile2ImageId @id, tile2ImageAlt @alt"
+                            {{#if tile2ImageId}}id="{{tile2ImageId}}"{{/if}}
+                            alt="{{?? tile2ImageAlt ''}}"
+                            src="{{?? tile2ImageSrc '/assets/img/empty.png'}}"
+                            loading="lazy"
+                            class="img-fluid"
+                            data-image-hint="width=512"
+                        >
+                    {{/unless}}
+                    <h3 class="{{#unless isImageBelow}}mt-4{{/unless}}" edit="tile2Title">{{{?? tile2Title 'Cras felis nunc'}}}</h3>
+                    <p class="text-muted mt-2 {{#if isImageBelow}}mb-0{{else}}mb-4{{/if}} paragraphColor-text fw-300" edit="tile2Description">
+                        {{{?? tile2Description 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas cursus in lectus ut dignissim.'}}}
+                    </p>
+                    {{#if isImageBelow}}
+                        <img
+                            edit="tile2ImageSrc @src, tile2ImageId @id, tile2ImageAlt @alt"
+                            {{#if tile2ImageId}}id="{{tile2ImageId}}"{{/if}}
+                            alt="{{?? tile2ImageAlt ''}}"
+                            src="{{?? tile2ImageSrc '/assets/img/empty.png'}}"
+                            loading="lazy"
+                            class="img-fluid mt-4"
+                            data-image-hint="width=512"
+                        >
+                    {{/if}}
+                    {{#unless config.hideCta}}
+                        <a
+                            class="btn buttonColor-bg d-inline-block{{#if isImageBelow}} mt-4{{/if}}"
+                            edit="tile2LinkText span, tile2LinkUrl @href, tile2LinkTarget @target, tile2LinkRel @rel"
+                            href="{{?? tile2LinkUrl '#'}}"
+                            {{#if tile2LinkTarget}}target="{{tile2LinkTarget}}"{{/if}}
+                            {{#if tile2LinkRel}}rel="{{tile2LinkRel}}"{{/if}}
+                            role="button"
+                        >
+                            <span>{{{?? tile2LinkText 'Learn More'}}}</span>
+                            <i no-edit class="la la-long-arrow-alt-right ms-1"></i>
+                        </a>
+                    {{/unless}}
+                </div>
+            </div>
+
+            <div class="col-12 {{#if isThreeColumns}}col-md-6 col-lg-4{{else}}col-sm-6 col-md-6 col-lg-3{{/if}}">
+                <div>
+                    {{#unless isImageBelow}}
+                        <img
+                            edit="tile3ImageSrc @src, tile3ImageId @id, tile3ImageAlt @alt"
+                            {{#if tile3ImageId}}id="{{tile3ImageId}}"{{/if}}
+                            alt="{{?? tile3ImageAlt ''}}"
+                            src="{{?? tile3ImageSrc '/assets/img/empty.png'}}"
+                            loading="lazy"
+                            class="img-fluid"
+                            data-image-hint="width=512"
+                        >
+                    {{/unless}}
+                    <h3 class="{{#unless isImageBelow}}mt-4{{/unless}}" edit="tile3Title">{{{?? tile3Title 'Cras felis nunc'}}}</h3>
+                    <p class="text-muted mt-2 {{#if isImageBelow}}mb-0{{else}}mb-4{{/if}} paragraphColor-text fw-300" edit="tile3Description">
+                        {{{?? tile3Description 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas cursus in lectus ut dignissim.'}}}
+                    </p>
+                    {{#if isImageBelow}}
+                        <img
+                            edit="tile3ImageSrc @src, tile3ImageId @id, tile3ImageAlt @alt"
+                            {{#if tile3ImageId}}id="{{tile3ImageId}}"{{/if}}
+                            alt="{{?? tile3ImageAlt ''}}"
+                            src="{{?? tile3ImageSrc '/assets/img/empty.png'}}"
+                            loading="lazy"
+                            class="img-fluid mt-4"
+                            data-image-hint="width=512"
+                        >
+                    {{/if}}
+                    {{#unless config.hideCta}}
+                        <a
+                            class="btn buttonColor-bg d-inline-block{{#if isImageBelow}} mt-4{{/if}}"
+                            edit="tile3LinkText span, tile3LinkUrl @href, tile3LinkTarget @target, tile3LinkRel @rel"
+                            href="{{?? tile3LinkUrl '#'}}"
+                            {{#if tile3LinkTarget}}target="{{tile3LinkTarget}}"{{/if}}
+                            {{#if tile3LinkRel}}rel="{{tile3LinkRel}}"{{/if}}
+                            role="button"
+                        >
+                            <span>{{{?? tile3LinkText 'Learn More'}}}</span>
+                            <i no-edit class="la la-long-arrow-alt-right ms-1"></i>
+                        </a>
+                    {{/unless}}
+                </div>
+            </div>
+
+            {{#if isFourColumns}}
+                <div class="col-12 col-sm-6 col-md-6 col-lg-3">
+                    <div>
+                        {{#unless isImageBelow}}
+                            <img
+                                edit="tile4ImageSrc @src, tile4ImageId @id, tile4ImageAlt @alt"
+                                {{#if tile4ImageId}}id="{{tile4ImageId}}"{{/if}}
+                                alt="{{?? tile4ImageAlt ''}}"
+                                src="{{?? tile4ImageSrc '/assets/img/empty.png'}}"
+                                loading="lazy"
+                                class="img-fluid"
+                                data-image-hint="width=512"
+                            >
+                        {{/unless}}
+                        <h3 class="{{#unless isImageBelow}}mt-4{{/unless}}" edit="tile4Title">{{{?? tile4Title 'Cras felis nunc'}}}</h3>
+                        <p class="text-muted mt-2 {{#if isImageBelow}}mb-0{{else}}mb-4{{/if}} paragraphColor-text fw-300" edit="tile4Description">
+                            {{{?? tile4Description 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas cursus in lectus ut dignissim.'}}}
+                        </p>
+                        {{#if isImageBelow}}
+                            <img
+                                edit="tile4ImageSrc @src, tile4ImageId @id, tile4ImageAlt @alt"
+                                {{#if tile4ImageId}}id="{{tile4ImageId}}"{{/if}}
+                                alt="{{?? tile4ImageAlt ''}}"
+                                src="{{?? tile4ImageSrc '/assets/img/empty.png'}}"
+                                loading="lazy"
+                                class="img-fluid mt-4"
+                                data-image-hint="width=512"
+                            >
+                        {{/if}}
+                        {{#unless config.hideCta}}
+                            <a
+                                class="btn buttonColor-bg d-inline-block{{#if isImageBelow}} mt-4{{/if}}"
+                                edit="tile4LinkText span, tile4LinkUrl @href, tile4LinkTarget @target, tile4LinkRel @rel"
+                                href="{{?? tile4LinkUrl '#'}}"
+                                {{#if tile4LinkTarget}}target="{{tile4LinkTarget}}"{{/if}}
+                                {{#if tile4LinkRel}}rel="{{tile4LinkRel}}"{{/if}}
+                                role="button"
+                            >
+                                <span>{{{?? tile4LinkText 'Learn More'}}}</span>
+                                <i no-edit class="la la-long-arrow-alt-right ms-1"></i>
+                            </a>
+                        {{/unless}}
+                    </div>
+                </div>
+            {{/if}}
+        </div>
+    </div>
+
+</section>

@@ -1,0 +1,372 @@
+{{let . styles=content.forms.styles}}
+/*
+    Theme palette settings:
+
+    {{{json styles}}}
+*/
+
+{{#unless (eq styles.themeStylingEnabled 'no')}}
+
+:root,
+[data-bs-theme="dark"] {
+    --theme-primaryColor: {{{?? styles.primaryColor 'initial'}}};
+    --theme-secondaryColor: {{{?? styles.secondaryColor 'initial'}}};
+    --theme-tertiaryColor: {{{?? styles.tertiaryColor 'initial'}}};
+    --theme-backgroundColor: {{{?? styles.backgroundColor 'initial'}}};
+    --theme-altBackgroundColor: {{{?? styles.altBackgroundColor 'initial'}}};
+    --theme-h1Color: {{{?? styles.h1Color 'initial'}}};
+    --theme-h2Color: {{{?? styles.h2Color 'initial'}}};
+    --theme-h3Color: {{{?? styles.h3Color 'initial'}}};
+    --theme-h4Color: {{{?? styles.h4Color 'initial'}}};
+    --theme-h5Color: {{{?? styles.h5Color 'initial'}}};
+    --theme-paragraphColor: {{{?? styles.paragraphColor 'initial'}}};
+
+    --theme-h1FontFamily: {{{?? styles.h1FontFamily "'Open Sans', sans-serif"}}};
+    --theme-h1FontSize: {{{?? styles.h1FontSize '48px'}}};
+    --theme-h1FontWeight: {{{?? styles.h1FontWeight '700'}}};
+    --theme-h2FontFamily: {{{?? styles.h2FontFamily "'Open Sans', sans-serif"}}};
+    --theme-h2FontSize: {{{?? styles.h2FontSize '36px'}}};
+    --theme-h2FontWeight: {{{?? styles.h2FontWeight '600'}}};
+    --theme-h3FontFamily: {{{?? styles.h3FontFamily "'Open Sans', sans-serif"}}};
+    --theme-h3FontSize: {{{?? styles.h3FontSize '28px'}}};
+    --theme-h3FontWeight: {{{?? styles.h3FontWeight '600'}}};
+    --theme-h4FontFamily: {{{?? styles.h4FontFamily "'Open Sans', sans-serif"}}};
+    --theme-h4FontSize: {{{?? styles.h4FontSize '20px'}}};
+    --theme-h4FontWeight: {{{?? styles.h4FontWeight '500'}}};
+    --theme-h5FontFamily: {{{?? styles.h5FontFamily "'Open Sans', sans-serif"}}};
+    --theme-h5FontSize: {{{?? styles.h5FontSize '16px'}}};
+    --theme-h5FontWeight: {{{?? styles.h5FontWeight '500'}}};
+    --theme-paragraphFontFamily: {{{?? styles.paragraphFontFamily "'Open Sans', sans-serif"}}};
+    --theme-paragraphFontSize: {{{?? styles.paragraphFontSize '16px'}}};
+    --theme-paragraphFontWeight: {{{?? styles.paragraphFontWeight '400'}}};
+
+    --theme-cardBorderRadius: {{#if (eq styles.cardBorderRadius 'none')}}0{{else if (eq styles.cardBorderRadius 'sm')}}0.25rem{{else if (eq styles.cardBorderRadius 'lg')}}0.5rem{{else if (eq styles.cardBorderRadius 'xl')}}1rem{{else if (eq styles.cardBorderRadius 'pill')}}50rem{{else}}0.375rem{{/if}};
+    --theme-buttonBorderRadius: {{#if (eq styles.buttonBorderRadius 'none')}}0{{else if (eq styles.buttonBorderRadius 'sm')}}0.25rem{{else if (eq styles.buttonBorderRadius 'lg')}}0.5rem{{else if (eq styles.buttonBorderRadius 'xl')}}1rem{{else if (eq styles.buttonBorderRadius 'pill')}}50rem{{else}}0.375rem{{/if}};
+    --theme-imageBorderRadius: {{#if (eq styles.imageBorderRadius 'none')}}0{{else if (eq styles.imageBorderRadius 'sm')}}0.25rem{{else if (eq styles.imageBorderRadius 'lg')}}0.5rem{{else if (eq styles.imageBorderRadius 'xl')}}1rem{{else if (eq styles.imageBorderRadius 'pill')}}50rem{{else}}0.375rem{{/if}};
+    --theme-cardShadow: {{#if (eq styles.cardShadow 'none')}}none{{else if (eq styles.cardShadow 'default')}}0 0.5rem 1rem rgba(0, 0, 0, 0.15){{else if (eq styles.cardShadow 'lg')}}0 1rem 3rem rgba(0, 0, 0, 0.175){{else if (eq styles.cardShadow 'wide')}}0 0.35rem 1.25rem rgba(0, 0, 0, 0.1), 0 1.25rem 2.5rem rgba(0, 0, 0, 0.08){{else}}0 0.125rem 0.25rem rgba(0, 0, 0, 0.075){{/if}};
+    --theme-buttonColor: {{#if (eq styles.buttonColorSource 'primary')}}var(--theme-primaryColor){{else if (eq styles.buttonColorSource 'secondary')}}var(--theme-secondaryColor){{else if (eq styles.buttonColorSource 'custom')}}{{{?? styles.buttonColorCustom '#007bff'}}}{{else}}var(--theme-tertiaryColor){{/if}};
+
+    {{#if styles.primaryColor}}
+    --bs-primary: var(--theme-primaryColor);
+    --bs-link-color: var(--theme-primaryColor);
+    --bs-link-hover-color: var(--theme-primaryColor);
+    {{/if}}
+    {{#if styles.secondaryColor}}
+    --bs-secondary: var(--theme-secondaryColor);
+    --bs-secondary-color: var(--theme-secondaryColor);
+    {{/if}}
+    {{#if styles.tertiaryColor}}
+    --bs-info: var(--theme-tertiaryColor);
+    {{/if}}
+    {{#if styles.backgroundColor}}
+    --bs-body-bg: var(--theme-backgroundColor);
+    {{/if}}
+    {{#if styles.paragraphColor}}
+    --bs-body-color: var(--theme-paragraphColor);
+    {{/if}}
+    --bs-border-radius: var(--theme-buttonBorderRadius);
+    --bs-border-radius-lg: var(--theme-cardBorderRadius);
+    --bs-btn-border-radius: var(--theme-buttonBorderRadius);
+    {{#unless (eq styles.menuStylingEnabled 'no')}}
+    {{#if styles.menuItemColor}}
+    --theme-menuItemColor: {{{styles.menuItemColor}}};
+    {{/if}}
+    {{#if styles.menuCtaColor}}
+    --theme-menuCtaColor: {{{styles.menuCtaColor}}};
+    {{/if}}
+    {{#if styles.menuCtaTextColor}}
+    --theme-menuCtaTextColor: {{{styles.menuCtaTextColor}}};
+    {{/if}}
+    {{#if styles.menuFontFamily}}
+    --theme-menuFontFamily: {{{styles.menuFontFamily}}};
+    {{/if}}
+    {{#if styles.menuFontSize}}
+    --theme-menuFontSize: {{{styles.menuFontSize}}};
+    {{/if}}
+    {{#if styles.menuFontWeight}}
+    --theme-menuFontWeight: {{{styles.menuFontWeight}}};
+    {{/if}}
+    {{/unless}}
+}
+
+body {
+    background-color: var(--theme-backgroundColor);
+    color: var(--theme-paragraphColor);
+    font-family: var(--theme-paragraphFontFamily);
+    font-size: var(--theme-paragraphFontSize);
+    font-weight: var(--theme-paragraphFontWeight);
+}
+
+.bg--alternate {
+    background-color: var(--theme-altBackgroundColor);
+}
+
+.p-all {
+    font-family: var(--theme-paragraphFontFamily) !important;
+    font-size: var(--theme-paragraphFontSize) !important;
+    font-weight: var(--theme-paragraphFontWeight) !important;
+    color: var(--theme-paragraphColor);
+}
+
+section h1, .h1-all {
+    color: var(--theme-h1Color);
+    font-family: var(--theme-h1FontFamily) !important;
+    font-size: var(--theme-h1FontSize) !important;
+    font-weight: var(--theme-h1FontWeight) !important;
+}
+
+section h2, .h2-all {
+    color: var(--theme-h2Color);
+    font-family: var(--theme-h2FontFamily) !important;
+    font-size: var(--theme-h2FontSize) !important;
+    font-weight: var(--theme-h2FontWeight) !important;
+}
+
+section h3, .h3-all {
+    color: var(--theme-h3Color);
+    font-family: var(--theme-h3FontFamily) !important;
+    font-size: var(--theme-h3FontSize) !important;
+    font-weight: var(--theme-h3FontWeight) !important;
+}
+
+section h4, .h4-all {
+    color: var(--theme-h4Color);
+    font-family: var(--theme-h4FontFamily) !important;
+    font-size: var(--theme-h4FontSize) !important;
+    font-weight: var(--theme-h4FontWeight) !important;
+}
+
+section h5, .h5-all {
+    color: var(--theme-h5Color);
+    font-family: var(--theme-h5FontFamily) !important;
+    font-size: var(--theme-h5FontSize) !important;
+    font-weight: var(--theme-h5FontWeight) !important;
+}
+
+.hero-1 h1,
+.hero-1 h2,
+.hero-3 h1.heading,
+.hero-3 h2,
+.hero-5 h1,
+.hero-5 p.lead {
+    color: var(--bs-light);
+}
+
+.btn {
+    border-radius: var(--theme-buttonBorderRadius);
+}
+
+.btn.buttonColor-bg {
+    color: #fff;
+    background-color: var(--theme-buttonColor);
+    border-color: var(--theme-buttonColor);
+}
+
+.btn.buttonColor-bg:hover,
+.btn.buttonColor-bg:focus-visible {
+    color: #fff;
+    background-color: var(--theme-buttonColor);
+    border-color: var(--theme-buttonColor);
+    filter: brightness(0.92);
+}
+
+{{#*inline "themeSolidButton"}}
+.btn-{{variant}} {
+    --bs-btn-color: {{textColor}};
+    --bs-btn-bg: var(--theme-{{colorKey}});
+    --bs-btn-border-color: var(--theme-{{colorKey}});
+    --bs-btn-hover-color: {{textColor}};
+    --bs-btn-hover-bg: var(--theme-{{colorKey}});
+    --bs-btn-hover-border-color: var(--theme-{{colorKey}});
+    --bs-btn-active-color: {{textColor}};
+    --bs-btn-active-bg: var(--theme-{{colorKey}});
+    --bs-btn-active-border-color: var(--theme-{{colorKey}});
+    --bs-btn-disabled-color: {{textColor}};
+    --bs-btn-disabled-bg: var(--theme-{{colorKey}});
+    --bs-btn-disabled-border-color: var(--theme-{{colorKey}});
+}
+{{/inline}}
+
+{{#*inline "themeOutlineButton"}}
+.btn-outline-{{variant}} {
+    --bs-btn-color: var(--theme-{{colorKey}});
+    --bs-btn-bg: transparent;
+    --bs-btn-border-color: var(--theme-{{colorKey}});
+    --bs-btn-hover-color: {{hoverTextColor}};
+    --bs-btn-hover-bg: var(--theme-{{colorKey}});
+    --bs-btn-hover-border-color: var(--theme-{{colorKey}});
+    --bs-btn-active-color: {{hoverTextColor}};
+    --bs-btn-active-bg: var(--theme-{{colorKey}});
+    --bs-btn-active-border-color: var(--theme-{{colorKey}});
+    --bs-btn-disabled-color: var(--theme-{{colorKey}});
+    --bs-btn-disabled-bg: transparent;
+    --bs-btn-disabled-border-color: var(--theme-{{colorKey}});
+}
+{{/inline}}
+
+{{#if styles.primaryColor}}
+
+    {{> themeSolidButton variant="primary" colorKey="primaryColor" textColor="#fff"}}
+    {{> themeOutlineButton variant="primary" colorKey="primaryColor" hoverTextColor="#fff"}}
+    {{> themeSolidButton variant="dark" colorKey="primaryColor" textColor="#fff"}}
+
+    [data-bs-theme="dark"] {
+        {{> themeSolidButton variant="primary" colorKey="primaryColor" textColor="#000"}}
+        {{> themeOutlineButton variant="primary" colorKey="primaryColor" hoverTextColor="#000"}}
+        {{> themeSolidButton variant="dark" colorKey="primaryColor" textColor="#000"}}
+    }
+{{/if}}
+
+{{#if styles.secondaryColor}}
+    {{> themeSolidButton variant="secondary" colorKey="secondaryColor" textColor="#fff"}}
+    {{> themeOutlineButton variant="secondary" colorKey="secondaryColor" hoverTextColor="#fff"}}
+{{/if}}
+
+{{#if styles.tertiaryColor}}
+{{> themeSolidButton variant="info" colorKey="tertiaryColor" textColor="#fff"}}
+{{> themeOutlineButton variant="info" colorKey="tertiaryColor" hoverTextColor="#fff"}}
+.btn-link {
+    --bs-btn-color: var(--theme-tertiaryColor);
+    --bs-btn-bg: transparent;
+    --bs-btn-border-color: transparent;
+    --bs-btn-hover-color: var(--theme-tertiaryColor);
+    --bs-btn-hover-bg: transparent;
+    --bs-btn-hover-border-color: transparent;
+    --bs-btn-active-color: var(--theme-tertiaryColor);
+    --bs-btn-active-border-color: transparent;
+    text-decoration: none;
+}
+{{/if}}
+
+.card,
+.testimonial,
+.showcase-3 .feature,
+.showcase-4 .feature,
+.showcase-5 .feature,
+.showcase-12 .feature {
+    border-radius: var(--theme-cardBorderRadius);
+    box-shadow: var(--theme-cardShadow);
+}
+
+section img:not(.rounded-circle),
+header img:not(.rounded-circle) {
+    border-radius: var(--theme-imageBorderRadius);
+}
+
+.background-container img {
+    border-radius: 0 !important;
+}
+
+{{#*inline "themeColorUtilities"}}
+.{{name}}-text { color: var(--theme-{{name}}) !important; }
+.{{name}}-bg { background-color: var(--theme-{{name}}) !important; }
+.{{name}}-border { border-color: var(--theme-{{name}}) !important; }
+
+.{{name}}-text-hover:hover,
+.{{name}}-text-hover:focus-visible { color: var(--theme-{{name}}) !important; }
+.{{name}}-bg-hover:hover,
+.{{name}}-bg-hover:focus-visible { background-color: var(--theme-{{name}}) !important; }
+.{{name}}-border-hover:hover,
+.{{name}}-border-hover:focus-visible { border-color: var(--theme-{{name}}) !important; }
+
+.{{name}}-text-active:active,
+.{{name}}-text-active.active { color: var(--theme-{{name}}) !important; }
+.{{name}}-bg-active:active,
+.{{name}}-bg-active.active { background-color: var(--theme-{{name}}) !important; }
+
+.{{name}}-text-focus:focus,
+.{{name}}-text-focus:focus-visible { color: var(--theme-{{name}}) !important; }
+.{{name}}-bg-focus:focus,
+.{{name}}-bg-focus:focus-visible { background-color: var(--theme-{{name}}) !important; }
+.{{name}}-border-focus:focus,
+.{{name}}-border-focus:focus-visible { border-color: var(--theme-{{name}}) !important; }
+{{/inline}}
+
+{{> themeColorUtilities name="primaryColor"}}
+{{> themeColorUtilities name="secondaryColor"}}
+{{> themeColorUtilities name="tertiaryColor"}}
+{{> themeColorUtilities name="backgroundColor"}}
+{{> themeColorUtilities name="altBackgroundColor"}}
+{{> themeColorUtilities name="h1Color"}}
+{{> themeColorUtilities name="h2Color"}}
+{{> themeColorUtilities name="h3Color"}}
+{{> themeColorUtilities name="h4Color"}}
+{{> themeColorUtilities name="h5Color"}}
+{{> themeColorUtilities name="paragraphColor"}}
+
+{{#*inline "themeTypographyUtilities"}}
+.{{prefix}}FontFamily { font-family: var(--theme-{{prefix}}FontFamily) !important; }
+.{{prefix}}FontSize { font-size: var(--theme-{{prefix}}FontSize) !important; }
+.{{prefix}}FontWeight { font-weight: var(--theme-{{prefix}}FontWeight) !important; }
+{{/inline}}
+
+{{> themeTypographyUtilities prefix="h1"}}
+{{> themeTypographyUtilities prefix="h2"}}
+{{> themeTypographyUtilities prefix="h3"}}
+{{> themeTypographyUtilities prefix="h4"}}
+{{> themeTypographyUtilities prefix="h5"}}
+{{> themeTypographyUtilities prefix="paragraph"}}
+
+{{#unless (eq styles.menuStylingEnabled 'no')}}
+.navigation-1 .navbar .navbar-nav a.nav-link {
+    {{#if styles.menuItemColor}}
+    color: var(--theme-menuItemColor);
+    {{/if}}
+    {{#if styles.menuFontFamily}}
+    font-family: var(--theme-menuFontFamily);
+    {{/if}}
+    {{#if styles.menuFontSize}}
+    font-size: var(--theme-menuFontSize);
+    {{/if}}
+    {{#if styles.menuFontWeight}}
+    font-weight: var(--theme-menuFontWeight);
+    {{/if}}
+}
+
+{{#if styles.menuItemColor}}
+.navigation-1 .navbar .navbar-nav a.nav-link:hover,
+.navigation-1 .navbar .navbar-nav a.nav-link:focus-visible {
+    color: var(--theme-menuItemColor);
+    opacity: 0.85;
+}
+{{/if}}
+
+{{#if (or styles.menuCtaColor styles.menuCtaTextColor styles.menuFontFamily styles.menuFontSize styles.menuFontWeight)}}
+.navigation-1 .btn.btn-primary {
+    {{#if styles.menuFontFamily}}
+    font-family: var(--theme-menuFontFamily);
+    {{/if}}
+    {{#if styles.menuFontSize}}
+    font-size: var(--theme-menuFontSize);
+    {{/if}}
+    {{#if styles.menuFontWeight}}
+    font-weight: var(--theme-menuFontWeight);
+    {{/if}}
+    {{#if styles.menuCtaTextColor}}
+    --bs-btn-color: var(--theme-menuCtaTextColor);
+    --bs-btn-hover-color: var(--theme-menuCtaTextColor);
+    --bs-btn-active-color: var(--theme-menuCtaTextColor);
+    --bs-btn-disabled-color: var(--theme-menuCtaTextColor);
+    {{else}}
+    {{#if styles.menuCtaColor}}
+    --bs-btn-color: #fff;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-active-color: #fff;
+    --bs-btn-disabled-color: #fff;
+    {{/if}}
+    {{/if}}
+    {{#if styles.menuCtaColor}}
+    --bs-btn-bg: var(--theme-menuCtaColor);
+    --bs-btn-border-color: var(--theme-menuCtaColor);
+    --bs-btn-hover-bg: var(--theme-menuCtaColor);
+    --bs-btn-hover-border-color: var(--theme-menuCtaColor);
+    --bs-btn-active-bg: var(--theme-menuCtaColor);
+    --bs-btn-active-border-color: var(--theme-menuCtaColor);
+    --bs-btn-disabled-bg: var(--theme-menuCtaColor);
+    --bs-btn-disabled-border-color: var(--theme-menuCtaColor);
+    {{/if}}
+}
+{{/if}}
+{{/unless}}
+
+{{/unless}}

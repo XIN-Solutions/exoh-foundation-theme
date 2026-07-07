@@ -1,0 +1,112 @@
+<header
+    class="
+        hero-3
+        {{?: config.compact 'hero--compact' ''}}
+        spacing--{{?? config.spacing 'comfortable'}}
+        {{?: config.noTopSpacing 'spacing--no-top' ''}}
+        {{?: config.noBottomSpacing 'spacing--no-bottom' ''}}
+    "
+    no-edit="children"
+    allowadd="no"
+    allowdelete="no"
+>
+
+	<div class="container">
+		<div class="container--mobile-min-height">
+			<div class="row align-items-center justify-content-center text-center">
+				<div class="col-lg-12">
+
+                    {{#unless config.hideTitle}}
+                        <h1
+                            edit="title, titleId @id, titleClass @class"
+                            {{#if titleId}} id="{{titleId}}"{{/if}}
+                            class="{{?? titleClass 'heading mb-3 display-4 h1-all'}}"
+                            data-aos="fade-up" data-aos-delay="100"
+                        >
+                            {{?? title 'Insert title here'}}
+                        </h1>
+                    {{/unless}}
+
+                    {{#unless config.hideSubtitle}}
+                        <h2
+                            edit="description, descriptionId @id, descriptionClass @class"
+                            class="{{?? descriptionClass 'col-lg-8 mx-auto w-100 h2-all'}}"
+                            {{#if descriptionId}} id="{{descriptionId}}"{{/if}}
+                            data-aos="fade-up" data-aos-delay="100"
+                        >
+                            {{?? description 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas cursus in
+                            lectus ut dignissim.'}}
+                        </h2>
+                    {{/unless}}
+
+                    {{#unless config.hideButton}}
+                        <div class="buttons mt-4" data-aos="fade-up" data-aos-delay="300" no-edit>
+                            <a edit="
+                                    buttonUrl @href,
+                                    buttonId @id,
+                                    buttonClasses @class,
+                                    buttonTitle @title,
+                                    buttonTarget @target,
+                                    buttonLabel span
+                                "
+                               href="{{buttonUrl}}"
+                               {{#if buttonId}}id="{{buttonId}}"{{/if}}
+                               title="{{buttonTitle}}"
+                               target="{{buttonTarget}}"
+                               class="{{?? buttonClasses 'btn btn-primary'}}"
+                            >
+                                <span>{{{?? buttonLabel 'Read More'}}}</span>
+                                <b no-edit>›</b>
+                            </a>
+                        </div>
+                    {{/unless}}
+				</div>
+			</div>
+		</div>
+	</div>
+
+    {{#if config.setHeroSeparators}}
+        {{let . 
+            topIdName=(?: config.separatorDifferentTopBottom config.separatorTopId (concat config.separatorPairBase '_top'))
+            bottomIdName=(?: config.separatorDifferentTopBottom config.separatorBottomId (concat config.separatorPairBase '_bottom'))
+        }}
+        
+        {{#if topIdName}}
+            <div class="separator top {{?: config.reduceSeparator 'separator--reduced' ''}}">
+                {{> common/shapes/hero_separator_svgs
+                        border_type=topIdName
+                        fill='var(--bs-body-bg)'
+                }}
+            </div>
+        {{/if}}
+
+        {{#if bottomIdName}}
+            <div class="separator bottom {{?: config.reduceSeparator 'separator--reduced' ''}}">
+                {{> common/shapes/hero_separator_svgs
+                        border_type=bottomIdName
+                        fill='var(--bs-body-bg)'
+                }}
+            </div>
+        {{/if}}
+
+    {{/if}}
+
+	{{#unless config.hideOverlay}}
+        <div class="overlay" style="background-color: {{?? config.overlayColour '#000000'}}; opacity: {{?? config.overlayOpacity 0.7}}">
+        </div>
+	{{/unless}}
+
+    {{!-- show background container if background configured --}}
+    <div class="background-container">
+        {{#if config.backgroundVideo}}
+            <video playsinline loop muted autoplay
+                data-image-hint="width=1920" alt=""
+                src="{{config.backgroundVideo}}" 
+                poster="{{?? config.backgroundImage '/assets/img/empty.png'}}"
+            ></video>            
+        {{else if config.backgroundImage}}
+            <img src="{{?? config.backgroundImage '/assets/img/empty.png'}}" data-image-hint="width=1920" alt="">
+        {{/if}}
+    </div>
+
+</header>

@@ -1,0 +1,190 @@
+name: Promote Artifact to Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch to promote artifact from'
+        required: true
+        type: choice
+        options:
+          - main
+          - test
+
+jobs:
+  promote-to-release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ inputs.branch }}
+
+      - name: Find most recent artifact
+        id: find-artifact
+        run: |
+          BRANCH="${{ inputs.branch }}"
+          SANITIZED_BRANCH=$(echo "$BRANCH" | sed 's/[\/_]/-/g' | sed 's/[^a-zA-Z0-9._-]/-/g')
+          ARTIFACT_PREFIX="theme-${SANITIZED_BRANCH}-"
+          
+          echo "Looking for artifacts matching pattern: ${ARTIFACT_PREFIX}*"
+          
+          # Get the most recent successful workflow runs for this branch
+          RUNS_JSON=$(gh run list --branch "$BRANCH" --workflow=build-themes.yml --status=success --limit 50 --json databaseId,createdAt,headBranch,headSha)
+          
+          if [ -z "$RUNS_JSON" ] || [ "$RUNS_JSON" = "[]" ]; then
+            echo "Error: No successful workflow runs found for branch $BRANCH"
+            exit 1
+          fi
+          
+          # Find the most recent run with an artifact matching our pattern
+          ARTIFACT_NAME=""
+          RUN_ID=""
+          FULL_SHA=""
+          ARTIFACT_ID=""
+          ARTIFACT_DOWNLOAD_URL=""
+          
+          # Process runs in order (most recent first)
+          for run_id in $(echo "$RUNS_JSON" | jq -r '.[].databaseId'); do
+            echo "Checking run $run_id..."
+            
+            # Get artifacts for this run using GitHub API
+            ARTIFACTS_JSON=$(gh api "repos/${{ github.repository }}/actions/runs/${run_id}/artifacts" || echo "{\"artifacts\":[]}")
+            MATCHING_ARTIFACT_JSON=$(echo "$ARTIFACTS_JSON" | jq --arg prefix "$ARTIFACT_PREFIX" '[.artifacts[] | select(.name | startswith($prefix))] | first')
+            
+            if [ -n "$MATCHING_ARTIFACT_JSON" ] && [ "$MATCHING_ARTIFACT_JSON" != "null" ]; then
+              ARTIFACT_NAME=$(echo "$MATCHING_ARTIFACT_JSON" | jq -r '.name')
+              ARTIFACT_ID=$(echo "$MATCHING_ARTIFACT_JSON" | jq -r '.id')
+              ARTIFACT_DOWNLOAD_URL=$(echo "$MATCHING_ARTIFACT_JSON" | jq -r '.archive_download_url')
+              RUN_ID="$run_id"
+              
+              # Get the SHA from the run
+              FULL_SHA=$(echo "$RUNS_JSON" | jq -r --arg id "$run_id" '.[] | select(.databaseId == ($id | tonumber)) | .headSha')
+              
+              echo "Found artifact: $ARTIFACT_NAME (ID: $ARTIFACT_ID) from run $RUN_ID"
+              echo "SHA: $FULL_SHA"
+              echo "Download URL: $ARTIFACT_DOWNLOAD_URL"
+              break
+            fi
+          done
+          
+          if [ -z "$ARTIFACT_NAME" ]; then
+            echo "Error: No artifact found matching pattern ${ARTIFACT_PREFIX}* for branch $BRANCH"
+            echo "Available runs:"
+            echo "$RUNS_JSON" | jq -r '.[] | "\(.databaseId) - \(.createdAt)"'
+            exit 1
+          fi
+          
+          echo "artifact_name=${ARTIFACT_NAME}" >> $GITHUB_OUTPUT
+          echo "artifact_id=${ARTIFACT_ID}" >> $GITHUB_OUTPUT
+          echo "artifact_download_url=${ARTIFACT_DOWNLOAD_URL}" >> $GITHUB_OUTPUT
+          echo "run_id=${RUN_ID}" >> $GITHUB_OUTPUT
+          
+          if [ -n "$FULL_SHA" ]; then
+            SHA_SHORT=$(echo "$FULL_SHA" | cut -c1-8)
+            echo "full_sha=${FULL_SHA}" >> $GITHUB_OUTPUT
+            echo "sha_short=${SHA_SHORT}" >> $GITHUB_OUTPUT
+          else
+            # Extract SHA from artifact name as fallback (format: theme-{branch}-{sha8})
+            SHA8=$(echo "$ARTIFACT_NAME" | sed "s/^${ARTIFACT_PREFIX}//")
+            echo "Warning: Could not determine full SHA from run, using ${SHA8}"
+            echo "full_sha=${SHA8}" >> $GITHUB_OUTPUT
+            echo "sha_short=${SHA8}" >> $GITHUB_OUTPUT
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download artifact
+        run: |
+          DOWNLOAD_URL="${{ steps.find-artifact.outputs.artifact_download_url }}"
+          ARTIFACT_NAME="${{ steps.find-artifact.outputs.artifact_name }}"
+          
+          if [ -z "$DOWNLOAD_URL" ]; then
+            echo "Error: No download URL found for artifact"
+            exit 1
+          fi
+          
+          echo "Downloading artifact from: $DOWNLOAD_URL"
+          curl -L -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+               -H "Accept: application/vnd.github+json" \
+               -o "artifact-download.zip" \
+               "$DOWNLOAD_URL"
+          
+          if [ ! -f "artifact-download.zip" ]; then
+            echo "Error: Failed to download artifact"
+            exit 1
+          fi
+          
+          echo "Artifact downloaded successfully"
+          ls -lh "artifact-download.zip"
+          
+          # Unzip the GitHub Actions artifact wrapper
+          echo "Extracting artifact..."
+          unzip -q "artifact-download.zip" -d extracted-artifact
+          rm "artifact-download.zip"
+          
+          # Create a clean zip file for the release
+          echo "Creating release zip..."
+          cd extracted-artifact
+          zip -r "../${ARTIFACT_NAME}.zip" . -x "*.git*" "*.github*" "*.sh" "gulp*" "package*" "node_modules*"
+          cd ..
+          
+          if [ ! -f "${ARTIFACT_NAME}.zip" ]; then
+            echo "Error: Failed to create release zip"
+            exit 1
+          fi
+          
+          echo "Release artifact created successfully: ${ARTIFACT_NAME}.zip"
+          ls -lh "${ARTIFACT_NAME}.zip"
+          
+          # Clean up extracted files
+          rm -rf extracted-artifact
+
+      - name: Determine release info
+        id: release-info
+        run: |
+          BRANCH="${{ inputs.branch }}"
+          ARTIFACT_NAME="${{ steps.find-artifact.outputs.artifact_name }}"
+          FULL_SHA="${{ steps.find-artifact.outputs.full_sha }}"
+          SHA_SHORT="${{ steps.find-artifact.outputs.sha_short }}"
+          
+          # Generate release tag (use branch name and timestamp)
+          RELEASE_TAG="release-${BRANCH}-$(date +%Y%m%d-%H%M%S)"
+          RELEASE_NAME="Release ${BRANCH} - ${SHA_SHORT}"
+          
+          echo "release_tag=${RELEASE_TAG}" >> $GITHUB_OUTPUT
+          echo "release_name=${RELEASE_NAME}" >> $GITHUB_OUTPUT
+          echo "artifact_file=${ARTIFACT_NAME}.zip" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ steps.release-info.outputs.release_tag }}
+          name: ${{ steps.release-info.outputs.release_name }}
+          body: |
+            Theme release for branch **${{ inputs.branch }}**
+            
+            - **Branch**: `${{ inputs.branch }}`
+            - **SHA**: `${{ steps.find-artifact.outputs.full_sha }}`
+            - **Artifact**: `${{ steps.find-artifact.outputs.artifact_name }}`
+            
+            This release was manually promoted from workflow artifact.
+          files: ${{ steps.release-info.outputs.artifact_file }}
+          draft: false
+          prerelease: false
+          generate_release_notes: true
+
+      - name: Output release information
+        run: |
+          echo "## Release Created" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Release**: [${{ steps.release-info.outputs.release_name }}](https://github.com/${{ github.repository }}/releases/tag/${{ steps.release-info.outputs.release_tag }})" >> $GITHUB_STEP_SUMMARY
+          echo "- **Tag**: \`${{ steps.release-info.outputs.release_tag }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "- **Artifact**: \`${{ steps.release-info.outputs.artifact_file }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "- **Source Branch**: \`${{ inputs.branch }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "- **SHA**: \`${{ steps.find-artifact.outputs.full_sha }}\`" >> $GITHUB_STEP_SUMMARY
+

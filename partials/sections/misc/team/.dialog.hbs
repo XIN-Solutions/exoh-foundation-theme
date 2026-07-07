@@ -1,0 +1,63 @@
+<form id="miscTeamConfigForm" class="config-form"
+      x-data="componentDialog({
+            defaultConfig: {
+                styleVariant: 'style3',
+                columns: 'four',
+                hideTitle: false,
+                hideDescription: false,
+                useAltBackground: false,
+                spacing: 'comfortable',
+                noTopSpacing: false,
+                noBottomSpacing: false
+            }
+      })"
+      @set="setConfig"
+      @get="getConfig"
+>
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" data-bs-toggle="tab" href="#misc-team-component" role="tab">Component</a>
+        </li>
+        {{> common/dialogs/basic_nav }}
+    </ul>
+
+    <div class="tab-content tab-content--withBorder">
+        <div class="tab-pane fade show active" id="misc-team-component" role="tabpanel">
+            <div class="mb-3">
+                <label class="form-label">Style</label>
+                <select class="form-select" x-model="config.styleVariant">
+                    <option value="style3">Professional - 4col</option>
+                    <option value="style4">Professional - 3col</option>
+                    <option value="style5">Cards</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Team Columns</label>
+                <select class="form-select" x-model="config.columns">
+                    <option value="one">1</option>
+                    <option value="two">2</option>
+                    <option value="three">3</option>
+                    <option value="four">4</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" type="checkbox" x-model="config.hideTitle">
+                        Hide title
+                    </label>
+                </div>
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" type="checkbox" x-model="config.hideDescription">
+                        Hide description
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        {{> common/dialogs/basic_content }}
+    </div>
+</form>

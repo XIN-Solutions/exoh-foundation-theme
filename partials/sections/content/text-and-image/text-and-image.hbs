@@ -1,0 +1,77 @@
+{{let .
+      isLeft=(eq config.imagePosition "left")
+      isRight=(eq (?? config.imagePosition "right") "right")
+}}
+
+<section
+    class="
+        features-1 bg-alternate
+        {{?: config.useAltBackground 'bg--alternate' ''}}
+        spacing--{{?? config.spacing 'comfortable'}}
+        {{?: config.noTopSpacing 'spacing--no-top' ''}}
+        {{?: config.noBottomSpacing 'spacing--no-bottom' ''}}
+    "
+    no-edit="children"
+    allowadd="no"
+    allowdelete="no"
+>
+    <div class="container">
+        <div class="row wrap">
+
+            {{#if isLeft}}
+                {{> imageCol}}
+            {{/if}}
+
+            <div class="col-md-7 align-self-center">
+                <div class="max-box">
+
+                    {{#unless config.hideTitle}}
+                        <h3 class="mt-md-0 mt-2" edit="title">
+                            {{{?? title 'Lorem ipsum dolor sit amet.'}}}
+                        </h3>
+                    {{/unless}}
+
+                    {{#unless config.hideDescription}}
+                        <p class="mt-2 mt-md-4" edit="description innerHTML">
+                            {{{?? description 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus ullamcorper, dui vitae ullamcorper rutrum, quam orci cursus ex, consectetur interdum mauris purus ut ligula.<br><br>Cras felis nunc, aliquet ut efficitur a, feugiat vel elit. Donec tortor turpis, ultricies vel massa eu, efficitur feugiat est. Vivamus non viverra libero.<br><br>Aliquam tempor porttitor velit a consectetur. Sed rhoncus sagittis euismod. Etiam vitae nunc eu lectus feugiat vulputate. Etiam ut luctus eros.'}}}
+                        </p>
+                    {{/unless}}
+
+                    {{#unless config.hideCta}}
+                        <a edit="
+                                labelContents span,
+                                learnMoreClasses @class,
+                                learnMoreUrl @href,
+                                learnMoreTitle @title,
+                                learnMoreTarget @target,
+                                learnMoreRel @rel
+                           "
+                           class="{{?? learnMoreClasses 'btn buttonColor-bg'}}"
+                           href="{{?? learnMoreUrl '#'}}"
+                           target="{{learnMoreTarget}}"
+                           rel="{{learnMoreRel}}"
+                           role="button"
+                        >
+                            <span>{{{?? labelContents 'Learn More'}}}</span>
+                            <i no-edit class="la la-long-arrow-alt-right ms-1"></i>
+                        </a>
+                    {{/unless}}
+                </div>
+            </div>
+
+            {{#if isRight }}
+                {{> imageCol}}
+            {{/if}}
+        </div>
+    </div>
+</section>
+
+{{#*inline "imageCol"}}
+    <div class="col-md-5{{#if isRight}} order-first order-md-0{{/if}}">
+        <img
+            alt="{{imageAlt}}" loading="lazy" class="{{?? imageClass 'img-fluid'}}"
+            src="{{?? imageSrc '/assets/img/empty.png' }}" data-image-hint="width=768"
+            edit="imageAlt @alt, imageSrc @src, imageClass @class"
+        >
+    </div>
+{{/inline}}

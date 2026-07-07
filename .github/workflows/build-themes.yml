@@ -1,0 +1,147 @@
+name: Build ex:oh Theme
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch to build'
+        required: true
+        type: choice
+        options:
+          - "mx-tweaks"
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Full history for SHA
+          ref: ${{ inputs.branch }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install dependencies
+        run: |
+          if [ -f package.json ]; then
+            npm ci
+          fi
+
+      - name: Build theme
+        run: |
+          BUILD_CMD="${BUILD_COMMAND:-npm run build}"
+          if [ -f package.json ] && grep -q '"build"' package.json; then
+            eval $BUILD_CMD
+          else
+            echo "No build command found, skipping build step"
+          fi
+        env:
+          BUILD_COMMAND: ${{ vars.BUILD_COMMAND || 'npm run build' }}
+
+      - name: Determine artifact info
+        id: artifact-info
+        run: |
+          BRANCH_NAME="${{ github.ref_name }}"
+          SANITIZED_BRANCH=$(echo "$BRANCH_NAME" | sed 's/[\/_]/-/g' | sed 's/[^a-zA-Z0-9._-]/-/g')
+          SHA8=$(git rev-parse --short=8 HEAD)
+          ARTIFACT_NAME="theme-${SANITIZED_BRANCH}-${SHA8}"
+          FULL_SHA=$(git rev-parse HEAD)
+          SHA_SHORT=$(git rev-parse --short HEAD)
+          BUILD_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          
+          echo "artifact_name=${ARTIFACT_NAME}" >> $GITHUB_OUTPUT
+          echo "branch_name=${BRANCH_NAME}" >> $GITHUB_OUTPUT
+          echo "full_sha=${FULL_SHA}" >> $GITHUB_OUTPUT
+          echo "sha_short=${SHA_SHORT}" >> $GITHUB_OUTPUT
+          echo "build_time=${BUILD_TIME}" >> $GITHUB_OUTPUT
+
+      - name: Generate build info
+        id: build-info
+        run: |
+          BUILD_DIR="${BUILD_DIR:-dist}"
+          if [ ! -d "$BUILD_DIR" ]; then
+            BUILD_DIR="."
+          fi
+          
+          # Generate checksums for files in build directory
+          CHECKSUMS=$(cd "$BUILD_DIR" && find . -type f ! -name '.build-info' -exec sha256sum {} \; | awk '{printf "    \"%s\": \"%s\",\n", substr($2, 3), $1}' | sed '$ s/,$//')
+          
+          # Create builds-info.json
+          cat > build-info.json << EOF
+          {
+            "branch": "${{ steps.artifact-info.outputs.branch_name }}",
+            "sha": "${{ steps.artifact-info.outputs.full_sha }}",
+            "shaShort": "${{ steps.artifact-info.outputs.sha_short }}",
+            "buildTime": "${{ steps.artifact-info.outputs.build_time }}",
+            "checksums": {
+          ${CHECKSUMS}
+            }
+          }
+          EOF
+          
+          # Copy build-info.json into build directory
+          cp build-info.json "$BUILD_DIR/.build-info"
+          echo "build_dir=${BUILD_DIR}" >> $GITHUB_OUTPUT
+        env:
+          BUILD_DIR: ${{ vars.BUILD_DIR || 'dist' }}
+
+      - name: Prepare artifact for upload
+        id: prepare-artifact
+        run: |
+          BUILD_DIR="${{ steps.build-info.outputs.build_dir }}"
+          WORKSPACE="${{ github.workspace }}"
+          ARTIFACT_STAGING="${WORKSPACE}/artifact-staging"
+          
+          # Create staging directory
+          mkdir -p "$ARTIFACT_STAGING"
+          
+          # Copy files excluding unwanted patterns
+          echo "Copying files from $BUILD_DIR to $ARTIFACT_STAGING..."
+          
+          # Use rsync for efficient copying with exclusions
+          rsync -av \
+            --exclude='.git*' \
+            --exclude='.github*' \
+            --exclude='*.sh' \
+            --exclude='/.*' \
+            --exclude='gulp*' \
+            --exclude='package.json' \
+            --exclude='package-lock.json' \
+            --exclude='node_modules' \
+            "${WORKSPACE}/${BUILD_DIR}/" "$ARTIFACT_STAGING/"
+          
+          echo "Artifact staging complete"
+          echo "staging_dir=${ARTIFACT_STAGING}" >> $GITHUB_OUTPUT
+          
+          # Show what will be uploaded
+          echo "Files to be uploaded:"
+          ls -lah "$ARTIFACT_STAGING"
+
+      - name: Upload workflow artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.artifact-info.outputs.artifact_name }}
+          path: ${{ steps.prepare-artifact.outputs.staging_dir }}
+          include-hidden-files: true
+          retention-days: 90
+
+      - name: Output artifact information
+        run: |
+          echo "## Artifact Published" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Workflow Artifact**: \`${{ steps.artifact-info.outputs.artifact_name }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "- **Branch**: ${BRANCH_NAME}" >> $GITHUB_STEP_SUMMARY
+          echo "- **SHA**: ${FULL_SHA}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Build Time**: ${BUILD_TIME}" >> $GITHUB_STEP_SUMMARY
+        env:
+          BRANCH_NAME: ${{ steps.artifact-info.outputs.branch_name }}
+          FULL_SHA: ${{ steps.artifact-info.outputs.full_sha }}
+          BUILD_TIME: ${{ steps.artifact-info.outputs.build_time }}
+

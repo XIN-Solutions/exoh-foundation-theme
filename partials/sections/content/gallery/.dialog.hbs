@@ -1,0 +1,210 @@
+<form class="config-form"
+      x-data="(() => {
+        const base = componentDialog({
+            defaultConfig: {
+                images: [],
+                columnSize: '8',
+                showNavigationArrows: true,
+                showSlideDots: true,
+                autoplay: false,
+                switchAfterSeconds: 5,
+                useAltBackground: false,
+                spacing: 'comfortable',
+                noTopSpacing: false,
+                noBottomSpacing: false
+            }
+        });
+
+        return {
+            ...base,
+            draggingIndex: null,
+            dragOverIndex: null,
+            fileName(url) {
+                const raw = (url || '').toString();
+                const withoutHash = raw.split('#')[0];
+                const withoutQuery = withoutHash.split('?')[0];
+                const parts = withoutQuery.split('/');
+                return parts[parts.length - 1] || raw;
+            },
+            moveImage(fromIndex, toIndex) {
+                if (!Array.isArray(this.config.images)) return;
+                if (fromIndex === toIndex) return;
+                if (fromIndex < 0 || toIndex < 0) return;
+                if (fromIndex >= this.config.images.length) return;
+                if (toIndex >= this.config.images.length) return;
+
+                const next = [...this.config.images];
+                const [moved] = next.splice(fromIndex, 1);
+                next.splice(toIndex, 0, moved);
+                this.config.images = next;
+            },
+            onDragStartImage(index, e) {
+                if (e?.target?.closest?.('.js-no-drag')) {
+                    e.preventDefault();
+                    return;
+                }
+                this.draggingIndex = index;
+                this.dragOverIndex = index;
+
+                try {
+                    e.dataTransfer.effectAllowed = 'move';
+                    e.dataTransfer.setData('text/plain', String(index));
+                } catch (_) {
+                    // no-op
+                }
+            },
+            onDragOverImage(index) {
+                this.dragOverIndex = index;
+            },
+            onDropImage(index, e) {
+                e.preventDefault();
+                const fromIndex = this.draggingIndex;
+                this.moveImage(fromIndex, index);
+                this.draggingIndex = null;
+                this.dragOverIndex = null;
+            },
+            onDragEndImage() {
+                this.draggingIndex = null;
+                this.dragOverIndex = null;
+            },
+            addImage() {
+                (Vvveb.MediaModal || (Vvveb.MediaModal = new MediaModal(true))).open(null, (src) => {
+                    if (!src) return;
+                    this.config.images ??= [];
+                    this.config.images.push(src);
+                });
+            },
+            removeImage(index) {
+                if (!Array.isArray(this.config.images)) return;
+                this.config.images.splice(index, 1);
+            },
+            clearImages() {
+                this.config.images = [];
+            }
+        };
+      })()"
+      @set="setConfig"
+      @get="getConfig"
+>
+
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" data-bs-toggle="tab" href="#image-gallery-images" role="tab">Images</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" href="#image-gallery-layout" role="tab">Layout</a>
+        </li>
+        {{> common/dialogs/basic_nav }}
+    </ul>
+
+    <div class="tab-content tab-content--withBorder">
+        <div class="tab-pane fade show active" id="image-gallery-images" role="tabpanel">
+            <div class="mb-3">
+                <div class="d-flex justify-content-between align-items-center gap-2 flex-wrap">
+                    <div>
+                        <label class="form-label mb-0">Images</label>
+                        <p class="form-text text-muted mb-0 small">Add one or more images. If you add multiple, it becomes a slider.</p>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button type="button" class="btn btn-primary btn-sm" @click="addImage()">Add image</button>
+                        <button type="button" class="btn btn-outline-secondary btn-sm" x-show="config.images?.length" @click="clearImages()">Clear</button>
+                    </div>
+                </div>
+            </div>
+
+            <template x-if="!config.images?.length">
+                <div class="alert alert-warning mb-0" role="alert">
+                    No images selected yet.
+                </div>
+            </template>
+
+            <div class="d-flex flex-column gap-2" x-show="config.images?.length">
+                <template x-for="(img, idx) in (config.images || [])" :key="img + ':' + idx">
+                    <div class="d-flex align-items-center gap-3 p-2 border rounded bg-light"
+                         draggable="true"
+                         @dragstart="onDragStartImage(idx, $event)"
+                         @dragend="onDragEndImage()"
+                         @dragover.prevent="onDragOverImage(idx)"
+                         @drop="onDropImage(idx, $event)"
+                         :class="{
+                            'border-primary': dragOverIndex === idx && draggingIndex !== null,
+                            'opacity-50': draggingIndex === idx
+                         }"
+                    >
+                        <span class="flex-shrink-0 text-muted"
+                              title="Drag to reorder"
+                              style="cursor: grab; user-select: none; font-size: 18px; line-height: 1;"
+                              aria-hidden="true"
+                        >≡</span>
+                        <div class="rounded border bg-white overflow-hidden d-flex align-items-center justify-content-center flex-shrink-0"
+                             style="width: 120px; height: 80px;">
+                            <img :src="img" alt="" class="w-100 h-100" style="object-fit: cover;">
+                        </div>
+                        <div class="flex-grow-1">
+                            <div class="small text-muted text-truncate" x-text="fileName(img)"></div>
+                        </div>
+                        <button type="button" class="btn btn-outline-danger btn-sm js-no-drag" @click="removeImage(idx)" draggable="false">Remove</button>
+                    </div>
+                </template>
+            </div>
+        </div>
+
+        <div class="tab-pane fade" id="image-gallery-layout" role="tabpanel">
+            <div class="mb-3">
+                <label class="form-label">Column size</label>
+                <select class="form-select" x-model="config.columnSize">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" type="checkbox" x-model="config.showNavigationArrows">
+                        Navigation arrows
+                    </label>
+                </div>
+                <p class="form-text text-muted mb-0 small">Show previous/next arrows when there are multiple images.</p>
+            </div>
+
+            <div class="mb-3">
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" type="checkbox" x-model="config.showSlideDots">
+                        Slide dots
+                    </label>
+                </div>
+                <p class="form-text text-muted mb-0 small">Show pagination dots when there are multiple images.</p>
+            </div>
+
+            <div class="mb-3">
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" type="checkbox" x-model="config.autoplay">
+                        Autoplay
+                    </label>
+                </div>
+            </div>
+
+            <div class="mb-3" x-show="config.autoplay">
+                <label class="form-label">Switch after x seconds</label>
+                <input type="number" class="form-control" x-model.number="config.switchAfterSeconds" min="1" step="1">
+                <p class="form-text text-muted mb-0 small">Applies only when autoplay is enabled.</p>
+            </div>
+        </div>
+
+        {{> common/dialogs/basic_content }}
+    </div>
+
+</form>

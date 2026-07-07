@@ -1,0 +1,40 @@
+{{let . site=(ancestor-of-type 'site')}}
+{{let . content=site.content}}
+{{let . siteSettings=content.forms.site}}
+
+<script id="bootstrap-js" src="{{theme.url}}/assets/js/bootstrap.min.js"></script>
+
+
+<link rel="stylesheet" href="{{theme.url}}/assets/js/aos.css">
+<noscript>
+    <style type="text/css">
+        [data-aos] {
+            opacity: 1 !important;
+            transform: translate(0) scale(1) !important;
+        }
+    </style>
+</noscript>
+
+<script src="{{theme.url}}/assets/js/htmx.min.js"></script>
+<script src="{{theme.url}}/assets/js/aos.js"></script>
+<script src="{{theme.url}}/assets/js/theme.js"></script>
+<script src="{{theme.url}}/assets/libs/swiper/swiper-bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js"></script>
+<script src="{{theme.url}}/assets/js/behaviour.js"></script>
+
+{{{siteSettings.bodyScripts}}}
+
+
+<script>
+        
+    AOS.init({
+        once: true
+    });
+
+    if (typeof GLightbox !== 'undefined') {
+        GLightbox({
+            selector: '.glightbox'
+        });
+    }
+
+</script>

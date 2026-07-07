@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+{{let . site=(ancestor-of-type 'site')}}
+{{let . siteSettings=site.content.forms.site}}
+{{let . styleSettings=site.content.forms.styles}}
+{{let . isDarkMode=(eq styleSettings.darkMode 'yes')}}
+
+<html lang="en" {{{?: isDarkMode 'data-bs-theme="dark"' ''}}}>
+
+    <head>
+        <base href="{{theme.url}}">
+        {{> structure/htmlhead hideCustomScripts=true}}
+    </head>
+
+
+    <body class="page is-editing" data-editable>
+
+        {{{body}}}
+
+        {{> structure/footerscripts }}
+
+    </body>
+
+</html>

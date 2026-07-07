@@ -1,0 +1,86 @@
+<section
+    class="
+        {{variant}}
+        {{spacingClass}}
+        {{spacingEdgeClasses}}
+    "
+    no-edit="children"
+    allowadd="no"
+    allowdelete="no"
+>
+    <div class="container">
+        <div class="row g-1 justify-content-center">
+            <div class="col-12 col-sm-6 col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="0">
+                <div class="feature">
+                    <div class="font-container text-center" edit="item1IconHtml">
+                        {{#if item1IconHtml}}
+                            {{{item1IconHtml}}}
+                        {{else}}
+                            <i class="font-icon la la-shield-alt"></i>
+                        {{/if}}
+                    </div>
+                    <h3>
+                        <a href="{{?? item1Url '#'}}" edit="item1Title innerHTML, item1Url @href">{{{?? item1Title "Cras felis nunc"}}}</a>
+                    </h3>
+                    <p class="text-center" edit="item1Description innerHTML">
+                        {{{?? item1Description "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas cursus in lectus ut dignissim."}}}
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="100">
+                <div class="feature">
+                    <div class="font-container text-center" edit="item2IconHtml">
+                        {{#if item2IconHtml}}
+                            {{{item2IconHtml}}}
+                        {{else}}
+                            <i class="font-icon la la-praying-hands"></i>
+                        {{/if}}
+                    </div>
+                    <h3>
+                        <a href="{{?? item2Url '#'}}" edit="item2Title innerHTML, item2Url @href">{{{?? item2Title "Cras felis nunc"}}}</a>
+                    </h3>
+                    <p class="text-center" edit="item2Description innerHTML">
+                        {{{?? item2Description "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas cursus in lectus ut dignissim."}}}
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="200">
+                <div class="feature">
+                    <div class="font-container text-center" edit="item3IconHtml">
+                        {{#if item3IconHtml}}
+                            {{{item3IconHtml}}}
+                        {{else}}
+                            <i class="font-icon la la-shopping-cart"></i>
+                        {{/if}}
+                    </div>
+                    <h3>
+                        <a href="{{?? item3Url '#'}}" edit="item3Title innerHTML, item3Url @href">{{{?? item3Title "Cras felis nunc"}}}</a>
+                    </h3>
+                    <p class="text-center" edit="item3Description innerHTML">
+                        {{{?? item3Description "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas cursus in lectus ut dignissim."}}}
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="300">
+                <div class="feature">
+                    <div class="font-container text-center" edit="item4IconHtml">
+                        {{#if item4IconHtml}}
+                            {{{item4IconHtml}}}
+                        {{else}}
+                            <i class="font-icon la la-globe-europe"></i>
+                        {{/if}}
+                    </div>
+                    <h3>
+                        <a href="{{?? item4Url '#'}}" edit="item4Title innerHTML, item4Url @href">{{{?? item4Title "Cras felis nunc"}}}</a>
+                    </h3>
+                    <p class="text-center" edit="item4Description innerHTML">
+                        {{{?? item4Description "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas cursus in lectus ut dignissim."}}}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
