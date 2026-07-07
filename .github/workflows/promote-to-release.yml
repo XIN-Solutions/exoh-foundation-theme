@@ -8,8 +8,8 @@ on:
         required: true
         type: choice
         options:
-          - main
-          - test
+          - master
+          - uat
 
 jobs:
   promote-to-release:
