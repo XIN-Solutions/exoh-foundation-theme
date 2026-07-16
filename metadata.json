@@ -1,5 +1,7 @@
 {
-    "name": "VVVebJS HBS Theme",
+    "name": "EX:OH Foundation Theme",
+    "description": "Foundation theme with flexible sections, hero layouts, and site-wide style controls.",
+
     "version": "1.0",
     "env": {
         "default": {
@@ -177,8 +179,5 @@
             "structure/htmlhead.hbs",
             "structure/modal.hbs"
         ]
-    },
-    "description": "Foundation Vvveb-based theme with flexible sections, hero layouts, and site-wide style controls.",
-    "thumbnail": "assets/img/background.svg",
-    "previewUrl": "http://localhost:9999"
+    }
 }
