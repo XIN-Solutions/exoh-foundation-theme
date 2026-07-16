@@ -56,5 +56,11 @@ const newMetadata = {
     files: filesObj,
 };
 
+for (const field of ["description", "thumbnail", "previewUrl"]) {
+    if (metadata[field] !== undefined) {
+        newMetadata[field] = metadata[field];
+    }
+}
+
 fs.writeFileSync(metadataPath, JSON.stringify(newMetadata, null, 4), "utf8");
 console.log("Updated metadata.json with current files");
