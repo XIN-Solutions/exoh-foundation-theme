@@ -177,5 +177,8 @@
             "structure/htmlhead.hbs",
             "structure/modal.hbs"
         ]
-    }
+    },
+    "description": "Foundation Vvveb-based theme with flexible sections, hero layouts, and site-wide style controls.",
+    "thumbnail": "assets/img/background.svg",
+    "previewUrl": "http://localhost:9999"
 }
