@@ -73,7 +73,8 @@
 			left: 0;
 		}
 		
-		&:hover {
+		&:hover,
+		&:focus-within {
 			> .dropdown-toggle + .dropdown-menu,
 			> .dropdown-menu  {
 				transform: translateY(0);
@@ -176,10 +177,20 @@
 		.dropdown-item {
 			padding: 0.35rem 1rem 0.35rem 1.5rem;
 			white-space: normal;
+
+			&:focus-visible {
+				outline: 2px solid rgba(var(--bs-primary-rgb), 0.5);
+				outline-offset: -2px;
+			}
 		}
 
 		.dropdown-toggle::after {
 			display: none;
+		}
+
+		> .nav-link.dropdown-toggle:focus-visible {
+			outline: 2px solid rgba(var(--bs-primary-rgb), 0.5);
+			outline-offset: 2px;
 		}
 	}
 }

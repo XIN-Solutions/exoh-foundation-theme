@@ -80,7 +80,7 @@
           {{#each navigation.items as |navItem|}}
             {{#if navItem.children}}
               <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="{{?: navItem.isExternal navItem.externalUrl navItem.pageUrl}}">
+                <a class="nav-link dropdown-toggle" href="{{?: navItem.isExternal navItem.externalUrl navItem.pageUrl}}" aria-haspopup="true">
                   <span>{{navItem.label}}</span>
                 </a>
                 <div class="dropdown-menu">
