@@ -78,11 +78,26 @@
       <div class="collapse navbar-collapse" id="navbar">
         <ul class="navbar-nav ms-auto">
           {{#each navigation.items as |navItem|}}
-            <li class="nav-item">
-              <a class="nav-link" href="{{?: navItem.isExternal navItem.externalUrl navItem.pageUrl}}">
-                <span>{{navItem.label}}</span>
-              </a>
-            </li>
+            {{#if navItem.children}}
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="{{?: navItem.isExternal navItem.externalUrl navItem.pageUrl}}" aria-haspopup="true">
+                  <span>{{navItem.label}}</span>
+                </a>
+                <div class="dropdown-menu">
+                  {{#each navItem.children as |childItem|}}
+                    <a class="dropdown-item" href="{{?: childItem.isExternal childItem.externalUrl childItem.pageUrl}}">
+                      <span>{{childItem.label}}</span>
+                    </a>
+                  {{/each}}
+                </div>
+              </li>
+            {{else}}
+              <li class="nav-item">
+                <a class="nav-link" href="{{?: navItem.isExternal navItem.externalUrl navItem.pageUrl}}">
+                  <span>{{navItem.label}}</span>
+                </a>
+              </li>
+            {{/if}}
           {{/each}}
         </ul>
 
