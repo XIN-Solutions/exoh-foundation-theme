@@ -154,3 +154,32 @@
 	}
 	
 }
+
+@media screen and (max-width: 767px) {
+	.navbar-nav .nav-item.dropdown {
+		.dropdown-menu {
+			display: block;
+			position: static;
+			float: none;
+			opacity: 1;
+			visibility: visible;
+			transform: none;
+			box-shadow: none;
+			border: none;
+			background: transparent;
+			padding: 0;
+			margin: 0;
+			min-width: 0;
+			width: auto;
+		}
+
+		.dropdown-item {
+			padding: 0.35rem 1rem 0.35rem 1.5rem;
+			white-space: normal;
+		}
+
+		.dropdown-toggle::after {
+			display: none;
+		}
+	}
+}
