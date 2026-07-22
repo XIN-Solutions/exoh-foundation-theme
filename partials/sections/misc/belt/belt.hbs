@@ -3,7 +3,19 @@
 <section class="features-1 bg-alternate spacing--{{?? config.spacing 'comfortable'}} {{?: config.useAltBackground 'bg--alternate' ''}}" no-edit="children" allowadd="no" allowdelete="no">
     <div class="container">
         <div class="row wrap">
-            {{#if (empty beltItems)}}
+            {{#if data.childrenMeta.error}}
+                <div class="col-12">
+                    <div class="alert alert-danger mb-0 belt-load-error"
+                         data-belt-load-error
+                         data-belt-load-error-code="{{data.childrenMeta.error.code}}">
+                        {{#if (eq data.childrenMeta.error.code 'INVALID_SLUG')}}
+                            Could not find a page for the configured source path. Check Belt's source page in component settings.
+                        {{else}}
+                            {{data.childrenMeta.error.message}}
+                        {{/if}}
+                    </div>
+                </div>
+            {{else if (empty beltItems)}}
                 <div class="col-12">
                     <p>No child pages found for this section.</p>
                 </div>

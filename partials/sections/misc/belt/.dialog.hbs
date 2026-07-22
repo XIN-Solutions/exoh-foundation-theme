@@ -1,5 +1,6 @@
 <form id="miscBeltConfigForm" class="config-form"
-      x-data="componentDialog({
+      x-data="(() => {
+        const base = componentDialog({
             defaultConfig: {
                 displayType: 'horizontal',
                 searchType: 'immediate',
@@ -7,8 +8,41 @@
                 ctaLabel: 'Read more',
                 defaultImage: meta.theme.url + '/assets/img/empty.png',
                 limit: 0,
+                basePageSlug: '',
             }
-      })"
+        });
+
+        return {
+            ...base,
+            loadError: null,
+            init(opts) {
+                base.init.call(this, opts);
+                this.syncLoadErrorFromSection();
+            },
+            setConfig(configEvent) {
+                base.setConfig.call(this, configEvent);
+                this.syncLoadErrorFromSection();
+            },
+            syncLoadErrorFromSection() {
+                const section = typeof Vvveb !== 'undefined' && Vvveb.Builder?.selectedEl;
+                const el = section?.querySelector?.('[data-belt-load-error]');
+                if (!el) {
+                    this.loadError = null;
+                    return;
+                }
+                this.loadError = {
+                    code: el.getAttribute('data-belt-load-error-code') || '',
+                    message: el.textContent?.trim() || '',
+                };
+            },
+            onSearchTypeChange() {
+                if (this.config.searchType !== 'immediate'
+                    && (this.config.sort === 'childOrdering' || this.config.sort === '-childOrdering')) {
+                    this.config.sort = '-publishDate';
+                }
+            },
+        };
+      })()"
       @set="setConfig"
       @get="getConfig"
 >
@@ -86,9 +120,21 @@
                 {{/common/dialogs/html_preview_select}}
             </div>
 
+            <div x-show="loadError" class="mb-3 alert alert-danger" x-cloak>
+                <span x-text="loadError?.message"></span>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Belt's source page</label>
+                <input class="form-control" x-model="config.basePageSlug" type="text" placeholder="Source current page">
+                <p class="mt-1 small text-muted">
+                    Leave empty to use the current page as the source. Enter an absolute path such as <code>/blog</code> to list children of another page.
+                </p>
+            </div>
+
             <div class="mb-3">
                 <label class="form-label">Search type</label>
-                {{#> common/dialogs/html_preview_select model="config.searchType"}}
+                {{#> common/dialogs/html_preview_select model="config.searchType" onChange="onSearchTypeChange()"}}
                     <option value="immediate">
                         <span class="dialog-svg-option">
                             <span class="dialog-svg-option__preview" aria-hidden="true">

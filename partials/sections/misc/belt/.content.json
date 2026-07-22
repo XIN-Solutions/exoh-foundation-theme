@@ -7,7 +7,8 @@
         "children": {
             "loader": "pages",
             "params": {
-                "basePageId": "{{page.id}}",
+                "basePageId": "{{?: config.basePageSlug '' page.id}}",
+                "basePageSlug": "{{config.basePageSlug}}",
                 "sort": "{{?? config.sort '-publishDate'}}",
                 "allResults": "{{?: (eq config.limit 0) 'true' 'false'}}",
                 "withContent": true,
