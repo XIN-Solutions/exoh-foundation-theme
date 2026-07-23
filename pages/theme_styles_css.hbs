@@ -252,6 +252,14 @@ textarea.form-control {
     border-radius: var(--theme-cardBorderRadius);
 }
 
+.navigation-1 .navbar .navbar-nav .nav-item.dropdown > .dropdown-menu {
+    --bs-dropdown-border-radius: var(--theme-cardBorderRadius);
+    border-radius: var(--theme-cardBorderRadius);
+    --bs-dropdown-link-hover-bg: var(--theme-altBackgroundColor, var(--bs-body-bg, #fff));
+    --bs-dropdown-link-active-bg: var(--theme-altBackgroundColor, var(--bs-body-bg, #fff));
+    --bs-dropdown-link-active-color: var(--theme-menuItemColor, var(--bs-body-color));
+}
+
 section img:not(.rounded-circle),
 header img:not(.rounded-circle) {
     border-radius: var(--theme-imageBorderRadius);
@@ -312,7 +320,8 @@ header img:not(.rounded-circle) {
 {{> themeTypographyUtilities prefix="paragraph"}}
 
 {{#unless (eq styles.menuStylingEnabled 'no')}}
-.navigation-1 .navbar .navbar-nav a.nav-link {
+.navigation-1 .navbar .navbar-nav a.nav-link,
+.navigation-1 .navbar .navbar-nav .nav-item.dropdown .dropdown-item {
     {{#if styles.menuItemColor}}
     color: var(--theme-menuItemColor);
     {{/if}}
@@ -329,7 +338,10 @@ header img:not(.rounded-circle) {
 
 {{#if styles.menuItemColor}}
 .navigation-1 .navbar .navbar-nav a.nav-link:hover,
-.navigation-1 .navbar .navbar-nav a.nav-link:focus-visible {
+.navigation-1 .navbar .navbar-nav a.nav-link:focus-visible,
+.navigation-1 .navbar .navbar-nav .nav-item.dropdown .dropdown-item:hover,
+.navigation-1 .navbar .navbar-nav .nav-item.dropdown .dropdown-item:focus-visible,
+.navigation-1 .navbar .navbar-nav .nav-item.dropdown .dropdown-item:active {
     color: var(--theme-menuItemColor);
     opacity: 0.85;
 }
