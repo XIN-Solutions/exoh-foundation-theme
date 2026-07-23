@@ -467,9 +467,6 @@ footer.footer-1 {
   }
   */
 }
-section.bg--alternate + footer.footer-1 {
-  margin-top: 0;
-}
 footer.footer-1 .h6 {
   margin: 1rem 0rem;
   font-weight: 500;
@@ -504,6 +501,10 @@ footer.footer-1 .footer-copyright a:hover {
 footer.footer-1 .footer-copyright .container {
   padding: 1.5rem 0;
   border-top: 1px solid rgba(var(--bs-body-color-rgb), 0.05);
+}
+
+body:has(> section.bg--alternate:last-of-type) > footer.footer-1 {
+  margin-top: 0;
 }
 
 .testimonials-1 {
