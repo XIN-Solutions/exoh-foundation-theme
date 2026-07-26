@@ -50,6 +50,7 @@ const filesObj = {
 const newMetadata = {
     name: metadata.name,
     version: metadata.version,
+    ...(metadata.mcpEnabled !== undefined ? { mcpEnabled: metadata.mcpEnabled } : {}),
     env: metadata.env,
     aspects: metadata?.aspects ?? [],
     editor: metadata.editor,
