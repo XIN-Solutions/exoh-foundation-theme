@@ -1,7 +1,6 @@
 {
     "name": "EX:OH Foundation Theme",
     "version": "1.0",
-    "mcpEnabled": true,
     "env": {
         "default": {
             "url": "http://localhost:9999"
