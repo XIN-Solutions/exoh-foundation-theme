@@ -21,6 +21,7 @@
                 "site"
             ],
             "template": "pages/aspects/styles.html",
+            "mcpDoc": "pages/aspects/styles.mcp.md",
             "defaults": {
                 "themeStylingEnabled": "yes",
                 "darkMode": "no",
