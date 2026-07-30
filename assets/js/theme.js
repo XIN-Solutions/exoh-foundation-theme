@@ -50,44 +50,6 @@ function navbarSticky(isSticky) {
   }
 }
 
-function setCookie(name, value) {
-	document.cookie = name + "=" + value + ";";
-	//try to set cookie to all subdomains
-	document.cookie = name + "=" + value + ";path=/;domain=." + window.location.host.replace(/^.*?\./, '') + ";";
-}
-
-let themeSwitch = document.querySelector("#color-theme-switch i");
-let theme = document.documentElement.dataset.bsTheme;
-if (theme) {
-	if (theme === "dark") {
-		let themeSwitch = document.querySelector("#color-theme-switch i");
-		themeSwitch.classList.remove("la-sun")
-		themeSwitch.classList.add("la-moon");
-	}
-}
-	
-themeSwitch?.addEventListener("click", function (event) {
-	
-	let theme = document.documentElement.dataset.bsTheme;
-	
-	if (theme === "dark") {
-		theme = "light";
-		themeSwitch.classList.remove("la-sun")
-		themeSwitch.classList.add("la-moon");
-	} else if (theme === "light" || theme === "auto" || !theme) {
-		theme = "dark";
-		themeSwitch.classList.remove("la-moon")
-		themeSwitch.classList.add("la-sun");
-	} else {
-		theme = "auto";
-	}
-	
-	document.documentElement.dataset.bsTheme = theme;
-	//localStorage.setItem("theme", theme);
-	setCookie("theme", theme);
-	//serverStorage.setItem();
-});
-
 // product page
 document.querySelectorAll('.quantity').forEach(e => e.addEventListener('click', function (e) {
 	let btn = e.target.closest(".btn-plus");
