@@ -42,14 +42,19 @@ const metadata = JSON.parse(fs.readFileSync(metadataPath, "utf8"));
 
 const filesObj = {
     layouts: getFilesWithExtensions(path.join(rootDir, "layouts"), [".hbs", ".json"]),
-    pages: getFilesWithExtensions(path.join(rootDir, "pages"), [".hbs", ".json"]),
+    pages: getFilesWithExtensions(path.join(rootDir, "pages"), [".hbs", ".json", ".md"]),
     data: getFilesWithExtensions(path.join(rootDir, "data"), [".jsonc"]),
-    partials: getFilesWithExtensions(path.join(rootDir, "partials"), [".hbs", ".json"]).map(formatPartialPath),
+    partials: getFilesWithExtensions(path.join(rootDir, "partials"), [".hbs", ".json", ".md"]).map(formatPartialPath),
 };
+
+if (metadata.mcpEnabled === true && fs.existsSync(path.join(rootDir, "LLM.md"))) {
+    filesObj.root = ["LLM.md"];
+}
 
 const newMetadata = {
     name: metadata.name,
     version: metadata.version,
+    ...(metadata.mcpEnabled !== undefined ? { mcpEnabled: metadata.mcpEnabled } : {}),
     env: metadata.env,
     aspects: metadata?.aspects ?? [],
     editor: metadata.editor,
