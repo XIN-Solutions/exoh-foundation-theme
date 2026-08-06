@@ -1,110 +1,96 @@
 # EX:OH Foundation Theme — agent guidance
 
-Theme-wide guidance for planning and editing pages in the **EX:OH Foundation Theme**. Use this file once per session for page types, recipes, and cross-cutting rules; drill into per-component `.mcp.md` files for field-level detail.
-
-**Theme root:** `foundation-theme/` · **`metadata.json` → `mcpEnabled`:** `true` (required for MCP tools to expose this file).
+Theme-wide guidance for planning and editing pages in the **EX:OH Foundation Theme**. Load this once per session via **`site_theme_documentation`**, then use section and aspect tools for field-level detail.
 
 Intended for marketing and brochure sites: clear hierarchy, one hero per page, accessible CTAs, and section-driven body content.
 
-## Page templates and content types
+## Page types
 
-CMS page types map to Handlebars templates under `pages/`. Both public page types share the same body model: programmatic sections render from `content.blocks.body` as pre-rendered HTML blocks.
+| `contentType` | Aspects to set | Body sections |
+|---------------|----------------|---------------|
+| `site` | `general`, `seo`, `site`, `styles` | Ordered blocks edited with **`list_sections`**, **`append_section`**, **`update_section`**, **`insert_section_*`**, **`delete_section`** |
+| `content_page` | `general`, `seo` | Same section tools as `site` |
 
-| CMS page type | Theme template | Layout | Body model | Aspects |
-|---------------|----------------|--------|------------|---------|
-| `site` | `pages/site.hbs` | `layouts/main.hbs` | `content.blocks.body` — ordered section blocks | `general`, `seo`, `site`, theme `styles` |
-| `content_page` | `pages/content_page.hbs` | `layouts/main.hbs` | `content.blocks.body` — ordered section blocks | `general`, `seo` |
+Create pages with **`create_page`** (use **`page_types_at_root`** or **`page_types_as_children`** to discover allowed types). Set aspects after create with **`update_aspect`**; load field contracts with **`aspect_documentation`** or **`get_aspect`**.
 
-**Layout:** `layouts/main.hbs` wraps every public page with `partials/nav/header`, the page body, and `partials/nav/footer`. Site-wide style variables come from the site root's `forms.styles` aspect (see [styles aspect doc](pages/aspects/styles.mcp.md)).
-
-**CSS extension:** `data/site.jsonc` registers a `theme_styles_css` extension for page type `site`, rendered via `pages/theme_styles_css.hbs`. Agents do not author this template directly.
-
-**Editing-only templates** (CMS editor chrome, not public pages):
-
-| Template | Purpose |
-|----------|---------|
-| `pages/editing/blocks.hbs` | Block editor shell (`layouts/content_block.hbs`) |
-| `pages/editing/empty.hbs` | Empty editor placeholder |
-
-Do not edit layout or editing templates for content-only tasks — work through section models and page aspects instead.
+Site-wide brand colours and typography are controlled by the **`styles`** aspect on the **site root page** — see **`aspect_documentation`** with `aspect: "styles"`.
 
 ## Recommended page recipes
 
-Recipes list section **display names** and paths. Field shapes and constraints live in each component's `.mcp.md`.
+Recipes list section display names and **`type`** codes for **`append_section`**. Load field contracts with **`component_documentation`** or from **`list_sections`** / **`get_section`** (`includeComponentDocs: true`).
 
-### Homepage / landing (`site`)
+### Homepage / landing (`contentType: site`)
 
-1. **Hero Image** — `partials/sections/hero/hero/` — single above-the-fold message and primary CTA ([`.mcp.md`](partials/sections/hero/hero/.mcp.md))
-2. **Icon Banner** — `partials/sections/content/icon-banner/` — 3–4 value-prop tiles ([`.mcp.md`](partials/sections/content/icon-banner/.mcp.md))
-3. **Text & Image** — `partials/sections/content/text-and-image/` — supporting story block ([`.mcp.md`](partials/sections/content/text-and-image/.mcp.md))
-4. **Testimonials** — `partials/sections/misc/testimonials/` — social proof ([`.mcp.md`](partials/sections/misc/testimonials/.mcp.md))
-5. **Belt** — `partials/sections/misc/belt/` — footer-adjacent links or CTAs ([`.mcp.md`](partials/sections/misc/belt/.mcp.md))
+1. **Hero Image** — `hero/hero` — single above-the-fold message and primary CTA
+2. **Icon Banner** — `content/icon-banner` — 3–4 value-prop tiles
+3. **Text & Image** — `content/text-and-image` — supporting story block
+4. **Testimonials** — `misc/testimonials` — social proof
+5. **Belt** — `misc/belt` — footer-adjacent links or CTAs
 
-**Placement:** exactly one hero variant at the top. Belt belongs late in the stack. Deviating is acceptable when content warrants it (e.g. **Video Hero** instead of **Hero Image** for video-first brands).
+**Placement:** exactly one hero variant at the top. Belt belongs late in the stack. Deviating is acceptable when content warrants it (e.g. **Video Hero** (`hero/video-hero`) instead of **Hero Image** for video-first brands).
 
-### Standard content page (`content_page`)
+### Standard content page (`contentType: content_page`)
 
-1. **Image Banner** or **Two Column Hero** (optional) — lighter hero when the page needs context above the fold ([image-banner](partials/sections/hero/image-banner/.mcp.md), [two-col-hero](partials/sections/hero/two-col-hero/.mcp.md))
-2. **Markdown Text** or **Statements** — page introduction ([markdown-text](partials/sections/content/markdown-text/.mcp.md), [statements](partials/sections/content/statements/.mcp.md))
-3. **Text & Image**, **Showcase**, or **Info Tiles** — main body content ([text-and-image](partials/sections/content/text-and-image/.mcp.md), [column-showcase](partials/sections/content/column-showcase/.mcp.md), [info-tiles](partials/sections/content/info-tiles/.mcp.md))
-4. **Belt** (optional) — related links near the bottom ([`.mcp.md`](partials/sections/misc/belt/.mcp.md))
+1. **Image Banner** or **Two Column Hero** (optional) — `hero/image-banner` or `hero/two-col-hero` — lighter hero when the page needs context above the fold
+2. **Markdown Text** or **Statements** — `content/markdown-text` or `content/statements` — page introduction
+3. **Text & Image**, **Showcase**, or **Info Tiles** — `content/text-and-image`, `content/column-showcase`, or `content/info-tiles` — main body content
+4. **Belt** (optional) — `misc/belt` — related links near the bottom
 
-**Placement:** skip the hero when the page title in `seo` aspect is sufficient. Never stack two full heroes.
+**Placement:** skip the hero when the **`seo`** aspect title is sufficient. Never stack two full heroes.
 
-### Contact / lead capture (`content_page`)
+### Contact / lead capture (`contentType: content_page`)
 
-1. **Hero Image** or **Image Banner** — short headline and context ([hero](partials/sections/hero/hero/.mcp.md), [image-banner](partials/sections/hero/image-banner/.mcp.md))
-2. **Markdown Text** — what to expect after submitting ([`.mcp.md`](partials/sections/content/markdown-text/.mcp.md))
-3. **Contact Form & Map** — primary conversion ([`.mcp.md`](partials/sections/misc/contact-form/.mcp.md))
-4. **Info Tiles** (optional) — phone, hours, or office details ([`.mcp.md`](partials/sections/content/info-tiles/.mcp.md))
+1. **Hero Image** or **Image Banner** — `hero/hero` or `hero/image-banner` — short headline and context
+2. **Markdown Text** — `content/markdown-text` — what to expect after submitting
+3. **Contact Form & Map** — `misc/contact-form` — primary conversion
+4. **Info Tiles** (optional) — `content/info-tiles` — phone, hours, or office details
 
 **Placement:** keep the contact form in the lower half but not buried under unrelated long sections. One contact form per page.
 
-### About / team (`content_page`)
+### About / team (`contentType: content_page`)
 
-1. **Two Column Hero** or **Hero Image** — team or mission headline ([two-col-hero](partials/sections/hero/two-col-hero/.mcp.md), [hero](partials/sections/hero/hero/.mcp.md))
-2. **Statements** — mission or values ([`.mcp.md`](partials/sections/content/statements/.mcp.md))
-3. **Team** — member grid ([`.mcp.md`](partials/sections/misc/team/.mcp.md))
-4. **Text & Image** or **Icons & Image** — culture or history ([text-and-image](partials/sections/content/text-and-image/.mcp.md), [icons-and-image](partials/sections/content/icons-and-image/.mcp.md))
-5. **Testimonials** (optional) — endorsements ([`.mcp.md`](partials/sections/misc/testimonials/.mcp.md))
+1. **Two Column Hero** or **Hero Image** — `hero/two-col-hero` or `hero/hero` — team or mission headline
+2. **Statements** — `content/statements` — mission or values
+3. **Team** — `misc/team` — member grid
+4. **Text & Image** or **Icons & Image** — `content/text-and-image` or `content/icons-and-image` — culture or history
+5. **Testimonials** (optional) — `misc/testimonials` — endorsements
 
 ## Cross-cutting rules
 
 ### SEO
 
 - One clear `h1` per page — typically the hero or banner headline, not duplicated in body sections.
-- Set `title` and `description` via the `seo` aspect on every public page.
+- Set `title` and `description` via **`update_aspect`** with `aspect: "seo"` on every public page.
 - Keep the SEO title aligned with the visible hero headline unless there is a deliberate reason to differ (e.g. shorter SERP title).
 - Do not rely on section body text alone for meta description.
 
 ### Navigation
 
-- Header and footer come from `partials/nav/header` and `partials/nav/footer`; menu structure lives in site/nav aspects.
-- Do not hard-code navigation links inside section models when a site menu item exists.
+- Site navigation is managed at the site level — do not hard-code nav links in section **`model`** when a site menu item exists.
 - Belt tiles may supplement nav but should not replace primary menu structure.
 
 ### Aspects
 
-| Aspect | Applies to | Agent action |
-|--------|------------|--------------|
-| `general` | All public pages | Page title, slug, publish state |
-| `seo` | All public pages | Meta title, description, social preview |
-| `site` | `site` page type only | Site name, logo, global settings |
-| `styles` | `site` page type only | Brand colours, typography, borders — see [styles.mcp.md](pages/aspects/styles.mcp.md) |
+| Aspect | Applies to | Tool |
+|--------|------------|------|
+| `general` | All public pages | **`get_aspect`** / **`update_aspect`** — page title, slug, publish state |
+| `seo` | All public pages | **`get_aspect`** / **`update_aspect`** — meta title, description, social preview |
+| `site` | `site` page type only | **`get_aspect`** / **`update_aspect`** — site name, logo, global settings |
+| `styles` | `site` page type only (site root) | **`get_aspect`** / **`update_aspect`** / **`aspect_documentation`** — brand colours, typography, borders |
 
-Built-in aspect field detail is served by the CMS (`general`, `seo`, `site`). Theme custom aspects use `metadata.json` → `aspects[]` → `mcpDoc`.
+Load built-in aspect field detail with **`aspect_documentation`**. Load theme **`styles`** detail with **`aspect_documentation`** and `aspect: "styles"`.
 
 ### URLs and CTAs
 
-- Prefer site-relative paths (`/about`, `/contact`) over absolute URLs for internal links.
+- Prefer site-relative paths (`/about`, `/contact`) over absolute URLs for internal links in section **`model`** fields.
 - Every CTA needs both label and URL; do not leave empty buttons.
 - External links in belt tiles or CTAs should set `target` where the component supports it.
 
 ### Media
 
-- Hero components use background or banner imagery — see each hero `.mcp.md` for image vs video fields.
-- Inline images belong in **Text & Image**, **Image Gallery**, or **Icons & Image**, not duplicated in the hero unless intentional.
-- Use the CMS image aspect for uploads; respect alt text where the model exposes it.
+- Hero sections use background or banner imagery — see **`component_documentation`** for each hero **`type`** for image vs video **`config`** fields.
+- Inline images belong in **Text & Image** (`content/text-and-image`), **Image Gallery** (`content/gallery`), or **Icons & Image** (`content/icons-and-image`), not duplicated in the hero unless intentional.
+- Upload images with media tools; respect alt text where the **`model`** exposes it.
 
 ### Section order
 
@@ -115,55 +101,54 @@ Built-in aspect field detail is served by the CMS (`general`, `seo`, `site`). Th
 
 ### Theme styling
 
-- Global colours and typography are controlled on the `site` page via `forms.styles` ([styles.mcp.md](pages/aspects/styles.mcp.md)).
+- Global colours and typography are set via **`styles`** on the site root page with **`update_aspect`**.
 - When `themeStylingEnabled` is `"yes"`, section defaults inherit theme variables — avoid fighting global styles with per-section colour overrides unless the component supports it.
 - Menu styling is optional (`menuStylingEnabled`); leave off unless brand guidelines require custom nav chrome.
 
 ## Section component index
 
-Active leaf components only (`disabled/` variants are omitted). Full field tables are in each `.mcp.md`.
+Discover all types with **`list_section_types`**. Load per-type field contracts with **`component_documentation`**.
 
-### Hero (`partials/sections/hero/`)
+### Hero
 
-| Display name | Path | Role | Detail |
-|--------------|------|------|--------|
-| Hero Image | `partials/sections/hero/hero/` | Full-width centred hero with CTA | [`.mcp.md`](partials/sections/hero/hero/.mcp.md) |
-| Two Column Hero | `partials/sections/hero/two-col-hero/` | Side-by-side text and image | [`.mcp.md`](partials/sections/hero/two-col-hero/.mcp.md) |
-| Video Hero | `partials/sections/hero/video-hero/` | Hero with inline playable video | [`.mcp.md`](partials/sections/hero/video-hero/.mcp.md) |
-| Image Banner | `partials/sections/hero/image-banner/` | Shorter banner-style hero | [`.mcp.md`](partials/sections/hero/image-banner/.mcp.md) |
+| Display name | `type` | Role |
+|--------------|--------|------|
+| Hero Image | `hero/hero` | Full-width centred hero with CTA |
+| Two Column Hero | `hero/two-col-hero` | Side-by-side text and image |
+| Video Hero | `hero/video-hero` | Hero with inline playable video |
+| Image Banner | `hero/image-banner` | Shorter banner-style hero |
 
-### Content (`partials/sections/content/`)
+### Content
 
-| Display name | Path | Role | Detail |
-|--------------|------|------|--------|
-| Icon Banner | `partials/sections/content/icon-banner/` | Row of icon + label tiles | [`.mcp.md`](partials/sections/content/icon-banner/.mcp.md) |
-| Text & Image | `partials/sections/content/text-and-image/` | Prose beside an image | [`.mcp.md`](partials/sections/content/text-and-image/.mcp.md) |
-| Markdown Text | `partials/sections/content/markdown-text/` | Rich text body block | [`.mcp.md`](partials/sections/content/markdown-text/.mcp.md) |
-| Statements | `partials/sections/content/statements/` | Highlighted quote or value statements | [`.mcp.md`](partials/sections/content/statements/.mcp.md) |
-| Info Tiles | `partials/sections/content/info-tiles/` | Card grid for facts or features | [`.mcp.md`](partials/sections/content/info-tiles/.mcp.md) |
-| Showcase | `partials/sections/content/column-showcase/` | Multi-column feature showcase | [`.mcp.md`](partials/sections/content/column-showcase/.mcp.md) |
-| Freeform Columns | `partials/sections/content/freeform-columns/` | Flexible multi-column layout | [`.mcp.md`](partials/sections/content/freeform-columns/.mcp.md) |
-| Icons & Image | `partials/sections/content/icons-and-image/` | Icons grouped with a supporting image | [`.mcp.md`](partials/sections/content/icons-and-image/.mcp.md) |
-| Image Gallery | `partials/sections/content/gallery/` | Image grid or carousel | [`.mcp.md`](partials/sections/content/gallery/.mcp.md) |
-| Embedded Video | `partials/sections/content/embedded-video/` | Mid-page video embed | [`.mcp.md`](partials/sections/content/embedded-video/.mcp.md) |
+| Display name | `type` | Role |
+|--------------|--------|------|
+| Icon Banner | `content/icon-banner` | Row of icon + label tiles |
+| Text & Image | `content/text-and-image` | Prose beside an image |
+| Markdown Text | `content/markdown-text` | Rich text body block |
+| Statements | `content/statements` | Highlighted quote or value statements |
+| Info Tiles | `content/info-tiles` | Card grid for facts or features |
+| Showcase | `content/column-showcase` | Multi-column feature showcase |
+| Freeform Columns | `content/freeform-columns` | Flexible multi-column layout |
+| Icons & Image | `content/icons-and-image` | Icons grouped with a supporting image |
+| Image Gallery | `content/gallery` | Image grid or carousel |
+| Embedded Video | `content/embedded-video` | Mid-page video embed |
 
-### Misc (`partials/sections/misc/`)
+### Misc
 
-| Display name | Path | Role | Detail |
-|--------------|------|------|--------|
-| Belt | `partials/sections/misc/belt/` | Footer-adjacent link or CTA strip | [`.mcp.md`](partials/sections/misc/belt/.mcp.md) |
-| Contact Form & Map | `partials/sections/misc/contact-form/` | Lead capture with optional map | [`.mcp.md`](partials/sections/misc/contact-form/.mcp.md) |
-| Team | `partials/sections/misc/team/` | Team member grid | [`.mcp.md`](partials/sections/misc/team/.mcp.md) |
-| Testimonials | `partials/sections/misc/testimonials/` | Customer quotes | [`.mcp.md`](partials/sections/misc/testimonials/.mcp.md) |
+| Display name | `type` | Role |
+|--------------|--------|------|
+| Belt | `misc/belt` | Footer-adjacent link or CTA strip (loader-backed child pages) |
+| Contact Form & Map | `misc/contact-form` | Lead capture with optional map |
+| Team | `misc/team` | Team member grid |
+| Testimonials | `misc/testimonials` | Customer quotes |
 
 ## Anti-patterns
 
-- **Multiple heroes** — only one hero variant per page. Use **Image Banner** on inner pages instead of a second full hero.
-- **Competing above-the-fold messages** — one primary headline and CTA; demote secondary offers to **Icon Banner** or **Belt**.
-- **Contact form buried** — place **Contact Form & Map** after brief context, not after long unrelated galleries or team grids.
-- **SEO vs hero mismatch** — unrelated `seo.title` and hero headline confuses users and agents; align unless shortening for search.
+- **Multiple heroes** — only one hero variant per page. Use **Image Banner** (`hero/image-banner`) on inner pages instead of a second full hero.
+- **Competing above-the-fold messages** — one primary headline and CTA; demote secondary offers to `content/icon-banner` or `misc/belt`.
+- **Contact form buried** — place `misc/contact-form` after brief context, not after long unrelated galleries or team grids.
+- **SEO vs hero mismatch** — unrelated `seo.title` and hero headline confuses users; align unless shortening for search.
 - **Broken belt links** — verify every belt tile URL; use `target` for external destinations.
-- **Wrong hero variant** — side-by-side layout needs **Two Column Hero**, not **Hero Image** (see each hero `.mcp.md` "when not to use").
-- **Editing theme files for content** — do not modify `pages/editing/*`, `layouts/*`, or `partials/nav/*` when the task is page content only.
-- **Duplicate contact forms** — one **Contact Form & Map** per page.
-- **Ignoring `styles` aspect** — large brand changes belong on the `site` page `forms.styles`, not scattered across section overrides.
+- **Wrong hero variant** — side-by-side layout needs `hero/two-col-hero`, not `hero/hero` — see **`component_documentation`** for each hero type.
+- **Duplicate contact forms** — one `misc/contact-form` per page.
+- **Ignoring `styles` aspect** — large brand changes belong on the site root via **`update_aspect`** with `aspect: "styles"`, not scattered across section overrides.

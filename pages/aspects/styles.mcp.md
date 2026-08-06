@@ -1,12 +1,18 @@
-# Styles aspect (`styles`)
+# Styles aspect
 
-Foundation theme site-wide visual styling: colours, typography, borders, shadows, and navigation chrome. Stored on the **site root page** under `forms.styles`.
+**Aspect:** `styles`
+
+## Purpose
+
+Site-wide visual styling: colours, typography, borders, shadows, and navigation chrome.
+
+Load field detail with **`aspect_documentation`** (`aspect: "styles"`). Read current values with **`get_aspect`** on the **site root page**. Set values with **`update_aspect`** on the site root page.
 
 ## When it applies
 
-Declared in theme `metadata.json` for `pageTypes: ["site"]`. Only the site root page carries this aspect.
+Only the **site root page** (`contentType: site`) carries this aspect.
 
-## Fields (`forms.styles`)
+## Fields
 
 ### Master switches
 
@@ -64,33 +70,38 @@ Defaults: Open Sans stack; h1 `#212529` / 700 / 48px; h2 `#495057` / 600 / 36px;
 | `menuFontSize` | string | `""` | Nav font size |
 | `menuFontWeight` | string | `""` | Nav font weight |
 
-Empty strings for menu fields mean “use theme default”.
-
-## Persistence
-
-Theme aspects persist like other form namespaces: the full `styles` object is saved on the site root content record. There is no built-in CMS validator for individual fields — invalid values may produce unexpected CSS but will not block save.
-
-## Example
-
-```json
-{
-  "styles": {
-    "themeStylingEnabled": "yes",
-    "primaryColor": "#1a73e8",
-    "secondaryColor": "#5f6368",
-    "tertiaryColor": "#34a853",
-    "backgroundColor": "#ffffff",
-    "paragraphFontFamily": "'Open Sans', sans-serif",
-    "cardBorderRadius": "md",
-    "buttonColorSource": "tertiary",
-    "menuStylingEnabled": "no"
-  }
-}
-```
+Empty strings for menu fields mean "use theme default".
 
 ## Anti-patterns
 
 - Do not set `themeStylingEnabled` to `"no"` and expect brand colours to apply.
-- Avoid invalid hex colours — the editor uses colour inputs but agents should send `#rrggbb` form.
-- `googleFonts` must be a JSON-encoded array string, not a raw JavaScript array in the stored payload.
-- Do not rename the aspect namespace; it must remain `styles` to match theme `metadata.json`.
+- Avoid invalid hex colours — send `#rrggbb` form.
+- `googleFonts` must be a JSON-encoded array string, not a raw JavaScript array.
+- Do not set **`styles`** on child pages — update the site root page only.
+
+## Examples
+
+Pass as the aspect payload to **`update_aspect`** with `aspect: "styles"` on the site root page.
+
+```json
+{
+  "themeStylingEnabled": "yes",
+  "primaryColor": "#1a73e8",
+  "secondaryColor": "#5f6368",
+  "tertiaryColor": "#34a853",
+  "backgroundColor": "#ffffff",
+  "paragraphFontFamily": "'Open Sans', sans-serif",
+  "cardBorderRadius": "md",
+  "buttonColorSource": "tertiary",
+  "menuStylingEnabled": "no"
+}
+```
+
+Minimal brand update:
+
+```json
+{
+  "primaryColor": "#1a73e8",
+  "tertiaryColor": "#34a853"
+}
+```
