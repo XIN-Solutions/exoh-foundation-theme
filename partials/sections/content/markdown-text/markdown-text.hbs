@@ -1,5 +1,5 @@
 {{let .
-      textAlignment=(map left='left' center='center' right='right' justified='justify')
+      textAlignment=(map left='text-start' center='text-center' right='text-end' justified='text-justify')
 }}
 
 {{let .
@@ -21,7 +21,7 @@
         <div class="row">
             <div class="col-md-{{?? config.columnSize '12'}} col-sm-12 mx-auto">
                 {{#if config.markdown}}
-                    <div style="column-count: {{?? config.textColumns '1'}}; text-align: {{selectedTextAlignment}};">
+                    <div class="markdown-text__body {{selectedTextAlignment}}" style="column-count: {{?? config.textColumns '1'}};">
                         {{{markdown-to-html config.markdown}}}
                     </div>
                 {{else}}
