@@ -1,4 +1,4 @@
-<div class="nk-block theme-editor" x-init="themeEditorAttach($data)">
+<div class="theme-editor space-y-6" x-init="themeEditorAttach($data)">
     <input type="hidden" name="styles[googleFonts]" x-model="googleFonts">
     <input type="hidden" name="styles[h1FontFamily]" x-model="h1FontFamily">
     <input type="hidden" name="styles[h2FontFamily]" x-model="h2FontFamily">
@@ -6,47 +6,39 @@
     <input type="hidden" name="styles[h4FontFamily]" x-model="h4FontFamily">
     <input type="hidden" name="styles[h5FontFamily]" x-model="h5FontFamily">
     <template x-if="googleFontsHref"><link rel="stylesheet" :href="googleFontsHref"></template>
-    <div class="nk-block-head nk-block-head-sm nk-block-between">
-        <div class="nk-block-head-content">
-            <h5 class="nk-block-title">Theme Editor</h5>
-            <div class="nk-block-des">
-                <p class="text-soft">Customize the colours, typography, and appearance of this site.</p>
-            </div>
+    <div class="flex flex-wrap items-start justify-between gap-4">
+        <div class="min-w-0">
+            <h2 class="font-headline text-lg font-semibold tracking-tight text-admin-text">Theme Editor</h2>
+            <p class="mt-1 text-sm text-admin-muted">Customize the colours, typography, and appearance of this site.</p>
         </div>
-        <div class="nk-block-head-content">
-            <ul class="nk-block-tools g-2 align-items-center">
-                <li x-show="isDirty" x-cloak>
-                    <span class="badge badge-dim bg-warning">Unsaved changes</span>
-                </li>
-                <li>
-                    <button type="button" class="btn btn-dim btn-outline-light" @click="resetToSaved()">
-                        <em class="icon ni ni-reload"></em>
-                        <span>Reset</span>
-                    </button>
-                </li>
-            </ul>
+        <div class="flex shrink-0 items-center gap-3">
+            <span x-show="isDirty" x-cloak class="inline-flex items-center rounded-full bg-amber-100 px-3 py-1 text-xs font-medium text-amber-800">Unsaved changes</span>
+            <button type="button" class="inline-flex items-center gap-1.5 rounded-lg border border-admin-border bg-admin-surface px-4 py-2 text-sm font-medium text-admin-text hover:bg-admin-surface-muted" @click="resetToSaved()">
+                <span class="material-symbols-outlined text-[18px]" aria-hidden="true">refresh</span>Reset
+            </button>
         </div>
     </div>
 
-    <div class="nk-block">
-        <div class="row g-gs">
+    <div>
+        <div class="grid grid-cols-1 gap-6 lg:grid-cols-12">
         <!-- Controls -->
-        <div class="col-lg-5 order-2 order-lg-1">
-            <div class="card card-bordered">
-                <div class="card-inner">
-            <div class="form-group mb-3">
-                <div class="custom-control custom-switch">
-                    <input type="checkbox" class="custom-control-input" id="themeStylingEnabledInp"
-                        :checked="themeStylingEnabled === 'yes'"
-                        @change="themeStylingEnabled = $event.target.checked ? 'yes' : 'no'">
-                    <label class="custom-control-label" for="themeStylingEnabledInp">Enable theme styling</label>
-                </div>
+        <div class="lg:col-span-5 order-2 lg:order-1">
+            <div class="rounded-xl border border-admin-border bg-admin-surface shadow-card-sm">
+                <div class="p-5">
+            <div class="mb-4">
+                <label class="flex items-center justify-between gap-3">
+                    <span class="text-sm text-admin-text">Enable theme styling</span>
+                    <button type="button" data-guide-switch role="switch" :aria-checked="themeStylingEnabled === 'yes' ? 'true' : 'false'" @click="themeStylingEnabled = themeStylingEnabled === 'yes' ? 'no' : 'yes'" :class="themeStylingEnabled === 'yes' ? 'bg-admin-primary' : 'bg-admin-border'" class="relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors focus:outline-none focus:ring-2 focus:ring-admin-primary focus:ring-offset-2">
+                        <span data-guide-switch-knob class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition" :class="themeStylingEnabled === 'yes' ? 'translate-x-5' : 'translate-x-0'"></span>
+                    </button>
+                    <input type="checkbox" class="sr-only" id="themeStylingEnabledInp" :checked="themeStylingEnabled === 'yes'" @change="themeStylingEnabled = $event.target.checked ? 'yes' : 'no'">
+                </label>
                 <input type="hidden" name="styles[themeStylingEnabled]" x-model="themeStylingEnabled">
             </div>
-            <div class="form-group mb-4">
-                <label class="form-label" for="stylePresetInp">Style preset</label>
-                <div class="form-control-wrap">
-                <select class="form-select" id="stylePresetInp" x-model="selectedStylePreset" @change="applyStylePreset(selectedStylePreset)">
+            <div class="mb-4">
+                <label class="block font-label text-sm font-medium text-admin-text" for="stylePresetInp">Style preset</label>
+                <div class="">
+                <select class="mt-1 block w-full rounded-lg border border-admin-border bg-admin-surface px-4 py-2.5 text-sm text-admin-text shadow-sm focus:border-admin-primary focus:ring-admin-primary" id="stylePresetInp" x-model="selectedStylePreset" @change="applyStylePreset(selectedStylePreset)">
                     <option value="">Custom</option>
                     <optgroup label="Light themes">
                         <option value="kidsActivities">Kids Activities</option>
@@ -69,18 +61,22 @@
                     </optgroup>
                 </select>
                 </div>
-                <div class="form-note">Applies fonts, colours, and type scale. You can still tweak individual settings after.</div>
+                <div class="mt-1 text-xs text-admin-muted">Applies fonts, colours, and type scale. You can still tweak individual settings after.</div>
             </div>
-            <div class="accordion" id="themeEditorControls">
+            <div class="space-y-2" id="themeEditorControls">
                 <!-- Brand -->
-                <div class="accordion-item">
-                    <a href="#" class="accordion-head" data-bs-toggle="collapse" data-bs-target="#teBrand">
-                        <h6 class="title"><em class="icon ni ni-palette me-1"></em> Brand</h6>
-                        <span class="accordion-icon"></span>
-                    </a>
-                    <div class="accordion-body collapse show" id="teBrand" data-bs-parent="#themeEditorControls">
-                        <div class="accordion-inner">
-                            <div class="form-note mb-3">Core colours used across buttons, links, and sections.</div>
+                <div class="rounded-lg border border-admin-border" x-data="{ open: true }">
+                    <button type="button"
+                            class="flex w-full items-center justify-between gap-2 px-4 py-3 text-left text-sm font-medium text-admin-text hover:bg-admin-surface-muted"
+                            @click="open = !open"
+                            :aria-expanded="open ? 'true' : 'false'">
+                        <span class="inline-flex items-center gap-1.5">
+                            <span class="material-symbols-outlined text-[18px]" aria-hidden="true">palette</span>
+                            Brand
+                        </span>
+                        <span class="material-symbols-outlined text-[20px] text-admin-muted transition-transform" :class="open ? 'rotate-180' : ''" aria-hidden="true">expand_more</span>
+                    </button>
+                    <div x-show="open" class="border-t border-admin-border px-4 py-4"><div class="mt-1 text-xs text-admin-muted mb-3">Core colours used across buttons, links, and sections.</div>
                             <div class="theme-editor__swatches">
                                 <label class="theme-editor__swatch">
                                     <span class="theme-editor__swatch-label">Brand</span>
@@ -108,47 +104,44 @@
                                     <span class="theme-editor__swatch-hex" x-text="altBackgroundColor || '—'"></span>
                                 </label>
                             </div>
-                            <div class="d-flex align-items-center gap-2 mt-3">
-                                <button type="button" class="btn btn-sm btn-outline-light" @click="randomizeBrandColors()">
-                                    <em class="icon ni ni-update"></em>
-                                    <span>Randomize colours</span>
-                                </button>
-                            </div>
-                            <div class="form-note mt-2">Generates a harmonious brand and typography palette for the current light/dark mode.</div>
-                        </div>
-                    </div>
+                            <div class="mt-3"><button type="button" class="inline-flex items-center gap-1.5 rounded-lg border border-admin-border bg-admin-surface px-3 py-1.5 text-sm font-medium text-admin-text hover:bg-admin-surface-muted" @click="randomizeBrandColors()"><span class="material-symbols-outlined text-[18px]" aria-hidden="true">shuffle</span>Randomize colours</button></div>
+                            <div class="mt-2 text-xs text-admin-muted">Generates a harmonious brand and typography palette for the current light/dark mode.</div></div>
                 </div>
 
                 <!-- Typography -->
-                <div class="accordion-item">
-                    <a href="#" class="accordion-head collapsed" data-bs-toggle="collapse" data-bs-target="#teTypography">
-                        <h6 class="title"><em class="icon ni ni-text-a me-1"></em> Typography</h6>
-                        <span class="accordion-icon"></span>
-                    </a>
-                    <div class="accordion-body collapse" id="teTypography" data-bs-parent="#themeEditorControls">
-                        <div class="accordion-inner">
-                            <div class="form-group">
-                                <label class="form-label" for="headingFontInp">Heading font</label>
-                                <div class="form-control-wrap">
-                                <select class="form-select" id="headingFontInp" x-model="headingFont" @change="onHeadingFontChange($event.target.value)"></select>
+                <div class="rounded-lg border border-admin-border" x-data="{ open: false }">
+                    <button type="button"
+                            class="flex w-full items-center justify-between gap-2 px-4 py-3 text-left text-sm font-medium text-admin-text hover:bg-admin-surface-muted"
+                            @click="open = !open"
+                            :aria-expanded="open ? 'true' : 'false'">
+                        <span class="inline-flex items-center gap-1.5">
+                            <span class="material-symbols-outlined text-[18px]" aria-hidden="true">text_fields</span>
+                            Typography
+                        </span>
+                        <span class="material-symbols-outlined text-[20px] text-admin-muted transition-transform" :class="open ? 'rotate-180' : ''" aria-hidden="true">expand_more</span>
+                    </button>
+                    <div x-show="open" class="border-t border-admin-border px-4 py-4"><div class="mb-4">
+                                <label class="block font-label text-sm font-medium text-admin-text" for="headingFontInp">Heading font</label>
+                                <div class="">
+                                <select class="mt-1 block w-full rounded-lg border border-admin-border bg-admin-surface px-4 py-2.5 text-sm text-admin-text shadow-sm focus:border-admin-primary focus:ring-admin-primary" id="headingFontInp" x-model="headingFont" @change="onHeadingFontChange($event.target.value)"></select>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label class="form-label" for="bodyFontInp">Body font</label>
-                                <div class="form-control-wrap">
-                                <select class="form-select" id="bodyFontInp" name="styles[paragraphFontFamily]" x-model="paragraphFontFamily" @change="onFontFamilyChange()"></select>
+                            <div class="mb-4">
+                                <label class="block font-label text-sm font-medium text-admin-text" for="bodyFontInp">Body font</label>
+                                <div class="">
+                                <select class="mt-1 block w-full rounded-lg border border-admin-border bg-admin-surface px-4 py-2.5 text-sm text-admin-text shadow-sm focus:border-admin-primary focus:ring-admin-primary" id="bodyFontInp" name="styles[paragraphFontFamily]" x-model="paragraphFontFamily" @change="onFontFamilyChange()"></select>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label class="form-label" for="typeScaleInp">Type scale</label>
-                                <div class="form-control-wrap">
-                                <select class="form-select" id="typeScaleInp" x-model="typeScale" @change="applyTypeScale(typeScale)">
+                            <div class="mb-4">
+                                <label class="block font-label text-sm font-medium text-admin-text" for="typeScaleInp">Type scale</label>
+                                <div class="">
+                                <select class="mt-1 block w-full rounded-lg border border-admin-border bg-admin-surface px-4 py-2.5 text-sm text-admin-text shadow-sm focus:border-admin-primary focus:ring-admin-primary" id="typeScaleInp" x-model="typeScale" @change="applyTypeScale(typeScale)">
                                     <option value="compact">Compact</option>
                                     <option value="default">Default</option>
                                     <option value="large">Large</option>
                                 </select>
                                 </div>
-                                <div class="form-note">Adjusts heading and body sizes together.</div>
+                                <div class="mt-1 text-xs text-admin-muted">Adjusts heading and body sizes together.</div>
                             </div>
                             <div class="theme-editor__swatches">
                                 <label class="theme-editor__swatch">
@@ -161,23 +154,25 @@
                                     <input type="color" class="theme-editor__swatch-input" id="paragraphColorSimpleInp" name="styles[paragraphColor]" x-model="paragraphColor">
                                     <span class="theme-editor__swatch-hex" x-text="paragraphColor || '—'"></span>
                                 </label>
-                            </div>
-                        </div>
-                    </div>
+                            </div></div>
                 </div>
 
                 <!-- Appearance -->
-                <div class="accordion-item">
-                    <a href="#" class="accordion-head collapsed" data-bs-toggle="collapse" data-bs-target="#teAppearance">
-                        <h6 class="title"><em class="icon ni ni-moon me-1"></em> Appearance</h6>
-                        <span class="accordion-icon"></span>
-                    </a>
-                    <div class="accordion-body collapse" id="teAppearance" data-bs-parent="#themeEditorControls">
-                        <div class="accordion-inner">
-                            <div class="form-group">
-                                <label class="form-label" for="cardBorderRadiusInp">Card roundedness</label>
-                                <div class="form-control-wrap">
-                                <select class="form-select" id="cardBorderRadiusInp" name="styles[cardBorderRadius]" x-model="cardBorderRadius">
+                <div class="rounded-lg border border-admin-border" x-data="{ open: false }">
+                    <button type="button"
+                            class="flex w-full items-center justify-between gap-2 px-4 py-3 text-left text-sm font-medium text-admin-text hover:bg-admin-surface-muted"
+                            @click="open = !open"
+                            :aria-expanded="open ? 'true' : 'false'">
+                        <span class="inline-flex items-center gap-1.5">
+                            <span class="material-symbols-outlined text-[18px]" aria-hidden="true">dark_mode</span>
+                            Appearance
+                        </span>
+                        <span class="material-symbols-outlined text-[20px] text-admin-muted transition-transform" :class="open ? 'rotate-180' : ''" aria-hidden="true">expand_more</span>
+                    </button>
+                    <div x-show="open" class="border-t border-admin-border px-4 py-4"><div class="mb-4">
+                                <label class="block font-label text-sm font-medium text-admin-text" for="cardBorderRadiusInp">Card roundedness</label>
+                                <div class="">
+                                <select class="mt-1 block w-full rounded-lg border border-admin-border bg-admin-surface px-4 py-2.5 text-sm text-admin-text shadow-sm focus:border-admin-primary focus:ring-admin-primary" id="cardBorderRadiusInp" name="styles[cardBorderRadius]" x-model="cardBorderRadius">
                                     <option value="none">Square</option>
                                     <option value="sm">Slightly rounded</option>
                                     <option value="default">Default</option>
@@ -187,10 +182,10 @@
                                 </select>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label class="form-label" for="buttonBorderRadiusInp">Button roundedness</label>
-                                <div class="form-control-wrap">
-                                <select class="form-select" id="buttonBorderRadiusInp" name="styles[buttonBorderRadius]" x-model="buttonBorderRadius">
+                            <div class="mb-4">
+                                <label class="block font-label text-sm font-medium text-admin-text" for="buttonBorderRadiusInp">Button roundedness</label>
+                                <div class="">
+                                <select class="mt-1 block w-full rounded-lg border border-admin-border bg-admin-surface px-4 py-2.5 text-sm text-admin-text shadow-sm focus:border-admin-primary focus:ring-admin-primary" id="buttonBorderRadiusInp" name="styles[buttonBorderRadius]" x-model="buttonBorderRadius">
                                     <option value="none">Square</option>
                                     <option value="sm">Slightly rounded</option>
                                     <option value="default">Default</option>
@@ -200,10 +195,10 @@
                                 </select>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label class="form-label" for="imageBorderRadiusInp">Image roundedness</label>
-                                <div class="form-control-wrap">
-                                <select class="form-select" id="imageBorderRadiusInp" name="styles[imageBorderRadius]" x-model="imageBorderRadius">
+                            <div class="mb-4">
+                                <label class="block font-label text-sm font-medium text-admin-text" for="imageBorderRadiusInp">Image roundedness</label>
+                                <div class="">
+                                <select class="mt-1 block w-full rounded-lg border border-admin-border bg-admin-surface px-4 py-2.5 text-sm text-admin-text shadow-sm focus:border-admin-primary focus:ring-admin-primary" id="imageBorderRadiusInp" name="styles[imageBorderRadius]" x-model="imageBorderRadius">
                                     <option value="none">Square</option>
                                     <option value="sm">Slightly rounded</option>
                                     <option value="default">Default</option>
@@ -213,10 +208,10 @@
                                 </select>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label class="form-label" for="cardShadowInp">Card shadow</label>
-                                <div class="form-control-wrap">
-                                <select class="form-select" id="cardShadowInp" name="styles[cardShadow]" x-model="cardShadow">
+                            <div class="mb-4">
+                                <label class="block font-label text-sm font-medium text-admin-text" for="cardShadowInp">Card shadow</label>
+                                <div class="">
+                                <select class="mt-1 block w-full rounded-lg border border-admin-border bg-admin-surface px-4 py-2.5 text-sm text-admin-text shadow-sm focus:border-admin-primary focus:ring-admin-primary" id="cardShadowInp" name="styles[cardShadow]" x-model="cardShadow">
                                     <option value="none">None</option>
                                     <option value="sm">Small</option>
                                     <option value="default">Medium</option>
@@ -225,25 +220,25 @@
                                 </select>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label class="form-label" for="buttonColorSourceInp">Button background colour</label>
-                                <div class="form-control-wrap">
-                                <select class="form-select" id="buttonColorSourceInp" name="styles[buttonColorSource]" x-model="buttonColorSource">
+                            <div class="mb-4">
+                                <label class="block font-label text-sm font-medium text-admin-text" for="buttonColorSourceInp">Button background colour</label>
+                                <div class="">
+                                <select class="mt-1 block w-full rounded-lg border border-admin-border bg-admin-surface px-4 py-2.5 text-sm text-admin-text shadow-sm focus:border-admin-primary focus:ring-admin-primary" id="buttonColorSourceInp" name="styles[buttonColorSource]" x-model="buttonColorSource">
                                     <option value="primary">Brand</option>
                                     <option value="secondary">Secondary</option>
                                     <option value="tertiary">Accent</option>
                                     <option value="custom">Custom</option>
                                 </select>
                                 </div>
-                                <div class="form-note">Used for Learn more and Read more buttons across content sections.</div>
+                                <div class="mt-1 text-xs text-admin-muted">Used for Learn more and Read more buttons across content sections.</div>
                             </div>
-                            <div class="form-group" x-show="buttonColorSource === 'custom'" x-cloak>
-                                <label class="form-label" for="buttonColorCustomInp">Custom button colour</label>
-                                <div class="form-control-wrap">
-                                    <input type="color" class="form-control form-control-color w-100" id="buttonColorCustomInp" name="styles[buttonColorCustom]" x-model="buttonColorCustom">
+                            <div class="mb-4" x-show="buttonColorSource === 'custom'" x-cloak>
+                                <label class="block font-label text-sm font-medium text-admin-text" for="buttonColorCustomInp">Custom button colour</label>
+                                <div class="">
+                                    <input type="color" class="h-10 w-full cursor-pointer rounded-lg border border-admin-border bg-admin-surface p-1" id="buttonColorCustomInp" name="styles[buttonColorCustom]" x-model="buttonColorCustom">
                                 </div>
                             </div>
-                            <div class="form-group">
+                            <div class="mb-4">
                                 <div class="form-check form-switch">
                                     <input class="form-check-input" type="checkbox" id="darkModeSwitch" role="switch"
                                         :checked="darkMode === 'yes'"
@@ -251,31 +246,34 @@
                                     <label class="form-check-label" for="darkModeSwitch">Dark mode</label>
                                 </div>
                                 <input type="hidden" name="styles[darkMode]" x-model="darkMode">
-                                <div class="form-note mt-2">Applies <code>data-bs-theme="dark"</code> on the live site.</div>
-                            </div>
-                        </div>
+                                <div class="mt-1 text-xs text-admin-muted mt-2">Applies <code>data-bs-theme="dark"</code> on the live site.</div></div>
                     </div>
                 </div>
 
                 <!-- Navigation -->
-                <div class="accordion-item">
-                    <a href="#" class="accordion-head collapsed" data-bs-toggle="collapse" data-bs-target="#teNavigation">
-                        <h6 class="title"><em class="icon ni ni-menu me-1"></em> Navigation</h6>
-                        <span class="accordion-icon"></span>
-                    </a>
-                    <div class="accordion-body collapse" id="teNavigation" data-bs-parent="#themeEditorControls">
-                        <div class="accordion-inner">
-                            <div class="form-group mb-3">
-                                <div class="custom-control custom-switch">
-                                    <input type="checkbox" class="custom-control-input" id="menuStylingEnabledInp"
-                                        :checked="menuStylingEnabled === 'yes'"
-                                        @change="menuStylingEnabled = $event.target.checked ? 'yes' : 'no'">
-                                    <label class="custom-control-label" for="menuStylingEnabledInp">Enable menu styling</label>
-                                </div>
+                <div class="rounded-lg border border-admin-border" x-data="{ open: false }">
+                    <button type="button"
+                            class="flex w-full items-center justify-between gap-2 px-4 py-3 text-left text-sm font-medium text-admin-text hover:bg-admin-surface-muted"
+                            @click="open = !open"
+                            :aria-expanded="open ? 'true' : 'false'">
+                        <span class="inline-flex items-center gap-1.5">
+                            <span class="material-symbols-outlined text-[18px]" aria-hidden="true">menu</span>
+                            Navigation
+                        </span>
+                        <span class="material-symbols-outlined text-[20px] text-admin-muted transition-transform" :class="open ? 'rotate-180' : ''" aria-hidden="true">expand_more</span>
+                    </button>
+                    <div x-show="open" class="border-t border-admin-border px-4 py-4"><div class="mb-4">
+                                <label class="flex items-center justify-between gap-3">
+                                    <span class="text-sm text-admin-text">Enable menu styling</span>
+                                    <button type="button" data-guide-switch role="switch" :aria-checked="menuStylingEnabled === 'yes' ? 'true' : 'false'" @click="menuStylingEnabled = menuStylingEnabled === 'yes' ? 'no' : 'yes'" :class="menuStylingEnabled === 'yes' ? 'bg-admin-primary' : 'bg-admin-border'" class="relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors focus:outline-none focus:ring-2 focus:ring-admin-primary focus:ring-offset-2">
+                                        <span data-guide-switch-knob class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition" :class="menuStylingEnabled === 'yes' ? 'translate-x-5' : 'translate-x-0'"></span>
+                                    </button>
+                                    <input type="checkbox" class="sr-only" id="menuStylingEnabledInp" :checked="menuStylingEnabled === 'yes'" @change="menuStylingEnabled = $event.target.checked ? 'yes' : 'no'">
+                                </label>
                                 <input type="hidden" name="styles[menuStylingEnabled]" x-model="menuStylingEnabled">
                             </div>
                             <div x-show="menuStylingEnabled === 'yes'" x-cloak>
-                                <div class="form-note mb-3">Override navigation menu colours and typography. Section buttons are not affected.</div>
+                                <div class="mt-1 text-xs text-admin-muted mb-3">Override navigation menu colours and typography. Section buttons are not affected.</div>
                                 <div class="theme-editor__swatches">
                                     <label class="theme-editor__swatch">
                                         <span class="theme-editor__swatch-label">Menu item</span>
@@ -293,21 +291,21 @@
                                         <span class="theme-editor__swatch-hex" x-text="menuCtaTextColor || '—'"></span>
                                     </label>
                                 </div>
-                                <div class="form-group mt-3">
-                                    <label class="form-label" for="menuFontInp">Menu font</label>
-                                    <div class="form-control-wrap">
-                                        <select class="form-select" id="menuFontInp" x-model="menuFontFamily" @change="onMenuFontChange()">
+                                <div class="mt-3">
+                                    <label class="block font-label text-sm font-medium text-admin-text" for="menuFontInp">Menu font</label>
+                                    <div class="">
+                                        <select class="mt-1 block w-full rounded-lg border border-admin-border bg-admin-surface px-4 py-2.5 text-sm text-admin-text shadow-sm focus:border-admin-primary focus:ring-admin-primary" id="menuFontInp" x-model="menuFontFamily" @change="onMenuFontChange()">
                                             <option value="">Default</option>
                                         </select>
                                     </div>
                                     <input type="hidden" name="styles[menuFontFamily]" x-model="menuFontFamily">
                                 </div>
-                                <div class="row g-3">
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label class="form-label" for="menuFontSizeInp">Menu font size</label>
-                                            <div class="form-control-wrap">
-                                                <select class="form-select" id="menuFontSizeInp" name="styles[menuFontSize]" x-model="menuFontSize">
+                                <div class="grid grid-cols-2 gap-3">
+                                    <div class="">
+                                        <div class="mb-4">
+                                            <label class="block font-label text-sm font-medium text-admin-text" for="menuFontSizeInp">Menu font size</label>
+                                            <div class="">
+                                                <select class="mt-1 block w-full rounded-lg border border-admin-border bg-admin-surface px-4 py-2.5 text-sm text-admin-text shadow-sm focus:border-admin-primary focus:ring-admin-primary" id="menuFontSizeInp" name="styles[menuFontSize]" x-model="menuFontSize">
                                                     <option value="">Default</option>
                                                     <option value="12px">12px</option>
                                                     <option value="14px">14px</option>
@@ -316,14 +314,12 @@
                                                     <option value="18px">18px</option>
                                                     <option value="20px">20px</option>
                                                 </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label class="form-label" for="menuFontWeightInp">Menu font weight</label>
-                                            <div class="form-control-wrap">
-                                                <select class="form-select" id="menuFontWeightInp" name="styles[menuFontWeight]" x-model="menuFontWeight">
+                                            </div></div>
+                                    <div class="">
+                                        <div class="mb-4">
+                                            <label class="block font-label text-sm font-medium text-admin-text" for="menuFontWeightInp">Menu font weight</label>
+                                            <div class="">
+                                                <select class="mt-1 block w-full rounded-lg border border-admin-border bg-admin-surface px-4 py-2.5 text-sm text-admin-text shadow-sm focus:border-admin-primary focus:ring-admin-primary" id="menuFontWeightInp" name="styles[menuFontWeight]" x-model="menuFontWeight">
                                                     <option value="">Default</option>
                                                     <option value="100">100 - Thin</option>
                                                     <option value="200">200 - Extra Light</option>
@@ -347,31 +343,32 @@
                 </div>
             </div>
 
-            <h6 class="card-title mt-4 mb-2"><em class="icon ni ni-setting me-1"></em> Advanced</h6>
-            <div class="card card-bordered">
-                <div class="card-inner">
-                    <div class="form-note mb-3">Overrides simple typography settings for individual levels.</div>
-                    <div class="accordion" id="themeEditorAdvancedLevels">
+            <h6 class="mt-4 mb-2 text-sm font-semibold text-admin-text"><span class="material-symbols-outlined text-[18px] align-middle" aria-hidden="true">tune</span> Advanced</h6>
+            <div class="rounded-xl border border-admin-border bg-admin-surface shadow-card-sm">
+                <div class="p-5">
+                    <div class="mt-1 text-xs text-admin-muted mb-3">Overrides simple typography settings for individual levels.</div>
+                    <div class="space-y-2" id="themeEditorAdvancedLevels">
                                 <!-- H1 -->
-                                <div class="accordion-item">
-                                    <a href="#" class="accordion-head collapsed" data-bs-toggle="collapse" data-bs-target="#teAdvH1">
-                                        <h6 class="title">H1</h6>
-                                        <span class="accordion-icon"></span>
-                                    </a>
-                                    <div class="accordion-body collapse" id="teAdvH1" data-bs-parent="#themeEditorAdvancedLevels">
-                                        <div class="accordion-inner">
-                                            <div class="row gy-3">
-                                                <div class="col-6">
-                                                    <label class="form-label" for="h1ColorInp">Colour</label>
-                                                    <input type="color" class="form-control form-control-color" id="h1ColorInp" name="styles[h1Color]" x-model="h1Color">
+                                <div class="rounded-lg border border-admin-border" x-data="{ open: false }">
+                    <button type="button"
+                            class="flex w-full items-center justify-between gap-2 px-3 py-2 text-left text-sm font-medium text-admin-text hover:bg-admin-surface-muted"
+                            @click="open = !open"
+                            :aria-expanded="open ? 'true' : 'false'">
+                        <span>H1</span>
+                        <span class="material-symbols-outlined text-[18px] text-admin-muted transition-transform" :class="open ? 'rotate-180' : ''" aria-hidden="true">expand_more</span>
+                    </button>
+                    <div x-show="open" class="border-t border-admin-border px-3 py-3"><div class="grid grid-cols-2 gap-3">
+                                                <div class="">
+                                                    <label class="block font-label text-sm font-medium text-admin-text" for="h1ColorInp">Colour</label>
+                                                    <input type="color" class="h-10 w-full cursor-pointer rounded-lg border border-admin-border bg-admin-surface p-1" id="h1ColorInp" name="styles[h1Color]" x-model="h1Color">
                                                 </div>
-                                                <div class="col-6">
-                                                    <label class="form-label" for="h1FontInp">Font family</label>
-                                                    <select class="form-select" id="h1FontInp" x-model="h1FontFamily" @change="onAdvancedHeadingFontChange()"></select>
+                                                <div class="">
+                                                    <label class="block font-label text-sm font-medium text-admin-text" for="h1FontInp">Font family</label>
+                                                    <select class="mt-1 block w-full rounded-lg border border-admin-border bg-admin-surface px-4 py-2.5 text-sm text-admin-text shadow-sm focus:border-admin-primary focus:ring-admin-primary" id="h1FontInp" x-model="h1FontFamily" @change="onAdvancedHeadingFontChange()"></select>
                                                 </div>
-                                                <div class="col-6">
-                                                    <label class="form-label" for="h1WeightInp">Weight</label>
-                                                    <select class="form-select" id="h1WeightInp" name="styles[h1FontWeight]" x-model="h1FontWeight">
+                                                <div class="">
+                                                    <label class="block font-label text-sm font-medium text-admin-text" for="h1WeightInp">Weight</label>
+                                                    <select class="mt-1 block w-full rounded-lg border border-admin-border bg-admin-surface px-4 py-2.5 text-sm text-admin-text shadow-sm focus:border-admin-primary focus:ring-admin-primary" id="h1WeightInp" name="styles[h1FontWeight]" x-model="h1FontWeight">
                                                         <option value="">Default</option>
                                                         <option value="100">100 - Thin</option>
                                                         <option value="200">200 - Extra Light</option>
@@ -384,9 +381,9 @@
                                                         <option value="900">900 - Black</option>
                                                     </select>
                                                 </div>
-                                                <div class="col-6">
-                                                    <label class="form-label" for="h1SizeInp">Size</label>
-                                                    <select class="form-select" id="h1SizeInp" name="styles[h1FontSize]" x-model="h1FontSize" @change="inferTypeScaleFromSizes()">
+                                                <div class="">
+                                                    <label class="block font-label text-sm font-medium text-admin-text" for="h1SizeInp">Size</label>
+                                                    <select class="mt-1 block w-full rounded-lg border border-admin-border bg-admin-surface px-4 py-2.5 text-sm text-admin-text shadow-sm focus:border-admin-primary focus:ring-admin-primary" id="h1SizeInp" name="styles[h1FontSize]" x-model="h1FontSize" @change="inferTypeScaleFromSizes()">
                                                         <option value="">Default</option>
                                                         <option value="24px">24px</option>
                                                         <option value="28px">28px</option>
@@ -398,31 +395,30 @@
                                                         <option value="64px">64px</option>
                                                         <option value="72px">72px</option>
                                                     </select>
-                                                </div>
-                                            </div>
-                                        </div>
+                                                </div></div>
                                     </div>
                                 </div>
                                 <!-- H2 -->
-                                <div class="accordion-item">
-                                    <a href="#" class="accordion-head collapsed" data-bs-toggle="collapse" data-bs-target="#teAdvH2">
-                                        <h6 class="title">H2</h6>
-                                        <span class="accordion-icon"></span>
-                                    </a>
-                                    <div class="accordion-body collapse" id="teAdvH2" data-bs-parent="#themeEditorAdvancedLevels">
-                                        <div class="accordion-inner">
-                                            <div class="row gy-3">
-                                                <div class="col-6">
-                                                    <label class="form-label" for="h2ColorInp">Colour</label>
-                                                    <input type="color" class="form-control form-control-color" id="h2ColorInp" name="styles[h2Color]" x-model="h2Color">
+                                <div class="rounded-lg border border-admin-border" x-data="{ open: false }">
+                    <button type="button"
+                            class="flex w-full items-center justify-between gap-2 px-3 py-2 text-left text-sm font-medium text-admin-text hover:bg-admin-surface-muted"
+                            @click="open = !open"
+                            :aria-expanded="open ? 'true' : 'false'">
+                        <span>H2</span>
+                        <span class="material-symbols-outlined text-[18px] text-admin-muted transition-transform" :class="open ? 'rotate-180' : ''" aria-hidden="true">expand_more</span>
+                    </button>
+                    <div x-show="open" class="border-t border-admin-border px-3 py-3"><div class="grid grid-cols-2 gap-3">
+                                                <div class="">
+                                                    <label class="block font-label text-sm font-medium text-admin-text" for="h2ColorInp">Colour</label>
+                                                    <input type="color" class="h-10 w-full cursor-pointer rounded-lg border border-admin-border bg-admin-surface p-1" id="h2ColorInp" name="styles[h2Color]" x-model="h2Color">
                                                 </div>
-                                                <div class="col-6">
-                                                    <label class="form-label" for="h2FontInp">Font family</label>
-                                                    <select class="form-select" id="h2FontInp" x-model="h2FontFamily" @change="onAdvancedHeadingFontChange()"></select>
+                                                <div class="">
+                                                    <label class="block font-label text-sm font-medium text-admin-text" for="h2FontInp">Font family</label>
+                                                    <select class="mt-1 block w-full rounded-lg border border-admin-border bg-admin-surface px-4 py-2.5 text-sm text-admin-text shadow-sm focus:border-admin-primary focus:ring-admin-primary" id="h2FontInp" x-model="h2FontFamily" @change="onAdvancedHeadingFontChange()"></select>
                                                 </div>
-                                                <div class="col-6">
-                                                    <label class="form-label" for="h2WeightInp">Weight</label>
-                                                    <select class="form-select" id="h2WeightInp" name="styles[h2FontWeight]" x-model="h2FontWeight">
+                                                <div class="">
+                                                    <label class="block font-label text-sm font-medium text-admin-text" for="h2WeightInp">Weight</label>
+                                                    <select class="mt-1 block w-full rounded-lg border border-admin-border bg-admin-surface px-4 py-2.5 text-sm text-admin-text shadow-sm focus:border-admin-primary focus:ring-admin-primary" id="h2WeightInp" name="styles[h2FontWeight]" x-model="h2FontWeight">
                                                         <option value="">Default</option>
                                                         <option value="100">100 - Thin</option>
                                                         <option value="200">200 - Extra Light</option>
@@ -435,9 +431,9 @@
                                                         <option value="900">900 - Black</option>
                                                     </select>
                                                 </div>
-                                                <div class="col-6">
-                                                    <label class="form-label" for="h2SizeInp">Size</label>
-                                                    <select class="form-select" id="h2SizeInp" name="styles[h2FontSize]" x-model="h2FontSize" @change="inferTypeScaleFromSizes()">
+                                                <div class="">
+                                                    <label class="block font-label text-sm font-medium text-admin-text" for="h2SizeInp">Size</label>
+                                                    <select class="mt-1 block w-full rounded-lg border border-admin-border bg-admin-surface px-4 py-2.5 text-sm text-admin-text shadow-sm focus:border-admin-primary focus:ring-admin-primary" id="h2SizeInp" name="styles[h2FontSize]" x-model="h2FontSize" @change="inferTypeScaleFromSizes()">
                                                         <option value="">Default</option>
                                                         <option value="20px">20px</option>
                                                         <option value="24px">24px</option>
@@ -448,31 +444,30 @@
                                                         <option value="48px">48px</option>
                                                         <option value="56px">56px</option>
                                                     </select>
-                                                </div>
-                                            </div>
-                                        </div>
+                                                </div></div>
                                     </div>
                                 </div>
                                 <!-- H3 -->
-                                <div class="accordion-item">
-                                    <a href="#" class="accordion-head collapsed" data-bs-toggle="collapse" data-bs-target="#teAdvH3">
-                                        <h6 class="title">H3</h6>
-                                        <span class="accordion-icon"></span>
-                                    </a>
-                                    <div class="accordion-body collapse" id="teAdvH3" data-bs-parent="#themeEditorAdvancedLevels">
-                                        <div class="accordion-inner">
-                                            <div class="row gy-3">
-                                                <div class="col-6">
-                                                    <label class="form-label" for="h3ColorInp">Colour</label>
-                                                    <input type="color" class="form-control form-control-color" id="h3ColorInp" name="styles[h3Color]" x-model="h3Color">
+                                <div class="rounded-lg border border-admin-border" x-data="{ open: false }">
+                    <button type="button"
+                            class="flex w-full items-center justify-between gap-2 px-3 py-2 text-left text-sm font-medium text-admin-text hover:bg-admin-surface-muted"
+                            @click="open = !open"
+                            :aria-expanded="open ? 'true' : 'false'">
+                        <span>H3</span>
+                        <span class="material-symbols-outlined text-[18px] text-admin-muted transition-transform" :class="open ? 'rotate-180' : ''" aria-hidden="true">expand_more</span>
+                    </button>
+                    <div x-show="open" class="border-t border-admin-border px-3 py-3"><div class="grid grid-cols-2 gap-3">
+                                                <div class="">
+                                                    <label class="block font-label text-sm font-medium text-admin-text" for="h3ColorInp">Colour</label>
+                                                    <input type="color" class="h-10 w-full cursor-pointer rounded-lg border border-admin-border bg-admin-surface p-1" id="h3ColorInp" name="styles[h3Color]" x-model="h3Color">
                                                 </div>
-                                                <div class="col-6">
-                                                    <label class="form-label" for="h3FontInp">Font family</label>
-                                                    <select class="form-select" id="h3FontInp" x-model="h3FontFamily" @change="onAdvancedHeadingFontChange()"></select>
+                                                <div class="">
+                                                    <label class="block font-label text-sm font-medium text-admin-text" for="h3FontInp">Font family</label>
+                                                    <select class="mt-1 block w-full rounded-lg border border-admin-border bg-admin-surface px-4 py-2.5 text-sm text-admin-text shadow-sm focus:border-admin-primary focus:ring-admin-primary" id="h3FontInp" x-model="h3FontFamily" @change="onAdvancedHeadingFontChange()"></select>
                                                 </div>
-                                                <div class="col-6">
-                                                    <label class="form-label" for="h3WeightInp">Weight</label>
-                                                    <select class="form-select" id="h3WeightInp" name="styles[h3FontWeight]" x-model="h3FontWeight">
+                                                <div class="">
+                                                    <label class="block font-label text-sm font-medium text-admin-text" for="h3WeightInp">Weight</label>
+                                                    <select class="mt-1 block w-full rounded-lg border border-admin-border bg-admin-surface px-4 py-2.5 text-sm text-admin-text shadow-sm focus:border-admin-primary focus:ring-admin-primary" id="h3WeightInp" name="styles[h3FontWeight]" x-model="h3FontWeight">
                                                         <option value="">Default</option>
                                                         <option value="100">100 - Thin</option>
                                                         <option value="200">200 - Extra Light</option>
@@ -485,9 +480,9 @@
                                                         <option value="900">900 - Black</option>
                                                     </select>
                                                 </div>
-                                                <div class="col-6">
-                                                    <label class="form-label" for="h3SizeInp">Size</label>
-                                                    <select class="form-select" id="h3SizeInp" name="styles[h3FontSize]" x-model="h3FontSize" @change="inferTypeScaleFromSizes()">
+                                                <div class="">
+                                                    <label class="block font-label text-sm font-medium text-admin-text" for="h3SizeInp">Size</label>
+                                                    <select class="mt-1 block w-full rounded-lg border border-admin-border bg-admin-surface px-4 py-2.5 text-sm text-admin-text shadow-sm focus:border-admin-primary focus:ring-admin-primary" id="h3SizeInp" name="styles[h3FontSize]" x-model="h3FontSize" @change="inferTypeScaleFromSizes()">
                                                         <option value="">Default</option>
                                                         <option value="16px">16px</option>
                                                         <option value="18px">18px</option>
@@ -497,31 +492,30 @@
                                                         <option value="32px">32px</option>
                                                         <option value="36px">36px</option>
                                                     </select>
-                                                </div>
-                                            </div>
-                                        </div>
+                                                </div></div>
                                     </div>
                                 </div>
                                 <!-- H4 -->
-                                <div class="accordion-item">
-                                    <a href="#" class="accordion-head collapsed" data-bs-toggle="collapse" data-bs-target="#teAdvH4">
-                                        <h6 class="title">H4</h6>
-                                        <span class="accordion-icon"></span>
-                                    </a>
-                                    <div class="accordion-body collapse" id="teAdvH4" data-bs-parent="#themeEditorAdvancedLevels">
-                                        <div class="accordion-inner">
-                                            <div class="row gy-3">
-                                                <div class="col-6">
-                                                    <label class="form-label" for="h4ColorInp">Colour</label>
-                                                    <input type="color" class="form-control form-control-color" id="h4ColorInp" name="styles[h4Color]" x-model="h4Color">
+                                <div class="rounded-lg border border-admin-border" x-data="{ open: false }">
+                    <button type="button"
+                            class="flex w-full items-center justify-between gap-2 px-3 py-2 text-left text-sm font-medium text-admin-text hover:bg-admin-surface-muted"
+                            @click="open = !open"
+                            :aria-expanded="open ? 'true' : 'false'">
+                        <span>H4</span>
+                        <span class="material-symbols-outlined text-[18px] text-admin-muted transition-transform" :class="open ? 'rotate-180' : ''" aria-hidden="true">expand_more</span>
+                    </button>
+                    <div x-show="open" class="border-t border-admin-border px-3 py-3"><div class="grid grid-cols-2 gap-3">
+                                                <div class="">
+                                                    <label class="block font-label text-sm font-medium text-admin-text" for="h4ColorInp">Colour</label>
+                                                    <input type="color" class="h-10 w-full cursor-pointer rounded-lg border border-admin-border bg-admin-surface p-1" id="h4ColorInp" name="styles[h4Color]" x-model="h4Color">
                                                 </div>
-                                                <div class="col-6">
-                                                    <label class="form-label" for="h4FontInp">Font family</label>
-                                                    <select class="form-select" id="h4FontInp" x-model="h4FontFamily" @change="onAdvancedHeadingFontChange()"></select>
+                                                <div class="">
+                                                    <label class="block font-label text-sm font-medium text-admin-text" for="h4FontInp">Font family</label>
+                                                    <select class="mt-1 block w-full rounded-lg border border-admin-border bg-admin-surface px-4 py-2.5 text-sm text-admin-text shadow-sm focus:border-admin-primary focus:ring-admin-primary" id="h4FontInp" x-model="h4FontFamily" @change="onAdvancedHeadingFontChange()"></select>
                                                 </div>
-                                                <div class="col-6">
-                                                    <label class="form-label" for="h4WeightInp">Weight</label>
-                                                    <select class="form-select" id="h4WeightInp" name="styles[h4FontWeight]" x-model="h4FontWeight">
+                                                <div class="">
+                                                    <label class="block font-label text-sm font-medium text-admin-text" for="h4WeightInp">Weight</label>
+                                                    <select class="mt-1 block w-full rounded-lg border border-admin-border bg-admin-surface px-4 py-2.5 text-sm text-admin-text shadow-sm focus:border-admin-primary focus:ring-admin-primary" id="h4WeightInp" name="styles[h4FontWeight]" x-model="h4FontWeight">
                                                         <option value="">Default</option>
                                                         <option value="100">100 - Thin</option>
                                                         <option value="200">200 - Extra Light</option>
@@ -534,9 +528,9 @@
                                                         <option value="900">900 - Black</option>
                                                     </select>
                                                 </div>
-                                                <div class="col-6">
-                                                    <label class="form-label" for="h4SizeInp">Size</label>
-                                                    <select class="form-select" id="h4SizeInp" name="styles[h4FontSize]" x-model="h4FontSize" @change="inferTypeScaleFromSizes()">
+                                                <div class="">
+                                                    <label class="block font-label text-sm font-medium text-admin-text" for="h4SizeInp">Size</label>
+                                                    <select class="mt-1 block w-full rounded-lg border border-admin-border bg-admin-surface px-4 py-2.5 text-sm text-admin-text shadow-sm focus:border-admin-primary focus:ring-admin-primary" id="h4SizeInp" name="styles[h4FontSize]" x-model="h4FontSize" @change="inferTypeScaleFromSizes()">
                                                         <option value="">Default</option>
                                                         <option value="14px">14px</option>
                                                         <option value="16px">16px</option>
@@ -545,31 +539,30 @@
                                                         <option value="24px">24px</option>
                                                         <option value="28px">28px</option>
                                                     </select>
-                                                </div>
-                                            </div>
-                                        </div>
+                                                </div></div>
                                     </div>
                                 </div>
                                 <!-- H5 -->
-                                <div class="accordion-item">
-                                    <a href="#" class="accordion-head collapsed" data-bs-toggle="collapse" data-bs-target="#teAdvH5">
-                                        <h6 class="title">H5</h6>
-                                        <span class="accordion-icon"></span>
-                                    </a>
-                                    <div class="accordion-body collapse" id="teAdvH5" data-bs-parent="#themeEditorAdvancedLevels">
-                                        <div class="accordion-inner">
-                                            <div class="row gy-3">
-                                                <div class="col-6">
-                                                    <label class="form-label" for="h5ColorInp">Colour</label>
-                                                    <input type="color" class="form-control form-control-color" id="h5ColorInp" name="styles[h5Color]" x-model="h5Color">
+                                <div class="rounded-lg border border-admin-border" x-data="{ open: false }">
+                    <button type="button"
+                            class="flex w-full items-center justify-between gap-2 px-3 py-2 text-left text-sm font-medium text-admin-text hover:bg-admin-surface-muted"
+                            @click="open = !open"
+                            :aria-expanded="open ? 'true' : 'false'">
+                        <span>H5</span>
+                        <span class="material-symbols-outlined text-[18px] text-admin-muted transition-transform" :class="open ? 'rotate-180' : ''" aria-hidden="true">expand_more</span>
+                    </button>
+                    <div x-show="open" class="border-t border-admin-border px-3 py-3"><div class="grid grid-cols-2 gap-3">
+                                                <div class="">
+                                                    <label class="block font-label text-sm font-medium text-admin-text" for="h5ColorInp">Colour</label>
+                                                    <input type="color" class="h-10 w-full cursor-pointer rounded-lg border border-admin-border bg-admin-surface p-1" id="h5ColorInp" name="styles[h5Color]" x-model="h5Color">
                                                 </div>
-                                                <div class="col-6">
-                                                    <label class="form-label" for="h5FontInp">Font family</label>
-                                                    <select class="form-select" id="h5FontInp" x-model="h5FontFamily" @change="onAdvancedHeadingFontChange()"></select>
+                                                <div class="">
+                                                    <label class="block font-label text-sm font-medium text-admin-text" for="h5FontInp">Font family</label>
+                                                    <select class="mt-1 block w-full rounded-lg border border-admin-border bg-admin-surface px-4 py-2.5 text-sm text-admin-text shadow-sm focus:border-admin-primary focus:ring-admin-primary" id="h5FontInp" x-model="h5FontFamily" @change="onAdvancedHeadingFontChange()"></select>
                                                 </div>
-                                                <div class="col-6">
-                                                    <label class="form-label" for="h5WeightInp">Weight</label>
-                                                    <select class="form-select" id="h5WeightInp" name="styles[h5FontWeight]" x-model="h5FontWeight">
+                                                <div class="">
+                                                    <label class="block font-label text-sm font-medium text-admin-text" for="h5WeightInp">Weight</label>
+                                                    <select class="mt-1 block w-full rounded-lg border border-admin-border bg-admin-surface px-4 py-2.5 text-sm text-admin-text shadow-sm focus:border-admin-primary focus:ring-admin-primary" id="h5WeightInp" name="styles[h5FontWeight]" x-model="h5FontWeight">
                                                         <option value="">Default</option>
                                                         <option value="100">100 - Thin</option>
                                                         <option value="200">200 - Extra Light</option>
@@ -582,9 +575,9 @@
                                                         <option value="900">900 - Black</option>
                                                     </select>
                                                 </div>
-                                                <div class="col-6">
-                                                    <label class="form-label" for="h5SizeInp">Size</label>
-                                                    <select class="form-select" id="h5SizeInp" name="styles[h5FontSize]" x-model="h5FontSize" @change="inferTypeScaleFromSizes()">
+                                                <div class="">
+                                                    <label class="block font-label text-sm font-medium text-admin-text" for="h5SizeInp">Size</label>
+                                                    <select class="mt-1 block w-full rounded-lg border border-admin-border bg-admin-surface px-4 py-2.5 text-sm text-admin-text shadow-sm focus:border-admin-primary focus:ring-admin-primary" id="h5SizeInp" name="styles[h5FontSize]" x-model="h5FontSize" @change="inferTypeScaleFromSizes()">
                                                         <option value="">Default</option>
                                                         <option value="12px">12px</option>
                                                         <option value="14px">14px</option>
@@ -593,31 +586,30 @@
                                                         <option value="20px">20px</option>
                                                         <option value="24px">24px</option>
                                                     </select>
-                                                </div>
-                                            </div>
-                                        </div>
+                                                </div></div>
                                     </div>
                                 </div>
                                 <!-- Body -->
-                                <div class="accordion-item">
-                                    <a href="#" class="accordion-head collapsed" data-bs-toggle="collapse" data-bs-target="#teAdvBody">
-                                        <h6 class="title">Body</h6>
-                                        <span class="accordion-icon"></span>
-                                    </a>
-                                    <div class="accordion-body collapse" id="teAdvBody" data-bs-parent="#themeEditorAdvancedLevels">
-                                        <div class="accordion-inner">
-                                            <div class="row gy-3">
-                                                <div class="col-6">
-                                                    <label class="form-label" for="paragraphColorInp">Colour</label>
-                                                    <input type="color" class="form-control form-control-color" id="paragraphColorInp" x-model="paragraphColor">
+                                <div class="rounded-lg border border-admin-border" x-data="{ open: false }">
+                    <button type="button"
+                            class="flex w-full items-center justify-between gap-2 px-3 py-2 text-left text-sm font-medium text-admin-text hover:bg-admin-surface-muted"
+                            @click="open = !open"
+                            :aria-expanded="open ? 'true' : 'false'">
+                        <span>Body</span>
+                        <span class="material-symbols-outlined text-[18px] text-admin-muted transition-transform" :class="open ? 'rotate-180' : ''" aria-hidden="true">expand_more</span>
+                    </button>
+                    <div x-show="open" class="border-t border-admin-border px-3 py-3"><div class="grid grid-cols-2 gap-3">
+                                                <div class="">
+                                                    <label class="block font-label text-sm font-medium text-admin-text" for="paragraphColorInp">Colour</label>
+                                                    <input type="color" class="h-10 w-full cursor-pointer rounded-lg border border-admin-border bg-admin-surface p-1" id="paragraphColorInp" x-model="paragraphColor">
                                                 </div>
-                                                <div class="col-6">
-                                                    <label class="form-label" for="paragraphFontInp">Font family</label>
-                                                    <select class="form-select" id="paragraphFontInp" x-model="paragraphFontFamily" @change="onFontFamilyChange()"></select>
+                                                <div class="">
+                                                    <label class="block font-label text-sm font-medium text-admin-text" for="paragraphFontInp">Font family</label>
+                                                    <select class="mt-1 block w-full rounded-lg border border-admin-border bg-admin-surface px-4 py-2.5 text-sm text-admin-text shadow-sm focus:border-admin-primary focus:ring-admin-primary" id="paragraphFontInp" x-model="paragraphFontFamily" @change="onFontFamilyChange()"></select>
                                                 </div>
-                                                <div class="col-6">
-                                                    <label class="form-label" for="paragraphWeightInp">Weight</label>
-                                                    <select class="form-select" id="paragraphWeightInp" name="styles[paragraphFontWeight]" x-model="paragraphFontWeight">
+                                                <div class="">
+                                                    <label class="block font-label text-sm font-medium text-admin-text" for="paragraphWeightInp">Weight</label>
+                                                    <select class="mt-1 block w-full rounded-lg border border-admin-border bg-admin-surface px-4 py-2.5 text-sm text-admin-text shadow-sm focus:border-admin-primary focus:ring-admin-primary" id="paragraphWeightInp" name="styles[paragraphFontWeight]" x-model="paragraphFontWeight">
                                                         <option value="">Default</option>
                                                         <option value="100">100 - Thin</option>
                                                         <option value="200">200 - Extra Light</option>
@@ -630,9 +622,9 @@
                                                         <option value="900">900 - Black</option>
                                                     </select>
                                                 </div>
-                                                <div class="col-6">
-                                                    <label class="form-label" for="paragraphSizeInp">Size</label>
-                                                    <select class="form-select" id="paragraphSizeInp" name="styles[paragraphFontSize]" x-model="paragraphFontSize" @change="inferTypeScaleFromSizes()">
+                                                <div class="">
+                                                    <label class="block font-label text-sm font-medium text-admin-text" for="paragraphSizeInp">Size</label>
+                                                    <select class="mt-1 block w-full rounded-lg border border-admin-border bg-admin-surface px-4 py-2.5 text-sm text-admin-text shadow-sm focus:border-admin-primary focus:ring-admin-primary" id="paragraphSizeInp" name="styles[paragraphFontSize]" x-model="paragraphFontSize" @change="inferTypeScaleFromSizes()">
                                                         <option value="">Default</option>
                                                         <option value="12px">12px</option>
                                                         <option value="14px">14px</option>
@@ -642,9 +634,7 @@
                                                         <option value="22px">22px</option>
                                                         <option value="24px">24px</option>
                                                     </select>
-                                                </div>
-                                            </div>
-                                        </div>
+                                                </div></div>
                                     </div>
                                 </div>
                     </div>
@@ -653,22 +643,22 @@
         </div>
 
         <!-- Preview -->
-        <div class="col-lg-7 order-1 order-lg-2">
+        <div class="lg:col-span-7 order-1 lg:order-2">
             <div class="theme-editor__preview-sticky">
-                <div class="card card-bordered">
-                    <div class="card-inner">
-                        <h6 class="card-title mb-3"><em class="icon ni ni-eye me-1"></em> Live preview</h6>
+                <div class="rounded-xl border border-admin-border bg-admin-surface shadow-card-sm">
+                    <div class="p-5">
+                        <h6 class="mb-3 text-sm font-semibold text-admin-text"><span class="material-symbols-outlined text-[18px] align-middle" aria-hidden="true">visibility</span> Live preview</h6>
                         <div class="theme-editor__preview"
                             :data-bs-theme="darkMode === 'yes' ? 'dark' : null"
                             :style="previewThemeStyle()">
                             <div class="theme-editor__preview-nav-section" x-show="menuStylingEnabled === 'yes'" x-cloak :style="previewPageSectionStyle()">
                                 <p class="theme-editor__preview-section-label">Navigation</p>
-                                <div class="theme-editor__preview-nav d-flex flex-wrap align-items-center gap-x-2 px-3 py-2"
+                                <div class="theme-editor__preview-nav flex flex-wrap items-center gap-x-2 px-3 py-2"
                                      :style="previewMenuStyle()">
-                                    <a href="#" class="nav-link px-2 py-1 theme-editor__sample-nav-link" @click.prevent>Home</a>
-                                    <a href="#" class="nav-link px-2 py-1 theme-editor__sample-nav-link" @click.prevent>About</a>
-                                    <a href="#" class="nav-link px-2 py-1 theme-editor__sample-nav-link" @click.prevent>Contact</a>
-                                    <a href="#" class="btn btn-primary btn-sm theme-editor__sample-nav-cta ms-auto" @click.prevent>Book now</a>
+                                    <a href="#" class="px-2 py-1 theme-editor__sample-nav-link" @click.prevent>Home</a>
+                                    <a href="#" class="px-2 py-1 theme-editor__sample-nav-link" @click.prevent>About</a>
+                                    <a href="#" class="px-2 py-1 theme-editor__sample-nav-link" @click.prevent>Contact</a>
+                                    <a href="#" class="theme-editor__sample-nav-cta ms-auto" @click.prevent>Book now</a>
                                 </div>
                             </div>
                             <div class="theme-editor__preview-page-section" :style="previewPageSectionStyle()">
@@ -682,20 +672,20 @@
                                     <p class="mb-0" :style="{ color: paragraphColor || '#212529', fontFamily: paragraphFontFamily || 'inherit', fontWeight: paragraphFontWeight || 'inherit', fontSize: paragraphFontSize || 'inherit' }">This is body text showing how your typography and colours work together on a real page.</p>
                                 </div>
                                 <div class="theme-editor__preview-components">
-                                    <div class="d-flex flex-wrap gap-2 align-items-center">
-                                        <button type="button" class="btn btn-primary btn-sm theme-editor__sample-btn">Primary</button>
-                                        <button type="button" class="btn btn-secondary btn-sm theme-editor__sample-btn">Secondary</button>
-                                        <button type="button" class="btn btn-outline-primary btn-sm theme-editor__sample-btn">Outline</button>
-                                        <button type="button" class="btn btn-link btn-sm theme-editor__sample-btn">Link</button>
-                                        <button type="button" class="btn btn-sm btn-primary theme-editor__sample-btn">Default</button>
-                                        <button type="button" class="btn buttonColor-bg btn-sm theme-editor__sample-btn">CTA button style</button>
+                                    <div class="flex flex-wrap items-center gap-2">
+                                        <button type="button" class="theme-editor__sample-btn theme-editor__sample-btn--primary">Primary</button>
+                                        <button type="button" class="theme-editor__sample-btn theme-editor__sample-btn--secondary">Secondary</button>
+                                        <button type="button" class="theme-editor__sample-btn theme-editor__sample-btn--outline">Outline</button>
+                                        <button type="button" class="theme-editor__sample-btn theme-editor__sample-btn--link">Link</button>
+                                        <button type="button" class="theme-editor__sample-btn theme-editor__sample-btn--primary">Default</button>
+                                        <button type="button" class="theme-editor__sample-btn theme-editor__sample-btn--cta">CTA button style</button>
                                     </div>
 
                                     <div class="theme-editor__preview-image-wrap mt-4">
                                         <p class="theme-editor__preview-section-label mb-2">Sample image</p>
                                         <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='180' viewBox='0 0 320 180'%3E%3Crect width='320' height='180' fill='%23dee2e6'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%236c757d' font-family='sans-serif' font-size='14'%3EImage%3C/text%3E%3C/svg%3E"
                                              alt=""
-                                             class="theme-editor__sample-image img-fluid w-100"
+                                             class="theme-editor__sample-image w-full max-w-full"
                                              :style="previewImageStyle()">
                                     </div>
                                 </div>
@@ -712,19 +702,19 @@
                                 </div>
 
                                 <div class="theme-editor__preview-components">
-                                    <div class="card theme-editor__sample-card mt-2" :style="previewCardStyle()">
-                                        <div class="card-body">
+                                    <div class="theme-editor__sample-card mt-2 border border-black/10" :style="previewCardStyle()">
+                                        <div class="p-4">
                                             <h6 class="card-title mb-2">Sample card</h6>
-                                            <p class="card-text small text-body-secondary mb-0">Cards and buttons use your roundedness and shadow settings.</p>
+                                            <p class="text-sm text-admin-muted mb-0">Cards and buttons use your roundedness and shadow settings.</p>
                                         </div>
                                     </div>
-                                    <div class="d-flex flex-wrap gap-2 align-items-center my-2">
-                                        <button type="button" class="btn btn-primary btn-sm theme-editor__sample-btn">Primary</button>
-                                        <button type="button" class="btn btn-secondary btn-sm theme-editor__sample-btn">Secondary</button>
-                                        <button type="button" class="btn btn-outline-primary btn-sm theme-editor__sample-btn">Outline</button>
-                                        <button type="button" class="btn btn-link btn-sm theme-editor__sample-btn">Link</button>
-                                        <button type="button" class="btn btn-sm btn-primary theme-editor__sample-btn">Default</button>
-                                        <button type="button" class="btn buttonColor-bg btn-sm theme-editor__sample-btn">CTA button style</button>
+                                    <div class="flex flex-wrap items-center gap-2 my-2">
+                                        <button type="button" class="theme-editor__sample-btn theme-editor__sample-btn--primary">Primary</button>
+                                        <button type="button" class="theme-editor__sample-btn theme-editor__sample-btn--secondary">Secondary</button>
+                                        <button type="button" class="theme-editor__sample-btn theme-editor__sample-btn--outline">Outline</button>
+                                        <button type="button" class="theme-editor__sample-btn theme-editor__sample-btn--link">Link</button>
+                                        <button type="button" class="theme-editor__sample-btn theme-editor__sample-btn--primary">Default</button>
+                                        <button type="button" class="theme-editor__sample-btn theme-editor__sample-btn--cta">CTA button style</button>
                                     </div>
                                 </div>
                             </div>
@@ -761,7 +751,7 @@
     font-size: 0.75rem;
     font-weight: 500;
     text-align: center;
-    color: var(--bs-secondary-color);
+    color: #6b7280;
 }
 
 .theme-editor__swatch-input {
@@ -776,7 +766,7 @@
 .theme-editor__swatch-hex {
     font-size: 0.6875rem;
     font-family: ui-monospace, monospace;
-    color: var(--bs-secondary-color);
+    color: #6b7280;
     text-transform: uppercase;
 }
 
@@ -856,6 +846,12 @@
     margin: 0;
 }
 
+
+.theme-editor__sample-btn {
+    display: inline-flex; align-items: center; padding: 0.25rem 0.75rem;
+    font-size: 0.875rem; font-weight: 500; border: 1px solid transparent;
+    border-radius: var(--te-btn-radius, 0.375rem); cursor: default;
+}
 .theme-editor__sample-card {
     overflow: hidden;
 }
@@ -875,7 +871,7 @@
     font-weight: inherit;
 }
 
-.theme-editor__preview-nav .theme-editor__sample-nav-cta {
+.theme-editor__preview-nav .theme-editor__sample-nav-cta { display:inline-flex; align-items:center; padding:0.25rem 0.75rem; font-size:0.875rem; border:1px solid transparent; text-decoration:none;
     border-radius: var(--te-btn-radius);
     font-family: inherit;
     font-size: inherit;
@@ -885,7 +881,7 @@
     border-color: var(--te-menu-cta-border, var(--theme-brand-color));
 }
 
-.theme-editor__preview .theme-editor__sample-btn.btn.buttonColor-bg {
+.theme-editor__preview .theme-editor__sample-btn.theme-editor__sample-btn--cta {
     --te-btn-color: #fff;
     --te-btn-bg: var(--theme-button-color);
     --te-btn-border-color: var(--theme-button-color);
@@ -897,19 +893,19 @@
     border-color: var(--te-btn-border-color);
 }
 
-.theme-editor__preview .theme-editor__sample-btn.btn.buttonColor-bg:hover,
-.theme-editor__preview .theme-editor__sample-btn.btn.buttonColor-bg:focus-visible {
+.theme-editor__preview .theme-editor__sample-btn.theme-editor__sample-btn--cta:hover,
+.theme-editor__preview .theme-editor__sample-btn.theme-editor__sample-btn--cta:focus-visible {
     color: var(--te-btn-hover-color);
     background-color: var(--te-btn-hover-bg);
     border-color: var(--te-btn-hover-border-color);
     filter: brightness(0.92);
 }
 
-.theme-editor__preview .theme-editor__sample-btn.btn {
+.theme-editor__preview .theme-editor__sample-btn {
     border-radius: var(--te-btn-radius);
 }
 
-.theme-editor__preview .theme-editor__sample-btn.btn-primary {
+.theme-editor__preview .theme-editor__sample-btn.theme-editor__sample-btn--primary {
     --te-btn-color: #fff;
     --te-btn-bg: var(--theme-brand-color);
     --te-btn-border-color: var(--theme-brand-color);
@@ -924,21 +920,21 @@
     border-color: var(--te-btn-border-color);
 }
 
-.theme-editor__preview .theme-editor__sample-btn.btn-primary:hover,
-.theme-editor__preview .theme-editor__sample-btn.btn-primary:focus-visible {
+.theme-editor__preview .theme-editor__sample-btn.theme-editor__sample-btn--primary:hover,
+.theme-editor__preview .theme-editor__sample-btn.theme-editor__sample-btn--primary:focus-visible {
     color: var(--te-btn-hover-color);
     background-color: var(--te-btn-hover-bg);
     border-color: var(--te-btn-hover-border-color);
 }
 
-.theme-editor__preview .theme-editor__sample-btn.btn-primary:active,
-.theme-editor__preview .theme-editor__sample-btn.btn-primary.active {
+.theme-editor__preview .theme-editor__sample-btn.theme-editor__sample-btn--primary:active,
+.theme-editor__preview .theme-editor__sample-btn.theme-editor__sample-btn--primary.active {
     color: var(--te-btn-active-color);
     background-color: var(--te-btn-active-bg);
     border-color: var(--te-btn-active-border-color);
 }
 
-.theme-editor__preview .theme-editor__sample-btn.btn-outline-primary {
+.theme-editor__preview .theme-editor__sample-btn.theme-editor__sample-btn--outline {
     --te-btn-color: var(--theme-brand-color);
     --te-btn-bg: transparent;
     --te-btn-border-color: var(--theme-brand-color);
@@ -953,21 +949,21 @@
     border-color: var(--te-btn-border-color);
 }
 
-.theme-editor__preview .theme-editor__sample-btn.btn-outline-primary:hover,
-.theme-editor__preview .theme-editor__sample-btn.btn-outline-primary:focus-visible {
+.theme-editor__preview .theme-editor__sample-btn.theme-editor__sample-btn--outline:hover,
+.theme-editor__preview .theme-editor__sample-btn.theme-editor__sample-btn--outline:focus-visible {
     color: var(--te-btn-hover-color);
     background-color: var(--te-btn-hover-bg);
     border-color: var(--te-btn-hover-border-color);
 }
 
-.theme-editor__preview .theme-editor__sample-btn.btn-outline-primary:active,
-.theme-editor__preview .theme-editor__sample-btn.btn-outline-primary.active {
+.theme-editor__preview .theme-editor__sample-btn.theme-editor__sample-btn--outline:active,
+.theme-editor__preview .theme-editor__sample-btn.theme-editor__sample-btn--outline.active {
     color: var(--te-btn-active-color);
     background-color: var(--te-btn-active-bg);
     border-color: var(--te-btn-active-border-color);
 }
 
-.theme-editor__preview .theme-editor__sample-btn.btn-secondary {
+.theme-editor__preview .theme-editor__sample-btn.theme-editor__sample-btn--secondary {
     --te-btn-color: #fff;
     --te-btn-bg: var(--theme-secondary-color);
     --te-btn-border-color: var(--theme-secondary-color);
@@ -982,21 +978,21 @@
     border-color: var(--te-btn-border-color);
 }
 
-.theme-editor__preview .theme-editor__sample-btn.btn-secondary:hover,
-.theme-editor__preview .theme-editor__sample-btn.btn-secondary:focus-visible {
+.theme-editor__preview .theme-editor__sample-btn.theme-editor__sample-btn--secondary:hover,
+.theme-editor__preview .theme-editor__sample-btn.theme-editor__sample-btn--secondary:focus-visible {
     color: var(--te-btn-hover-color);
     background-color: var(--te-btn-hover-bg);
     border-color: var(--te-btn-hover-border-color);
 }
 
-.theme-editor__preview .theme-editor__sample-btn.btn-secondary:active,
-.theme-editor__preview .theme-editor__sample-btn.btn-secondary.active {
+.theme-editor__preview .theme-editor__sample-btn.theme-editor__sample-btn--secondary:active,
+.theme-editor__preview .theme-editor__sample-btn.theme-editor__sample-btn--secondary.active {
     color: var(--te-btn-active-color);
     background-color: var(--te-btn-active-bg);
     border-color: var(--te-btn-active-border-color);
 }
 
-.theme-editor__preview .theme-editor__sample-btn.btn-link {
+.theme-editor__preview .theme-editor__sample-btn.theme-editor__sample-btn--link {
     --te-btn-color: var(--theme-accent-color);
     --te-btn-bg: transparent;
     --te-btn-border-color: transparent;
@@ -1009,8 +1005,8 @@
     text-decoration: none;
 }
 
-.theme-editor__preview .theme-editor__sample-btn.btn-link:hover,
-.theme-editor__preview .theme-editor__sample-btn.btn-link:focus-visible {
+.theme-editor__preview .theme-editor__sample-btn.theme-editor__sample-btn--link:hover,
+.theme-editor__preview .theme-editor__sample-btn.theme-editor__sample-btn--link:focus-visible {
     color: var(--te-btn-hover-color);
     background-color: var(--te-btn-hover-bg);
     border-color: var(--te-btn-hover-border-color);
