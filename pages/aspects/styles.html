@@ -239,14 +239,21 @@
                                 </div>
                             </div>
                             <div class="mb-4">
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" id="darkModeSwitch" role="switch"
-                                        :checked="darkMode === 'yes'"
-                                        @change="darkMode = $event.target.checked ? 'yes' : 'no'">
-                                    <label class="form-check-label" for="darkModeSwitch">Dark mode</label>
-                                </div>
+                                <label class="flex items-center justify-between gap-3">
+                                    <span class="text-sm text-admin-text">Dark mode</span>
+                                    <button type="button"
+                                            role="switch"
+                                            :aria-checked="darkMode === 'yes' ? 'true' : 'false'"
+                                            @click="darkMode = darkMode === 'yes' ? 'no' : 'yes'"
+                                            :class="darkMode === 'yes' ? 'bg-admin-primary' : 'bg-admin-border'"
+                                            class="relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors focus:outline-none focus:ring-2 focus:ring-admin-primary focus:ring-offset-2">
+                                        <span class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition"
+                                              :class="darkMode === 'yes' ? 'translate-x-5' : 'translate-x-0'"></span>
+                                    </button>
+                                </label>
                                 <input type="hidden" name="styles[darkMode]" x-model="darkMode">
-                                <div class="mt-1 text-xs text-admin-muted mt-2">Applies <code>data-bs-theme="dark"</code> on the live site.</div></div>
+                                <div class="mt-1 text-xs text-admin-muted mt-2">Applies <code>data-bs-theme="dark"</code> on the live site.</div>
+                            </div>
                     </div>
                 </div>
 
