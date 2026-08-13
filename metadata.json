@@ -4,13 +4,6 @@
     "mcpEnabled": true,
     "env": {
         "default": {
-            "url": "http://localhost:9999"
-        },
-        "production": {
-            "url": "https://vvvebjs-hbs-theme.exoh.cloud"
-        },
-        "emy_prod": {
-            "url": "https://classic-theme.cms.enrolmy.com"
         }
     },
     "aspects": [
