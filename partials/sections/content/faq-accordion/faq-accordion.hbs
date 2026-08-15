@@ -1,0 +1,71 @@
+{{let . resolvedItems=(?? items config.items)}}
+{{let . accordionId=(?? config.instanceId 'faq')}}
+
+<section
+    class="
+        faq-accordion
+        {{?: config.useAltBackground 'bg--alternate' ''}}
+        spacing--{{?? config.spacing 'comfortable'}}
+        {{?: config.noTopSpacing 'spacing--no-top' ''}}
+        {{?: config.noBottomSpacing 'spacing--no-bottom' ''}}
+    "
+    no-edit="children"
+    allowadd="no"
+    allowdelete="no"
+>
+    <div class="container">
+        {{#unless config.hideTitle}}
+            <div class="row justify-content-center mb-4">
+                <div class="col-lg-8 {{?: config.centerTitle 'text-center' 'text-start'}}">
+                    <h2 class="mb-3 h2-all" edit="title innerHTML">
+                        {{{?? title "Frequently asked questions"}}}
+                    </h2>
+                    {{#unless config.hideDescription}}
+                        <p class="lead mb-0 h3-all" edit="description innerHTML">
+                            {{{?? description "Answers to common questions about our product and services."}}}
+                        </p>
+                    {{/unless}}
+                </div>
+            </div>
+        {{/unless}}
+
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                {{#if resolvedItems.length}}
+                    <div class="accordion" id="faq-accordion-{{accordionId}}">
+                        {{#each resolvedItems}}
+                            <div class="accordion-item">
+                                <h3 class="accordion-header" id="faq-heading-{{../accordionId}}-{{@index}}">
+                                    <button
+                                        class="accordion-button {{?: (and ../config.expandFirst (eq @index 0)) '' 'collapsed'}}"
+                                        type="button"
+                                        data-bs-toggle="collapse"
+                                        data-bs-target="#faq-collapse-{{../accordionId}}-{{@index}}"
+                                        aria-expanded="{{?: (and ../config.expandFirst (eq @index 0)) 'true' 'false'}}"
+                                        aria-controls="faq-collapse-{{../accordionId}}-{{@index}}"
+                                    >
+                                        {{?? question "Question"}}
+                                    </button>
+                                </h3>
+                                <div
+                                    id="faq-collapse-{{../accordionId}}-{{@index}}"
+                                    class="accordion-collapse collapse {{?: (and ../config.expandFirst (eq @index 0)) 'show' ''}}"
+                                    aria-labelledby="faq-heading-{{../accordionId}}-{{@index}}"
+                                    data-bs-parent="#faq-accordion-{{../accordionId}}"
+                                >
+                                    <div class="accordion-body paragraphColor-text">
+                                        {{{?? answer "Answer text goes here."}}}
+                                    </div>
+                                </div>
+                            </div>
+                        {{/each}}
+                    </div>
+                {{else}}
+                    <div class="alert alert-warning mb-0" role="alert">
+                        No FAQ items configured yet.
+                    </div>
+                {{/if}}
+            </div>
+        </div>
+    </div>
+</section>
