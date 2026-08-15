@@ -1,0 +1,214 @@
+<form class="config-form"
+      x-data="(() => {
+            const MIN_ITEMS = 4;
+            const MAX_ITEMS = 12;
+
+            const base = componentDialog({
+                defaultConfig: {
+                    grayscale: true,
+                    centerTitle: true,
+                    hideTitle: false,
+                    useAltBackground: false,
+                    spacing: 'comfortable',
+                    noTopSpacing: false,
+                    noBottomSpacing: false,
+                    logos: [
+                        { imageUrl: '/assets/img/empty.png', alt: 'Partner logo 1', url: '' },
+                        { imageUrl: '/assets/img/empty.png', alt: 'Partner logo 2', url: '' },
+                        { imageUrl: '/assets/img/empty.png', alt: 'Partner logo 3', url: '' },
+                        { imageUrl: '/assets/img/empty.png', alt: 'Partner logo 4', url: '' },
+                        { imageUrl: '/assets/img/empty.png', alt: 'Partner logo 5', url: '' },
+                        { imageUrl: '/assets/img/empty.png', alt: 'Partner logo 6', url: '' }
+                    ]
+                }
+            });
+
+            return {
+                ...base,
+                minItems: MIN_ITEMS,
+                maxItems: MAX_ITEMS,
+                init() {
+                    this.ensureLogos();
+                },
+                ensureLogos() {
+                    if (!Array.isArray(this.config.logos))
+                    {
+                        this.config.logos = [];
+                    }
+
+                    while (this.config.logos.length < MIN_ITEMS)
+                    {
+                        this.config.logos.push({
+                            imageUrl: '/assets/img/empty.png',
+                            alt: 'Partner logo',
+                            url: ''
+                        });
+                    }
+
+                    if (this.config.logos.length > MAX_ITEMS)
+                    {
+                        this.config.logos = this.config.logos.slice(0, MAX_ITEMS);
+                    }
+                },
+                addLogo() {
+                    this.ensureLogos();
+
+                    if (this.config.logos.length >= MAX_ITEMS)
+                    {
+                        return;
+                    }
+
+                    this.config.logos.push({
+                        imageUrl: '/assets/img/empty.png',
+                        alt: 'Partner logo',
+                        url: ''
+                    });
+                },
+                removeLogo(index) {
+                    if (!Array.isArray(this.config.logos))
+                    {
+                        return;
+                    }
+
+                    if (this.config.logos.length <= MIN_ITEMS)
+                    {
+                        return;
+                    }
+
+                    this.config.logos.splice(index, 1);
+                },
+                moveLogo(fromIndex, toIndex) {
+                    if (!Array.isArray(this.config.logos))
+                    {
+                        return;
+                    }
+
+                    if (fromIndex < 0 || toIndex < 0)
+                    {
+                        return;
+                    }
+
+                    if (fromIndex >= this.config.logos.length || toIndex >= this.config.logos.length)
+                    {
+                        return;
+                    }
+
+                    if (fromIndex === toIndex)
+                    {
+                        return;
+                    }
+
+                    const next = [...this.config.logos];
+                    const [moved] = next.splice(fromIndex, 1);
+                    next.splice(toIndex, 0, moved);
+                    this.config.logos = next;
+                },
+                pickLogoImage(index) {
+                    (Vvveb.MediaModal || (Vvveb.MediaModal = new MediaModal(true))).open(null, (src) => {
+                        if (!src)
+                        {
+                            return;
+                        }
+
+                        this.ensureLogos();
+                        this.config.logos[index].imageUrl = src;
+                    });
+                }
+            };
+      })()"
+      @set="setConfig"
+      @get="getConfig"
+>
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#logo-cloud-items" role="tab">Logos</a></li>
+        <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#logo-cloud-layout" role="tab">Layout</a></li>
+        <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#logo-cloud-show-hide" role="tab">Show/Hide</a></li>
+        {{> common/dialogs/basic_nav }}
+    </ul>
+
+    <div class="tab-content">
+        <div class="tab-pane show active" id="logo-cloud-items" role="tabpanel">
+            <div class="mt-3">
+                <div class="d-flex justify-content-between align-items-center gap-2 flex-wrap mb-3">
+                    <div>
+                        <label class="form-label mb-0">Partner logos</label>
+                        <p class="form-text text-muted mb-0 small">Add, remove, and reorder logo images. Between <span x-text="minItems"></span> and <span x-text="maxItems"></span> items.</p>
+                    </div>
+                    <button
+                        type="button"
+                        class="btn btn-primary btn-sm"
+                        @click="addLogo()"
+                        :disabled="(config.logos || []).length >= maxItems"
+                    >
+                        Add logo
+                    </button>
+                </div>
+
+                <div class="d-flex flex-column gap-3">
+                    <template x-for="(logo, logoIndex) in (config.logos || [])" :key="logoIndex">
+                        <div class="p-3 border rounded bg-light">
+                            <div class="d-flex justify-content-between align-items-start gap-2 mb-3 flex-wrap">
+                                <h6 class="mb-0" x-text="logo.alt || `Logo ${logoIndex + 1}`"></h6>
+                                <div class="btn-group btn-group-sm">
+                                    <button type="button" class="btn btn-outline-secondary" @click="moveLogo(logoIndex, logoIndex - 1)" :disabled="logoIndex === 0" aria-label="Move logo up" title="Move logo up">▲</button>
+                                    <button type="button" class="btn btn-outline-secondary" @click="moveLogo(logoIndex, logoIndex + 1)" :disabled="logoIndex === (config.logos.length - 1)" aria-label="Move logo down" title="Move logo down">▼</button>
+                                    <button type="button" class="btn btn-outline-danger" @click="removeLogo(logoIndex)" :disabled="config.logos.length <= minItems" aria-label="Remove logo" title="Remove logo">✕</button>
+                                </div>
+                            </div>
+
+                            <div class="d-flex align-items-start gap-3 flex-wrap mb-2">
+                                <div class="border rounded bg-white p-2" style="width: 120px; height: 64px;">
+                                    <img
+                                        :src="logo.imageUrl || '/assets/img/empty.png'"
+                                        alt=""
+                                        class="img-fluid w-100 h-100"
+                                        style="object-fit: contain;"
+                                    >
+                                </div>
+                                <div class="flex-grow-1">
+                                    <button type="button" class="btn btn-outline-secondary btn-sm" @click="pickLogoImage(logoIndex)">Choose image</button>
+                                </div>
+                            </div>
+
+                            <div class="mb-2">
+                                <label class="form-label small mb-1">Alt text</label>
+                                <input type="text" class="form-control form-control-sm" x-model="logo.alt" placeholder="Accessible description">
+                            </div>
+
+                            <div class="mb-0">
+                                <label class="form-label small mb-1">Link URL (optional)</label>
+                                <input type="text" class="form-control form-control-sm" x-model="logo.url" placeholder="https://example.com">
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane" id="logo-cloud-layout" role="tabpanel">
+            <div class="p-3 bg-light border rounded mt-3">
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" x-model="config.grayscale" id="logoCloudGrayscale">
+                    <label class="form-check-label" for="logoCloudGrayscale">Display logos in grayscale (colour on hover)</label>
+                </div>
+                <div class="form-check mb-0">
+                    <input class="form-check-input" type="checkbox" x-model="config.centerTitle" id="logoCloudCenterTitle">
+                    <label class="form-check-label" for="logoCloudCenterTitle">Center section title</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane" id="logo-cloud-show-hide" role="tabpanel">
+            <div class="p-3 bg-light border rounded mt-3">
+                <div class="mb-0">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" x-model="config.hideTitle" id="logoCloudHideTitle">
+                        <label class="form-check-label" for="logoCloudHideTitle">Hide section title</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{> common/dialogs/basic_content hideAlternateBackground=false }}
+    </div>
+</form>
