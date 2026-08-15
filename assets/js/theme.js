@@ -12,8 +12,17 @@ var navbar = document.getElementsByClassName("navbar")[0];
 // Get the offset position of the navbar
 var sticky = navbar?.offsetTop ? navbar?.offsetTop : navbar?.offsetHeight;
 
+function isCmsDarkMode() {
+	return document.documentElement.getAttribute('data-bs-theme') === 'dark';
+}
+
 function toggleNavbarTheme () {
 	if (!navbar) {
+		return;
+	}
+
+	if (isCmsDarkMode()) {
+		navbar.classList.remove('navbar-light');
 		return;
 	}
 

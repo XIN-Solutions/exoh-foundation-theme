@@ -1,6 +1,8 @@
 {{let . site=(ancestor-of-type 'site')}}
 {{let . content=site.content}}
 {{let . siteSettings=content.forms.site}}
+{{let . styleSettings=content.forms.styles}}
+{{let . isDarkMode=(eq styleSettings.darkMode 'yes')}}
 {{let . navigation=content.expand.navigation}}
 {{let . footer=content.forms.footer}}
 
@@ -37,7 +39,7 @@
     </div>
   {{/if}}
   
-  <div class="navbar navbar-expand-md">
+  <div class="navbar navbar-expand-md{{?: isDarkMode ' navbar-dark' ''}}">
 
     <div class="container">
       <div>
