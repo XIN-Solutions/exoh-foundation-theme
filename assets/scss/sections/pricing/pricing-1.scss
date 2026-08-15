@@ -1,0 +1,25 @@
+.pricing-1 {
+	.pricing-plan-card {
+		position: relative;
+		overflow: hidden;
+
+		&--highlighted {
+			border-color: var(--theme-tertiaryColor) !important;
+			transform: translateY(-4px);
+		}
+	}
+
+	.pricing-plan-badge {
+		position: absolute;
+		top: 0;
+		right: 0;
+		padding: 0.35rem 1.25rem;
+		font-size: 0.65rem;
+		letter-spacing: 0.08em;
+		border-bottom-left-radius: var(--theme-cardBorderRadius);
+	}
+
+	.pricing-trusted-by a:hover {
+		opacity: 1;
+	}
+}
