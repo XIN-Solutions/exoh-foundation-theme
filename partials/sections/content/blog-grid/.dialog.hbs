@@ -1,0 +1,266 @@
+<form class="config-form"
+      x-data="(() => {
+            const MIN_ITEMS = 2;
+            const MAX_ITEMS = 6;
+
+            const base = componentDialog({
+                defaultConfig: {
+                    columns: 'three',
+                    hideDate: false,
+                    centerTitle: true,
+                    hideTitle: false,
+                    useAltBackground: false,
+                    spacing: 'comfortable',
+                    noTopSpacing: false,
+                    noBottomSpacing: false,
+                    items: [
+                        {
+                            title: 'How we scaled customer onboarding',
+                            excerpt: 'Lessons from rolling out self-serve workflows to thousands of teams.',
+                            date: 'February 10, 2026',
+                            imageUrl: '/assets/img/empty.png',
+                            imageAlt: 'Team collaborating on onboarding flow',
+                            url: '/blog/scaling-onboarding',
+                            linkText: 'Read article'
+                        },
+                        {
+                            title: 'Security at scale',
+                            excerpt: 'An overview of our SOC 2 controls and data residency options.',
+                            date: 'January 22, 2026',
+                            imageUrl: '/assets/img/empty.png',
+                            imageAlt: 'Security dashboard',
+                            url: '/blog/security-at-scale',
+                            linkText: 'Read article'
+                        },
+                        {
+                            title: 'Product roadmap highlights',
+                            excerpt: 'What we shipped last quarter and what is coming next.',
+                            date: 'January 5, 2026',
+                            imageUrl: '/assets/img/empty.png',
+                            imageAlt: 'Product roadmap sketch',
+                            url: '/blog/roadmap-highlights',
+                            linkText: 'Read article'
+                        }
+                    ]
+                }
+            });
+
+            return {
+                ...base,
+                minItems: MIN_ITEMS,
+                maxItems: MAX_ITEMS,
+                init() {
+                    this.ensureItems();
+                },
+                ensureItems() {
+                    if (!Array.isArray(this.config.items))
+                    {
+                        this.config.items = [];
+                    }
+
+                    while (this.config.items.length < MIN_ITEMS)
+                    {
+                        this.config.items.push({
+                            title: 'Article title',
+                            excerpt: 'Brief excerpt summarising the article.',
+                            date: 'January 15, 2026',
+                            imageUrl: '/assets/img/empty.png',
+                            imageAlt: 'Article image',
+                            url: '#',
+                            linkText: 'Read more'
+                        });
+                    }
+
+                    if (this.config.items.length > MAX_ITEMS)
+                    {
+                        this.config.items = this.config.items.slice(0, MAX_ITEMS);
+                    }
+                },
+                addItem() {
+                    this.ensureItems();
+
+                    if (this.config.items.length >= MAX_ITEMS)
+                    {
+                        return;
+                    }
+
+                    this.config.items.push({
+                        title: 'Article title',
+                        excerpt: 'Brief excerpt summarising the article.',
+                        date: 'January 15, 2026',
+                        imageUrl: '/assets/img/empty.png',
+                        imageAlt: 'Article image',
+                        url: '#',
+                        linkText: 'Read more'
+                    });
+                },
+                removeItem(index) {
+                    if (!Array.isArray(this.config.items))
+                    {
+                        return;
+                    }
+
+                    if (this.config.items.length <= MIN_ITEMS)
+                    {
+                        return;
+                    }
+
+                    this.config.items.splice(index, 1);
+                },
+                moveItem(fromIndex, toIndex) {
+                    if (!Array.isArray(this.config.items))
+                    {
+                        return;
+                    }
+
+                    if (fromIndex < 0 || toIndex < 0)
+                    {
+                        return;
+                    }
+
+                    if (fromIndex >= this.config.items.length || toIndex >= this.config.items.length)
+                    {
+                        return;
+                    }
+
+                    if (fromIndex === toIndex)
+                    {
+                        return;
+                    }
+
+                    const next = [...this.config.items];
+                    const [moved] = next.splice(fromIndex, 1);
+                    next.splice(toIndex, 0, moved);
+                    this.config.items = next;
+                },
+                pickItemImage(index) {
+                    (Vvveb.MediaModal || (Vvveb.MediaModal = new MediaModal(true))).open(null, (src) => {
+                        if (!src)
+                        {
+                            return;
+                        }
+
+                        this.ensureItems();
+                        this.config.items[index].imageUrl = src;
+                    });
+                }
+            };
+      })()"
+      @set="setConfig"
+      @get="getConfig"
+>
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#blog-grid-articles" role="tab">Articles</a></li>
+        <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#blog-grid-layout" role="tab">Layout</a></li>
+        <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#blog-grid-show-hide" role="tab">Show/Hide</a></li>
+        {{> common/dialogs/basic_nav }}
+    </ul>
+
+    <div class="tab-content">
+        <div class="tab-pane show active" id="blog-grid-articles" role="tabpanel">
+            <div class="mt-3">
+                <div class="d-flex justify-content-between align-items-center gap-2 flex-wrap mb-3">
+                    <div>
+                        <label class="form-label mb-0">Article cards</label>
+                        <p class="form-text text-muted mb-0 small">Add, remove, and reorder articles. Between <span x-text="minItems"></span> and <span x-text="maxItems"></span> items. v1 uses manual items — no live blog loader.</p>
+                    </div>
+                    <button
+                        type="button"
+                        class="btn btn-primary btn-sm"
+                        @click="addItem()"
+                        :disabled="(config.items || []).length >= maxItems"
+                    >
+                        Add article
+                    </button>
+                </div>
+
+                <div class="d-flex flex-column gap-3">
+                    <template x-for="(item, itemIndex) in (config.items || [])" :key="itemIndex">
+                        <div class="p-3 border rounded bg-light">
+                            <div class="d-flex justify-content-between align-items-start gap-2 mb-3 flex-wrap">
+                                <h6 class="mb-0" x-text="item.title || `Article ${itemIndex + 1}`"></h6>
+                                <div class="btn-group btn-group-sm">
+                                    <button type="button" class="btn btn-outline-secondary" @click="moveItem(itemIndex, itemIndex - 1)" :disabled="itemIndex === 0" aria-label="Move article up" title="Move article up">▲</button>
+                                    <button type="button" class="btn btn-outline-secondary" @click="moveItem(itemIndex, itemIndex + 1)" :disabled="itemIndex === (config.items.length - 1)" aria-label="Move article down" title="Move article down">▼</button>
+                                    <button type="button" class="btn btn-outline-danger" @click="removeItem(itemIndex)" :disabled="config.items.length <= minItems" aria-label="Remove article" title="Remove article">✕</button>
+                                </div>
+                            </div>
+
+                            <div class="mb-2">
+                                <label class="form-label small mb-1">Title</label>
+                                <input type="text" class="form-control form-control-sm" x-model="item.title" placeholder="Article title">
+                            </div>
+
+                            <div class="mb-2">
+                                <label class="form-label small mb-1">Excerpt</label>
+                                <textarea class="form-control form-control-sm" rows="2" x-model="item.excerpt" placeholder="Brief excerpt"></textarea>
+                            </div>
+
+                            <div class="mb-2">
+                                <label class="form-label small mb-1">Date</label>
+                                <input type="text" class="form-control form-control-sm" x-model="item.date" placeholder="e.g. March 4, 2026">
+                            </div>
+
+                            <div class="mb-2">
+                                <label class="form-label small mb-1">Image</label>
+                                <div class="d-flex gap-2 align-items-center flex-wrap">
+                                    <img
+                                        :src="item.imageUrl || '/assets/img/empty.png'"
+                                        alt=""
+                                        class="img-fluid border"
+                                        style="max-height: 64px; max-width: 120px;"
+                                    >
+                                    <button type="button" class="btn btn-outline-secondary btn-sm" @click="pickItemImage(itemIndex)">
+                                        Choose image
+                                    </button>
+                                </div>
+                                <input type="text" class="form-control form-control-sm mt-2" x-model="item.imageAlt" placeholder="Image alt text">
+                            </div>
+
+                            <div class="mb-2">
+                                <label class="form-label small mb-1">Link URL</label>
+                                <input type="text" class="form-control form-control-sm" x-model="item.url" placeholder="/blog/article-slug">
+                            </div>
+
+                            <div class="mb-0">
+                                <label class="form-label small mb-1">Link text</label>
+                                <input type="text" class="form-control form-control-sm" x-model="item.linkText" placeholder="Read more">
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane" id="blog-grid-layout" role="tabpanel">
+            <div class="p-3 bg-light border rounded mt-3">
+                <div class="mb-3">
+                    <label class="form-label">Columns</label>
+                    <select class="form-select" x-model="config.columns">
+                        <option value="two">Two columns</option>
+                        <option value="three">Three columns</option>
+                    </select>
+                </div>
+                <div class="form-check mb-0">
+                    <input class="form-check-input" type="checkbox" x-model="config.centerTitle" id="blogGridCenterTitle">
+                    <label class="form-check-label" for="blogGridCenterTitle">Center section title</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane" id="blog-grid-show-hide" role="tabpanel">
+            <div class="p-3 bg-light border rounded mt-3">
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" x-model="config.hideTitle" id="blogGridHideTitle">
+                    <label class="form-check-label" for="blogGridHideTitle">Hide section title</label>
+                </div>
+                <div class="form-check mb-0">
+                    <input class="form-check-input" type="checkbox" x-model="config.hideDate" id="blogGridHideDate">
+                    <label class="form-check-label" for="blogGridHideDate">Hide publication dates</label>
+                </div>
+            </div>
+        </div>
+
+        {{> common/dialogs/basic_content hideAlternateBackground=false }}
+    </div>
+</form>
