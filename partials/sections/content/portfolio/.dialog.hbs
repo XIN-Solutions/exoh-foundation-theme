@@ -1,0 +1,305 @@
+<form class="config-form"
+      x-data="(() => {
+            const MIN_ITEMS = 2;
+            const MAX_ITEMS = 6;
+
+            const base = componentDialog({
+                defaultConfig: {
+                    columns: 'three',
+                    showFilterTags: false,
+                    hideCategory: false,
+                    centerTitle: true,
+                    hideTitle: false,
+                    useAltBackground: false,
+                    spacing: 'comfortable',
+                    noTopSpacing: false,
+                    noBottomSpacing: false,
+                    filterCategories: ['Branding', 'Web design', 'Product'],
+                    items: [
+                        {
+                            title: 'Northwind rebrand',
+                            category: 'Branding',
+                            description: 'Identity system and launch assets for a B2B logistics platform.',
+                            imageUrl: '/assets/img/empty.png',
+                            imageAlt: 'Northwind brand guidelines spread',
+                            url: '/work/northwind-rebrand',
+                            linkText: 'View case study'
+                        },
+                        {
+                            title: 'Acme commerce platform',
+                            category: 'Web design',
+                            description: 'Headless storefront redesign with improved conversion flows.',
+                            imageUrl: '/assets/img/empty.png',
+                            imageAlt: 'Acme storefront homepage',
+                            url: '/work/acme-commerce',
+                            linkText: 'View case study'
+                        },
+                        {
+                            title: 'Launchpad mobile app',
+                            category: 'Product',
+                            description: 'End-to-end product design for a team collaboration app.',
+                            imageUrl: '/assets/img/empty.png',
+                            imageAlt: 'Launchpad mobile screens',
+                            url: '/work/launchpad-app',
+                            linkText: 'View case study'
+                        }
+                    ]
+                }
+            });
+
+            return {
+                ...base,
+                minItems: MIN_ITEMS,
+                maxItems: MAX_ITEMS,
+                init() {
+                    this.ensureItems();
+                    this.syncFilterCategories();
+                },
+                syncFilterCategories() {
+                    const seen = new Set();
+                    const categories = [];
+
+                    for (const item of (this.config.items || []))
+                    {
+                        const category = (item.category || '').trim();
+
+                        if (!category)
+                        {
+                            continue;
+                        }
+
+                        const key = category.toLowerCase();
+
+                        if (seen.has(key))
+                        {
+                            continue;
+                        }
+
+                        seen.add(key);
+                        categories.push(category);
+                    }
+
+                    this.config.filterCategories = categories;
+                },
+                ensureItems() {
+                    if (!Array.isArray(this.config.items))
+                    {
+                        this.config.items = [];
+                    }
+
+                    while (this.config.items.length < MIN_ITEMS)
+                    {
+                        this.config.items.push({
+                            title: 'Project title',
+                            category: 'Category',
+                            description: 'Brief summary of the project outcome.',
+                            imageUrl: '/assets/img/empty.png',
+                            imageAlt: 'Project image',
+                            url: '#',
+                            linkText: 'View case study'
+                        });
+                    }
+
+                    if (this.config.items.length > MAX_ITEMS)
+                    {
+                        this.config.items = this.config.items.slice(0, MAX_ITEMS);
+                    }
+                },
+                addItem() {
+                    this.ensureItems();
+
+                    if (this.config.items.length >= MAX_ITEMS)
+                    {
+                        return;
+                    }
+
+                    this.config.items.push({
+                        title: 'Project title',
+                        category: 'Category',
+                        description: 'Brief summary of the project outcome.',
+                        imageUrl: '/assets/img/empty.png',
+                        imageAlt: 'Project image',
+                        url: '#',
+                        linkText: 'View case study'
+                    });
+                    this.syncFilterCategories();
+                },
+                removeItem(index) {
+                    if (!Array.isArray(this.config.items))
+                    {
+                        return;
+                    }
+
+                    if (this.config.items.length <= MIN_ITEMS)
+                    {
+                        return;
+                    }
+
+                    this.config.items.splice(index, 1);
+                    this.syncFilterCategories();
+                },
+                moveItem(fromIndex, toIndex) {
+                    if (!Array.isArray(this.config.items))
+                    {
+                        return;
+                    }
+
+                    if (fromIndex < 0 || toIndex < 0)
+                    {
+                        return;
+                    }
+
+                    if (fromIndex >= this.config.items.length || toIndex >= this.config.items.length)
+                    {
+                        return;
+                    }
+
+                    if (fromIndex === toIndex)
+                    {
+                        return;
+                    }
+
+                    const next = [...this.config.items];
+                    const [moved] = next.splice(fromIndex, 1);
+                    next.splice(toIndex, 0, moved);
+                    this.config.items = next;
+                    this.syncFilterCategories();
+                },
+                pickItemImage(index) {
+                    (Vvveb.MediaModal || (Vvveb.MediaModal = new MediaModal(true))).open(null, (src) => {
+                        if (!src)
+                        {
+                            return;
+                        }
+
+                        this.ensureItems();
+                        this.config.items[index].imageUrl = src;
+                    });
+                },
+                updateItemCategory() {
+                    this.syncFilterCategories();
+                }
+            };
+      })()"
+      @set="setConfig"
+      @get="getConfig"
+>
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#portfolio-projects" role="tab">Projects</a></li>
+        <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#portfolio-layout" role="tab">Layout</a></li>
+        <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#portfolio-show-hide" role="tab">Show/Hide</a></li>
+        {{> common/dialogs/basic_nav }}
+    </ul>
+
+    <div class="tab-content">
+        <div class="tab-pane show active" id="portfolio-projects" role="tabpanel">
+            <div class="mt-3">
+                <div class="d-flex justify-content-between align-items-center gap-2 flex-wrap mb-3">
+                    <div>
+                        <label class="form-label mb-0">Project cards</label>
+                        <p class="form-text text-muted mb-0 small">Add, remove, and reorder projects. Between <span x-text="minItems"></span> and <span x-text="maxItems"></span> items. v1 uses manual items — no live project loader.</p>
+                    </div>
+                    <button
+                        type="button"
+                        class="btn btn-primary btn-sm"
+                        @click="addItem()"
+                        :disabled="(config.items || []).length >= maxItems"
+                    >
+                        Add project
+                    </button>
+                </div>
+
+                <div class="d-flex flex-column gap-3">
+                    <template x-for="(item, itemIndex) in (config.items || [])" :key="itemIndex">
+                        <div class="p-3 border rounded bg-light">
+                            <div class="d-flex justify-content-between align-items-start gap-2 mb-3 flex-wrap">
+                                <h6 class="mb-0" x-text="item.title || `Project ${itemIndex + 1}`"></h6>
+                                <div class="btn-group btn-group-sm">
+                                    <button type="button" class="btn btn-outline-secondary" @click="moveItem(itemIndex, itemIndex - 1)" :disabled="itemIndex === 0" aria-label="Move project up" title="Move project up">▲</button>
+                                    <button type="button" class="btn btn-outline-secondary" @click="moveItem(itemIndex, itemIndex + 1)" :disabled="itemIndex === (config.items.length - 1)" aria-label="Move project down" title="Move project down">▼</button>
+                                    <button type="button" class="btn btn-outline-danger" @click="removeItem(itemIndex)" :disabled="config.items.length <= minItems" aria-label="Remove project" title="Remove project">✕</button>
+                                </div>
+                            </div>
+
+                            <div class="mb-2">
+                                <label class="form-label small mb-1">Title</label>
+                                <input type="text" class="form-control form-control-sm" x-model="item.title" placeholder="Project title">
+                            </div>
+
+                            <div class="mb-2">
+                                <label class="form-label small mb-1">Category</label>
+                                <input type="text" class="form-control form-control-sm" x-model="item.category" @change="updateItemCategory()" @blur="updateItemCategory()" placeholder="e.g. Branding">
+                            </div>
+
+                            <div class="mb-2">
+                                <label class="form-label small mb-1">Description</label>
+                                <textarea class="form-control form-control-sm" rows="2" x-model="item.description" placeholder="Brief project summary"></textarea>
+                            </div>
+
+                            <div class="mb-2">
+                                <label class="form-label small mb-1">Image</label>
+                                <div class="d-flex gap-2 align-items-center flex-wrap">
+                                    <img
+                                        :src="item.imageUrl || '/assets/img/empty.png'"
+                                        alt=""
+                                        class="img-fluid border"
+                                        style="max-height: 64px; max-width: 120px;"
+                                    >
+                                    <button type="button" class="btn btn-outline-secondary btn-sm" @click="pickItemImage(itemIndex)">
+                                        Choose image
+                                    </button>
+                                </div>
+                                <input type="text" class="form-control form-control-sm mt-2" x-model="item.imageAlt" placeholder="Image alt text">
+                            </div>
+
+                            <div class="mb-2">
+                                <label class="form-label small mb-1">Link URL</label>
+                                <input type="text" class="form-control form-control-sm" x-model="item.url" placeholder="/work/project-slug">
+                            </div>
+
+                            <div class="mb-0">
+                                <label class="form-label small mb-1">Link text</label>
+                                <input type="text" class="form-control form-control-sm" x-model="item.linkText" placeholder="View case study">
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane" id="portfolio-layout" role="tabpanel">
+            <div class="p-3 bg-light border rounded mt-3">
+                <div class="mb-3">
+                    <label class="form-label">Columns</label>
+                    <select class="form-select" x-model="config.columns">
+                        <option value="two">Two columns</option>
+                        <option value="three">Three columns</option>
+                    </select>
+                </div>
+                <div class="form-check mb-0">
+                    <input class="form-check-input" type="checkbox" x-model="config.centerTitle" id="portfolioCenterTitle">
+                    <label class="form-check-label" for="portfolioCenterTitle">Center section title</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane" id="portfolio-show-hide" role="tabpanel">
+            <div class="p-3 bg-light border rounded mt-3">
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" x-model="config.hideTitle" id="portfolioHideTitle">
+                    <label class="form-check-label" for="portfolioHideTitle">Hide section title</label>
+                </div>
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" x-model="config.hideCategory" id="portfolioHideCategory">
+                    <label class="form-check-label" for="portfolioHideCategory">Hide category badges on cards</label>
+                </div>
+                <div class="form-check mb-0">
+                    <input class="form-check-input" type="checkbox" x-model="config.showFilterTags" id="portfolioShowFilterTags">
+                    <label class="form-check-label" for="portfolioShowFilterTags">Show filter tag row (derived from project categories)</label>
+                </div>
+            </div>
+        </div>
+
+        {{> common/dialogs/basic_content hideAlternateBackground=false }}
+    </div>
+</form>
