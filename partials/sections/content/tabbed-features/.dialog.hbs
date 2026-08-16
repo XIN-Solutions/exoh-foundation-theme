@@ -1,0 +1,297 @@
+<form class="config-form"
+      x-data="(() => {
+            const MIN_ITEMS = 3;
+            const MAX_ITEMS = 6;
+
+            const base = componentDialog({
+                defaultConfig: {
+                    tabStyle: 'tabs',
+                    imagePosition: 'right',
+                    activeTabIndex: 0,
+                    centerNav: true,
+                    centerTitle: true,
+                    hideTitle: false,
+                    hideDescription: false,
+                    useAltBackground: false,
+                    spacing: 'comfortable',
+                    noTopSpacing: false,
+                    noBottomSpacing: false,
+                    instanceId: '',
+                    items: [
+                        {
+                            tabLabel: 'Automation',
+                            title: 'Workflow automation',
+                            description: 'Build multi-step automations without code using our visual builder.',
+                            imageUrl: '/assets/img/empty.png',
+                            imageAlt: 'Automation workflow diagram'
+                        },
+                        {
+                            tabLabel: 'Security',
+                            title: 'Enterprise-grade security',
+                            description: 'SOC 2 compliant with SSO, audit logs, and role-based access control.',
+                            imageUrl: '/assets/img/empty.png',
+                            imageAlt: 'Security dashboard'
+                        },
+                        {
+                            tabLabel: 'Integrations',
+                            title: 'Connect your stack',
+                            description: 'Native integrations with Slack, Salesforce, Jira, and 50+ other tools.',
+                            imageUrl: '/assets/img/empty.png',
+                            imageAlt: 'Integration logos grid'
+                        },
+                        {
+                            tabLabel: 'Analytics',
+                            title: 'Actionable insights',
+                            description: 'Real-time dashboards and custom reports to track what matters.',
+                            imageUrl: '/assets/img/empty.png',
+                            imageAlt: 'Analytics dashboard'
+                        }
+                    ]
+                }
+            });
+
+            return {
+                ...base,
+                minItems: MIN_ITEMS,
+                maxItems: MAX_ITEMS,
+                init() {
+                    this.ensureInstanceId();
+                    this.ensureItems();
+                    this.clampActiveTabIndex();
+                },
+                ensureInstanceId() {
+                    if (!this.config.instanceId)
+                    {
+                        this.config.instanceId = 'tabs-' + Math.random().toString(36).slice(2, 9);
+                    }
+                },
+                ensureItems() {
+                    if (!Array.isArray(this.config.items))
+                    {
+                        this.config.items = [];
+                    }
+
+                    while (this.config.items.length < MIN_ITEMS)
+                    {
+                        this.config.items.push({
+                            tabLabel: 'Feature',
+                            title: 'Feature title',
+                            description: 'Feature description goes here.',
+                            imageUrl: '/assets/img/empty.png',
+                            imageAlt: ''
+                        });
+                    }
+
+                    if (this.config.items.length > MAX_ITEMS)
+                    {
+                        this.config.items = this.config.items.slice(0, MAX_ITEMS);
+                    }
+
+                    this.clampActiveTabIndex();
+                },
+                clampActiveTabIndex() {
+                    const count = (this.config.items || []).length;
+
+                    if (count === 0)
+                    {
+                        this.config.activeTabIndex = 0;
+                        return;
+                    }
+
+                    const index = Number(this.config.activeTabIndex);
+
+                    if (!Number.isFinite(index) || index < 0)
+                    {
+                        this.config.activeTabIndex = 0;
+                        return;
+                    }
+
+                    if (index >= count)
+                    {
+                        this.config.activeTabIndex = count - 1;
+                    }
+                },
+                addItem() {
+                    this.ensureItems();
+
+                    if (this.config.items.length >= MAX_ITEMS)
+                    {
+                        return;
+                    }
+
+                    this.config.items.push({
+                        tabLabel: 'Feature',
+                        title: 'Feature title',
+                        description: 'Feature description goes here.',
+                        imageUrl: '/assets/img/empty.png',
+                        imageAlt: ''
+                    });
+                },
+                removeItem(index) {
+                    if (!Array.isArray(this.config.items))
+                    {
+                        return;
+                    }
+
+                    if (this.config.items.length <= MIN_ITEMS)
+                    {
+                        return;
+                    }
+
+                    this.config.items.splice(index, 1);
+                    this.clampActiveTabIndex();
+                },
+                moveItem(fromIndex, toIndex) {
+                    if (!Array.isArray(this.config.items))
+                    {
+                        return;
+                    }
+
+                    if (fromIndex < 0 || toIndex < 0)
+                    {
+                        return;
+                    }
+
+                    if (fromIndex >= this.config.items.length || toIndex >= this.config.items.length)
+                    {
+                        return;
+                    }
+
+                    if (fromIndex === toIndex)
+                    {
+                        return;
+                    }
+
+                    const next = [...this.config.items];
+                    const [moved] = next.splice(fromIndex, 1);
+                    next.splice(toIndex, 0, moved);
+                    this.config.items = next;
+                    this.clampActiveTabIndex();
+                }
+            };
+      })()"
+      @set="setConfig"
+      @get="getConfig"
+>
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#tabbed-features-tabs" role="tab">Tabs</a></li>
+        <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tabbed-features-layout" role="tab">Layout</a></li>
+        <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tabbed-features-show-hide" role="tab">Show/Hide</a></li>
+        {{> common/dialogs/basic_nav }}
+    </ul>
+
+    <div class="tab-content">
+        <div class="tab-pane show active" id="tabbed-features-tabs" role="tabpanel">
+            <div class="mt-3">
+                <div class="d-flex justify-content-between align-items-center gap-2 flex-wrap mb-3">
+                    <div>
+                        <label class="form-label mb-0">Feature tabs</label>
+                        <p class="form-text text-muted mb-0 small">Add, remove, and reorder tabs. Between <span x-text="minItems"></span> and <span x-text="maxItems"></span> items.</p>
+                    </div>
+                    <button
+                        type="button"
+                        class="btn btn-primary btn-sm"
+                        @click="addItem()"
+                        :disabled="(config.items || []).length >= maxItems"
+                    >
+                        Add tab
+                    </button>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Default active tab</label>
+                    <select class="form-select" x-model.number="config.activeTabIndex" @change="clampActiveTabIndex()">
+                        <template x-for="(item, itemIndex) in (config.items || [])" :key="itemIndex">
+                            <option :value="itemIndex" x-text="item.tabLabel || item.title || `Tab ${itemIndex + 1}`"></option>
+                        </template>
+                    </select>
+                    <p class="form-text text-muted mb-0 small">Tab shown when the page first loads. Editor preview may not switch tabs interactively.</p>
+                </div>
+
+                <div class="d-flex flex-column gap-3">
+                    <template x-for="(item, itemIndex) in (config.items || [])" :key="itemIndex">
+                        <div class="p-3 border rounded bg-light">
+                            <div class="d-flex justify-content-between align-items-start gap-2 mb-3 flex-wrap">
+                                <h6 class="mb-0" x-text="item.tabLabel || item.title || `Tab ${itemIndex + 1}`"></h6>
+                                <div class="btn-group btn-group-sm">
+                                    <button type="button" class="btn btn-outline-secondary" @click="moveItem(itemIndex, itemIndex - 1)" :disabled="itemIndex === 0" aria-label="Move tab up" title="Move tab up">▲</button>
+                                    <button type="button" class="btn btn-outline-secondary" @click="moveItem(itemIndex, itemIndex + 1)" :disabled="itemIndex === (config.items.length - 1)" aria-label="Move tab down" title="Move tab down">▼</button>
+                                    <button type="button" class="btn btn-outline-danger" @click="removeItem(itemIndex)" :disabled="config.items.length <= minItems" aria-label="Remove tab" title="Remove tab">✕</button>
+                                </div>
+                            </div>
+
+                            <div class="mb-2">
+                                <label class="form-label small mb-1">Tab label</label>
+                                <input type="text" class="form-control form-control-sm" x-model="item.tabLabel" placeholder="Short nav label">
+                            </div>
+
+                            <div class="mb-2">
+                                <label class="form-label small mb-1">Panel title</label>
+                                <input type="text" class="form-control form-control-sm" x-model="item.title" placeholder="Feature title">
+                            </div>
+
+                            <div class="mb-2">
+                                <label class="form-label small mb-1">Description</label>
+                                <textarea class="form-control form-control-sm" rows="2" x-model="item.description" placeholder="Feature description"></textarea>
+                            </div>
+
+                            <div class="mb-2" x-show="config.imagePosition !== 'none'">
+                                <label class="form-label small mb-1">Image URL</label>
+                                <input type="text" class="form-control form-control-sm" x-model="item.imageUrl" placeholder="/assets/img/empty.png">
+                            </div>
+
+                            <div class="mb-0" x-show="config.imagePosition !== 'none'">
+                                <label class="form-label small mb-1">Image alt text</label>
+                                <input type="text" class="form-control form-control-sm" x-model="item.imageAlt" placeholder="Describe the image">
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane" id="tabbed-features-layout" role="tabpanel">
+            <div class="p-3 bg-light border rounded mt-3">
+                <div class="mb-3">
+                    <label class="form-label">Tab style</label>
+                    <select class="form-select" x-model="config.tabStyle">
+                        <option value="tabs">Underline tabs</option>
+                        <option value="pills">Pill buttons</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Panel image position</label>
+                    <select class="form-select" x-model="config.imagePosition">
+                        <option value="right">Right of text</option>
+                        <option value="left">Left of text</option>
+                        <option value="below">Below text</option>
+                        <option value="none">No images</option>
+                    </select>
+                </div>
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" x-model="config.centerNav" id="tabbedFeaturesCenterNav">
+                    <label class="form-check-label" for="tabbedFeaturesCenterNav">Center tab navigation</label>
+                </div>
+                <div class="form-check mb-0">
+                    <input class="form-check-input" type="checkbox" x-model="config.centerTitle" id="tabbedFeaturesCenterTitle">
+                    <label class="form-check-label" for="tabbedFeaturesCenterTitle">Center section title</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane" id="tabbed-features-show-hide" role="tabpanel">
+            <div class="p-3 bg-light border rounded mt-3">
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" x-model="config.hideTitle" id="tabbedFeaturesHideTitle">
+                    <label class="form-check-label" for="tabbedFeaturesHideTitle">Hide section title</label>
+                </div>
+                <div class="form-check mb-0">
+                    <input class="form-check-input" type="checkbox" x-model="config.hideDescription" id="tabbedFeaturesHideDescription">
+                    <label class="form-check-label" for="tabbedFeaturesHideDescription">Hide section description</label>
+                </div>
+            </div>
+        </div>
+
+        {{> common/dialogs/basic_content hideAlternateBackground=false }}
+    </div>
+</form>

@@ -1,0 +1,132 @@
+{{let . resolvedItems=(?? items config.items)}}
+{{let . instanceId=(?? config.instanceId 'tabbed-features')}}
+{{let . activeIndex=(?? config.activeTabIndex 0)}}
+{{let . usePills=(eq (?? config.tabStyle 'tabs') 'pills')}}
+{{let . navClass=(?: usePills 'nav-pills' 'nav-tabs')}}
+
+<section
+    class="
+        tabbed-features
+        {{?: config.useAltBackground 'bg--alternate' ''}}
+        spacing--{{?? config.spacing 'comfortable'}}
+        {{?: config.noTopSpacing 'spacing--no-top' ''}}
+        {{?: config.noBottomSpacing 'spacing--no-bottom' ''}}
+    "
+    no-edit="children"
+    allowadd="no"
+    allowdelete="no"
+>
+    <div class="container">
+        {{#unless config.hideTitle}}
+            <div class="row justify-content-center mb-4 mb-lg-5">
+                <div class="col-lg-8 {{?: config.centerTitle 'text-center' 'text-start'}}">
+                    <h2 class="mb-0 h2-all" edit="title innerHTML">
+                        {{{?? title "Explore our features"}}}
+                    </h2>
+                    {{#unless config.hideDescription}}
+                        <p class="lead mb-0 mt-3 h3-all" edit="description innerHTML">
+                            {{{?? description "Dive deeper into what makes our platform different."}}}
+                        </p>
+                    {{/unless}}
+                </div>
+            </div>
+        {{/unless}}
+
+        {{#if resolvedItems.length}}
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <ul
+                        class="nav {{navClass}} mb-4 {{?: config.centerNav 'justify-content-center' 'justify-content-start'}} flex-wrap gap-2"
+                        id="tabbed-features-nav-{{instanceId}}"
+                        role="tablist"
+                    >
+                        {{#each resolvedItems}}
+                            <li class="nav-item" role="presentation">
+                                <button
+                                    class="nav-link {{?: (eq @index ../activeIndex) 'active' ''}}"
+                                    id="tabbed-features-tab-{{../instanceId}}-{{@index}}"
+                                    data-bs-toggle="tab"
+                                    data-bs-target="#tabbed-features-panel-{{../instanceId}}-{{@index}}"
+                                    type="button"
+                                    role="tab"
+                                    aria-controls="tabbed-features-panel-{{../instanceId}}-{{@index}}"
+                                    aria-selected="{{?: (eq @index ../activeIndex) 'true' 'false'}}"
+                                >
+                                    {{?? tabLabel (?? title "Tab")}}
+                                </button>
+                            </li>
+                        {{/each}}
+                    </ul>
+
+                    <div class="tab-content" id="tabbed-features-content-{{instanceId}}">
+                        {{#each resolvedItems}}
+                            {{let .
+                                  imagePosition=(?? ../config.imagePosition 'right')
+                                  hasImage=(and imageUrl (neq (?? ../config.imagePosition 'right') 'none'))
+                                  imageLeft=(and hasImage (eq imagePosition 'left'))
+                                  imageRight=(and hasImage (eq imagePosition 'right'))
+                                  imageBelow=(and hasImage (eq imagePosition 'below'))
+                            }}
+                            <div
+                                class="tab-pane fade {{?: (eq @index ../activeIndex) 'show active' ''}}"
+                                id="tabbed-features-panel-{{../instanceId}}-{{@index}}"
+                                role="tabpanel"
+                                aria-labelledby="tabbed-features-tab-{{../instanceId}}-{{@index}}"
+                                tabindex="0"
+                            >
+                                {{#if imageBelow}}
+                                    <div class="mb-4">
+                                        <h3 class="h4 mb-3">{{?? title "Feature title"}}</h3>
+                                        <p class="paragraphColor-text mb-4">{{?? description "Feature description goes here."}}</p>
+                                        <img
+                                            src="{{imageUrl}}"
+                                            alt="{{?? imageAlt ''}}"
+                                            loading="lazy"
+                                            class="img-fluid w-100 ratio-16-9"
+                                            data-image-hint="width=960"
+                                        >
+                                    </div>
+                                {{else}}
+                                    <div class="row align-items-center g-4">
+                                        {{#if imageLeft}}
+                                            <div class="col-lg-6 order-lg-1">
+                                                <img
+                                                    src="{{imageUrl}}"
+                                                    alt="{{?? imageAlt ''}}"
+                                                    loading="lazy"
+                                                    class="img-fluid w-100 ratio-4-3"
+                                                    data-image-hint="width=640"
+                                                >
+                                            </div>
+                                        {{/if}}
+
+                                        <div class="col-lg-{{?: hasImage '6' '12'}} {{?: imageLeft 'order-lg-2' ''}}">
+                                            <h3 class="h4 mb-3">{{?? title "Feature title"}}</h3>
+                                            <p class="paragraphColor-text mb-0">{{?? description "Feature description goes here."}}</p>
+                                        </div>
+
+                                        {{#if imageRight}}
+                                            <div class="col-lg-6">
+                                                <img
+                                                    src="{{imageUrl}}"
+                                                    alt="{{?? imageAlt ''}}"
+                                                    loading="lazy"
+                                                    class="img-fluid w-100 ratio-4-3"
+                                                    data-image-hint="width=640"
+                                                >
+                                            </div>
+                                        {{/if}}
+                                    </div>
+                                {{/if}}
+                            </div>
+                        {{/each}}
+                    </div>
+                </div>
+            </div>
+        {{else}}
+            <div class="alert alert-warning mb-0" role="alert">
+                No feature tabs configured yet.
+            </div>
+        {{/if}}
+    </div>
+</section>
