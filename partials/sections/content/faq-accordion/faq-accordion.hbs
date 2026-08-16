@@ -32,29 +32,33 @@
         <div class="row justify-content-center">
             <div class="col-lg-8">
                 {{#if resolvedItems.length}}
-                    <div class="accordion" id="faq-accordion-{{accordionId}}">
+                    <div class="faq-accordion__list w-100" id="faq-accordion-{{accordionId}}">
                         {{#each resolvedItems}}
-                            <div class="accordion-item">
-                                <h3 class="accordion-header" id="faq-heading-{{../accordionId}}-{{@index}}">
+                            <div class="faq-accordion__item backgroundColor-bg w-100 border mb-2" style="border-radius: var(--theme-cardBorderRadius);">
+                                <h3 class="faq-accordion__header mb-0" id="faq-heading-{{../accordionId}}-{{@index}}">
                                     <button
-                                        class="accordion-button {{?: (and ../config.expandFirst (eq @index 0)) '' 'collapsed'}}"
+                                        class="faq-accordion__button h3Color-text w-100 d-flex align-items-center justify-content-between border-0 bg-transparent p-3 text-start {{?: (and ../config.expandFirst (eq @index 0)) '' 'collapsed'}}"
                                         type="button"
+                                        style="appearance: none; -webkit-appearance: none;"
                                         data-bs-toggle="collapse"
                                         data-bs-target="#faq-collapse-{{../accordionId}}-{{@index}}"
                                         aria-expanded="{{?: (and ../config.expandFirst (eq @index 0)) 'true' 'false'}}"
                                         aria-controls="faq-collapse-{{../accordionId}}-{{@index}}"
                                     >
-                                        {{?? question "Question"}}
+                                        <span class="faq-accordion__question">{{?? question "Question"}}</span>
+                                        <svg class="faq-accordion__icon flex-shrink-0" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true" focusable="false">
+                                            <path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                        </svg>
                                     </button>
                                 </h3>
                                 <div
                                     id="faq-collapse-{{../accordionId}}-{{@index}}"
-                                    class="accordion-collapse collapse {{?: (and ../config.expandFirst (eq @index 0)) 'show' ''}}"
+                                    class="collapse {{?: (and ../config.expandFirst (eq @index 0)) 'show' ''}}"
                                     aria-labelledby="faq-heading-{{../accordionId}}-{{@index}}"
                                     data-bs-parent="#faq-accordion-{{../accordionId}}"
                                 >
-                                    <div class="accordion-body paragraphColor-text">
-                                        {{{?? answer "Answer text goes here."}}}
+                                    <div class="faq-accordion__body paragraphColor-text px-3 pb-3">
+                                        {{{markdown-to-html (?? answer "Answer text goes here.")}}}
                                     </div>
                                 </div>
                             </div>
@@ -68,4 +72,25 @@
             </div>
         </div>
     </div>
+
+    {{#if resolvedItems.length}}
+        <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+        {{#each resolvedItems}}
+        {
+            "@type": "Question",
+            "name": {{{jsonflat (?? question "Question")}}},
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": {{{jsonflat (markdown-to-html (?? answer "Answer text goes here."))}}}
+            }
+        }{{#unless @last}},{{/unless}}
+        {{/each}}
+    ]
+}
+        </script>
+    {{/if}}
 </section>
