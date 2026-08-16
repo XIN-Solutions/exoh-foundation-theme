@@ -1,0 +1,13 @@
+{
+    "name": "Article Hero",
+    "enableConfig": true,
+    "loaders": {
+        "breadcrumbPage": {
+            "loader": "page",
+            "params": {
+                "pageId": "{{page.id}}",
+                "children": false
+            }
+        }
+    }
+}

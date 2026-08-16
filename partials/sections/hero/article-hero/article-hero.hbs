@@ -1,0 +1,95 @@
+{{let . breadcrumbAncestors=data.breadcrumbPage.ancestors}}
+{{let . breadcrumbLeaf=(?? data.breadcrumbPage.page page)}}
+
+<section
+    class="
+        article-hero
+        spacing--{{?? config.spacing 'comfortable'}}
+        {{?: config.noTopSpacing 'spacing--no-top' ''}}
+        {{?: config.noBottomSpacing 'spacing--no-bottom' ''}}
+    "
+    no-edit="children"
+    allowadd="no"
+    allowdelete="no"
+>
+    <div class="container">
+        <div class="article-hero__content">
+            {{#unless config.hideTag}}
+                <div>
+                    <span class="article-hero__tag" edit="tag innerHTML">
+                        {{{?? tag "Product update"}}}
+                    </span>
+                </div>
+            {{/unless}}
+
+            {{#if (has-items breadcrumbAncestors)}}
+                {{#unless config.hideBreadcrumb}}
+                    <nav aria-label="Breadcrumb" class="article-hero__breadcrumb">
+                        <ol class="breadcrumb flex-wrap align-items-center mb-0">
+                            {{#each breadcrumbAncestors}}
+                                <li class="breadcrumb-item">
+                                    <a
+                                        href="{{url}}"
+                                        class="text-reset text-decoration-none d-inline-flex align-items-center gap-1"
+                                    >
+                                        {{#if @first}}
+                                            <i class="la la-home" aria-hidden="true"></i>
+                                            <span class="visually-hidden">Home</span>
+                                        {{else}}
+                                            {{?? navLabel name}}
+                                        {{/if}}
+                                    </a>
+                                </li>
+                            {{/each}}
+                            <li class="breadcrumb-item active" aria-current="page">
+                                {{?? breadcrumbLeaf.navLabel breadcrumbLeaf.name}}
+                            </li>
+                        </ol>
+                    </nav>
+                {{/unless}}
+            {{/if}}
+
+            <h1 class="article-hero__title display-3 fw-bold mb-4 h1-all">
+                <span edit="title innerHTML">{{{?? title "Article headline"}}}</span>
+                {{#unless config.hideTitleAccent}}
+                    <br>
+                    <span class="article-hero__title-accent primaryColor-text" edit="titleAccent innerHTML">
+                        {{{?? titleAccent "Accent line for emphasis."}}}
+                    </span>
+                {{/unless}}
+            </h1>
+
+            {{#unless config.hideMeta}}
+                <div class="article-hero__meta paragraphColor-text">
+                    <span class="article-hero__meta-item">
+                        <i class="la la-calendar" aria-hidden="true"></i>
+                        <span edit="publishedAt innerHTML">{{{?? publishedAt "March 12, 2026"}}}</span>
+                    </span>
+                    <span class="article-hero__meta-item">
+                        <i class="la la-clock" aria-hidden="true"></i>
+                        <span edit="readTime innerHTML">{{{?? readTime "6 min read"}}}</span>
+                    </span>
+                    <span class="article-hero__meta-item">
+                        <i class="la la-user" aria-hidden="true"></i>
+                        <span edit="author innerHTML">{{{?? author "Alex Morgan"}}}</span>
+                    </span>
+                </div>
+            {{/unless}}
+        </div>
+    </div>
+
+    {{#unless config.hideOverlay}}
+        <div
+            class="overlay"
+            style="background-color: {{?? config.overlayColour '#000000'}}; opacity: {{?? config.overlayOpacity 0.7}}"
+        ></div>
+    {{/unless}}
+
+    <div class="background-container">
+        <img
+            src="{{?? config.backgroundImage '/assets/img/empty.png'}}"
+            alt="{{?? config.backgroundImageAlt 'Article hero background'}}"
+            data-image-hint="width=1920"
+        >
+    </div>
+</section>
