@@ -1,0 +1,121 @@
+<form class="config-form"
+      x-data="componentDialog({
+            defaultConfig: {
+                formType: 'subscribe',
+                contentPosition: 'left',
+                nameLabel: 'Full name',
+                namePlaceholder: 'Jane Smith',
+                emailLabel: 'Email address',
+                emailPlaceholder: 'you@company.com',
+                messageLabel: 'How can we help?',
+                privacyNote: 'We respect your privacy. Unsubscribe at any time.',
+                hideTitle: false,
+                hideDescription: false,
+                hideSecondaryLink: false,
+                hideName: false,
+                hidePrivacyNote: false,
+                useAltBackground: false,
+                spacing: 'comfortable',
+                noTopSpacing: false,
+                noBottomSpacing: false
+            }
+      })"
+      @set="setConfig"
+      @get="getConfig"
+>
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#split-cta-component" role="tab">Component</a></li>
+        <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#split-cta-labels" role="tab">Labels</a></li>
+        <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#split-cta-show-hide" role="tab">Show/Hide</a></li>
+        {{> common/dialogs/basic_nav }}
+    </ul>
+
+    <div class="tab-content">
+        <div class="tab-pane show active" id="split-cta-component" role="tabpanel">
+            <div class="p-3 bg-light border rounded mt-3">
+                <div class="mb-3">
+                    <label class="form-label">Form type</label>
+                    <select class="form-select" x-model="config.formType">
+                        <option value="subscribe">Subscribe (name + email)</option>
+                        <option value="contact">Contact (name + email + message)</option>
+                    </select>
+                    <p class="form-text text-muted mb-0 small">Subscribe posts to <code>formAction</code>; contact uses the site contact endpoint.</p>
+                </div>
+
+                <div class="mb-0">
+                    <label class="form-label">Copy column position</label>
+                    <select class="form-select" x-model="config.contentPosition">
+                        <option value="left">Copy left, form right</option>
+                        <option value="right">Copy right, form left</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane" id="split-cta-labels" role="tabpanel">
+            <div class="p-3 bg-light border rounded mt-3">
+                <div class="mb-3">
+                    <label class="form-label small text-muted mb-1">Name field label</label>
+                    <input class="form-control" type="text" x-model="config.nameLabel" placeholder="Full name">
+                </div>
+                <div class="mb-3" x-show="config.formType === 'subscribe'">
+                    <label class="form-label small text-muted mb-1">Name placeholder</label>
+                    <input class="form-control" type="text" x-model="config.namePlaceholder" placeholder="Jane Smith">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label small text-muted mb-1">Email field label</label>
+                    <input class="form-control" type="text" x-model="config.emailLabel" placeholder="Email address">
+                </div>
+                <div class="mb-3" x-show="config.formType === 'subscribe'">
+                    <label class="form-label small text-muted mb-1">Email placeholder</label>
+                    <input class="form-control" type="text" x-model="config.emailPlaceholder" placeholder="you@company.com">
+                </div>
+                <div class="mb-3" x-show="config.formType === 'contact'">
+                    <label class="form-label small text-muted mb-1">Message field label</label>
+                    <input class="form-control" type="text" x-model="config.messageLabel" placeholder="How can we help?">
+                </div>
+                <div class="mb-0" x-show="config.formType === 'subscribe'">
+                    <label class="form-label small text-muted mb-1">Privacy note</label>
+                    <textarea class="form-control" rows="2" x-model="config.privacyNote" placeholder="We respect your privacy. Unsubscribe at any time."></textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane" id="split-cta-show-hide" role="tabpanel">
+            <div class="p-3 bg-light border rounded mt-3">
+                <div class="mb-3">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" x-model="config.hideTitle" id="splitCtaHideTitle">
+                        <label class="form-check-label" for="splitCtaHideTitle">Hide headline</label>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" x-model="config.hideDescription" id="splitCtaHideDescription">
+                        <label class="form-check-label" for="splitCtaHideDescription">Hide description</label>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" x-model="config.hideSecondaryLink" id="splitCtaHideSecondaryLink">
+                        <label class="form-check-label" for="splitCtaHideSecondaryLink">Hide secondary link</label>
+                    </div>
+                </div>
+                <div class="mb-3" x-show="config.formType === 'subscribe'">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" x-model="config.hideName" id="splitCtaHideName">
+                        <label class="form-check-label" for="splitCtaHideName">Hide name field</label>
+                    </div>
+                </div>
+                <div class="mb-0" x-show="config.formType === 'subscribe'">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" x-model="config.hidePrivacyNote" id="splitCtaHidePrivacyNote">
+                        <label class="form-check-label" for="splitCtaHidePrivacyNote">Hide privacy note</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{> common/dialogs/basic_content hideAlternateBackground=false }}
+    </div>
+</form>
