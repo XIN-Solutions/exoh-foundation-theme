@@ -1,0 +1,189 @@
+{{let .
+      isCompact=(eq (?? config.layoutPreset 'default') 'compact')
+}}
+
+<section
+    class="
+        bento
+        {{?: config.useAltBackground 'bg--alternate' ''}}
+        spacing--{{?? config.spacing 'comfortable'}}
+        {{?: config.noTopSpacing 'spacing--no-top' ''}}
+        {{?: config.noBottomSpacing 'spacing--no-bottom' ''}}
+    "
+    no-edit="children"
+    allowadd="no"
+    allowdelete="no"
+>
+    <div class="container">
+        <div class="row justify-content-center mb-4 mb-lg-5">
+            <div class="col-lg-8 text-center">
+                <h2 class="mb-3 h2-all" edit="sectionTitle innerHTML">
+                    {{{?? sectionTitle "Platform capabilities"}}}
+                </h2>
+
+                {{#unless config.hideSectionDescription}}
+                    <p class="lead mb-0 h3-all paragraphColor-text" edit="sectionDescription innerHTML">
+                        {{{?? sectionDescription "Everything you need to build and scale."}}}
+                    </p>
+                {{/unless}}
+            </div>
+        </div>
+
+        <div class="bento__grid {{?: isCompact 'bento__grid--compact' ''}}">
+            <div class="bento__cell bento__cell--primary card border-0 shadow-sm h-100">
+                <div class="card-body d-flex flex-column h-100 p-4 p-lg-5">
+                    <div class="flex-grow-1">
+                        <i
+                            class="{{?? primaryIconClass 'la la-layer-group text-primary mb-4'}}"
+                            style="font-size: 3rem;"
+                            edit="primaryIconClass @class"
+                            aria-hidden="true"
+                        ></i>
+                        <h3 class="h4 mb-3" edit="primaryTitle innerHTML">
+                            {{{?? primaryTitle "Unified control plane"}}}
+                        </h3>
+                        <p class="paragraphColor-text mb-0" edit="primaryDescription innerHTML">
+                            {{{?? primaryDescription "Manage infrastructure from a single dashboard."}}}
+                        </p>
+                    </div>
+
+                    {{#unless config.hidePrimaryImage}}
+                        <img
+                            class="bento__primary-image img-fluid mt-4"
+                            alt="{{?? primaryImageAlt 'Dashboard overview'}}"
+                            src="{{?? primaryImageSrc '/assets/img/empty.png'}}"
+                            loading="lazy"
+                            edit="primaryImageSrc @src, primaryImageAlt @alt"
+                        >
+                    {{/unless}}
+
+                    {{#unless config.hidePrimaryLink}}
+                        <a
+                            class="link link-underline-opacity-100 mt-3 align-self-start"
+                            edit="
+                                primaryLinkLabel span,
+                                primaryLinkUrl @href,
+                                primaryLinkTarget @target,
+                                primaryLinkRel @rel
+                            "
+                            href="{{?? primaryLinkUrl '#'}}"
+                            {{#if primaryLinkTarget}}target="{{primaryLinkTarget}}"{{/if}}
+                            {{#if primaryLinkRel}}rel="{{primaryLinkRel}}"{{/if}}
+                        >
+                            <span>{{{?? primaryLinkLabel "Learn more"}}}</span>
+                        </a>
+                    {{/unless}}
+                </div>
+            </div>
+
+            <div class="bento__cell bento__cell--secondary card border-0 shadow-sm h-100">
+                <div class="card-body d-flex flex-column flex-md-row align-items-md-center justify-content-md-between gap-3 h-100 p-4 p-lg-5">
+                    <div class="flex-grow-1">
+                        <h3 class="h4 mb-3" edit="secondaryTitle innerHTML">
+                            {{{?? secondaryTitle "Global edge network"}}}
+                        </h3>
+                        <p class="paragraphColor-text mb-0" edit="secondaryDescription innerHTML">
+                            {{{?? secondaryDescription "Low-latency delivery worldwide."}}}
+                        </p>
+
+                        {{#unless config.hideSecondaryLink}}
+                            <a
+                                class="link link-underline-opacity-100 mt-3 d-inline-block"
+                                edit="
+                                    secondaryLinkLabel span,
+                                    secondaryLinkUrl @href,
+                                    secondaryLinkTarget @target,
+                                    secondaryLinkRel @rel
+                                "
+                                href="{{?? secondaryLinkUrl '#'}}"
+                                {{#if secondaryLinkTarget}}target="{{secondaryLinkTarget}}"{{/if}}
+                                {{#if secondaryLinkRel}}rel="{{secondaryLinkRel}}"{{/if}}
+                            >
+                                <span>{{{?? secondaryLinkLabel "Learn more"}}}</span>
+                            </a>
+                        {{/unless}}
+                    </div>
+
+                    <i
+                        class="{{?? secondaryIconClass 'la la-globe text-primary flex-shrink-0'}}"
+                        style="font-size: 3.5rem;"
+                        edit="secondaryIconClass @class"
+                        aria-hidden="true"
+                    ></i>
+                </div>
+            </div>
+
+            <div class="bento__cell bento__cell--tertiary card border-0 shadow-sm h-100">
+                <div class="card-body d-flex flex-column justify-content-end h-100 p-4 p-lg-5">
+                    <i
+                        class="{{?? tertiaryIconClass 'la la-shield-alt text-primary mb-3'}}"
+                        style="font-size: 2.5rem;"
+                        edit="tertiaryIconClass @class"
+                        aria-hidden="true"
+                    ></i>
+                    <div>
+                        <h3 class="h5 mb-2" edit="tertiaryTitle innerHTML">
+                            {{{?? tertiaryTitle "Enterprise security"}}}
+                        </h3>
+                        <p class="small text-uppercase letter-spacing-wide paragraphColor-text mb-0" edit="tertiaryDescription innerHTML">
+                            {{{?? tertiaryDescription "SOC 2 compliant"}}}
+                        </p>
+
+                        {{#unless config.hideTertiaryLink}}
+                            <a
+                                class="link link-underline-opacity-100 mt-3 d-inline-block small"
+                                edit="
+                                    tertiaryLinkLabel span,
+                                    tertiaryLinkUrl @href,
+                                    tertiaryLinkTarget @target,
+                                    tertiaryLinkRel @rel
+                                "
+                                href="{{?? tertiaryLinkUrl '#'}}"
+                                {{#if tertiaryLinkTarget}}target="{{tertiaryLinkTarget}}"{{/if}}
+                                {{#if tertiaryLinkRel}}rel="{{tertiaryLinkRel}}"{{/if}}
+                            >
+                                <span>{{{?? tertiaryLinkLabel "Learn more"}}}</span>
+                            </a>
+                        {{/unless}}
+                    </div>
+                </div>
+            </div>
+
+            <div class="bento__cell bento__cell--quaternary card border-0 shadow-sm h-100">
+                <div class="card-body d-flex flex-column justify-content-end h-100 p-4 p-lg-5">
+                    <i
+                        class="{{?? quaternaryIconClass 'la la-magic text-primary mb-3'}}"
+                        style="font-size: 2.5rem;"
+                        edit="quaternaryIconClass @class"
+                        aria-hidden="true"
+                    ></i>
+                    <div>
+                        <h3 class="h5 mb-2" edit="quaternaryTitle innerHTML">
+                            {{{?? quaternaryTitle "Smart automation"}}}
+                        </h3>
+                        <p class="small text-uppercase letter-spacing-wide paragraphColor-text mb-0" edit="quaternaryDescription innerHTML">
+                            {{{?? quaternaryDescription "AI-assisted workflows"}}}
+                        </p>
+
+                        {{#unless config.hideQuaternaryLink}}
+                            <a
+                                class="link link-underline-opacity-100 mt-3 d-inline-block small"
+                                edit="
+                                    quaternaryLinkLabel span,
+                                    quaternaryLinkUrl @href,
+                                    quaternaryLinkTarget @target,
+                                    quaternaryLinkRel @rel
+                                "
+                                href="{{?? quaternaryLinkUrl '#'}}"
+                                {{#if quaternaryLinkTarget}}target="{{quaternaryLinkTarget}}"{{/if}}
+                                {{#if quaternaryLinkRel}}rel="{{quaternaryLinkRel}}"{{/if}}
+                            >
+                                <span>{{{?? quaternaryLinkLabel "Learn more"}}}</span>
+                            </a>
+                        {{/unless}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

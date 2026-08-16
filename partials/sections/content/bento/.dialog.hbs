@@ -1,0 +1,98 @@
+<form class="config-form"
+      x-data="componentDialog({
+            defaultConfig: {
+                layoutPreset: 'default',
+                hideSectionDescription: false,
+                hidePrimaryImage: false,
+                hidePrimaryLink: true,
+                hideSecondaryLink: true,
+                hideTertiaryLink: true,
+                hideQuaternaryLink: true,
+                useAltBackground: false,
+                spacing: 'comfortable',
+                noTopSpacing: false,
+                noBottomSpacing: false,
+                cells: [
+                    { id: 'primary', label: 'Primary panel', colSpan: 2, rowSpan: 2 },
+                    { id: 'secondary', label: 'Top-right panel', colSpan: 2, rowSpan: 1 },
+                    { id: 'tertiary', label: 'Bottom-left panel', colSpan: 1, rowSpan: 1 },
+                    { id: 'quaternary', label: 'Bottom-right panel', colSpan: 1, rowSpan: 1 }
+                ]
+            }
+      })"
+      @set="setConfig"
+      @get="getConfig"
+>
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#bento-layout" role="tab">Layout</a></li>
+        <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#bento-cells" role="tab">Cells</a></li>
+        <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#bento-show-hide" role="tab">Show/Hide</a></li>
+        {{> common/dialogs/basic_nav }}
+    </ul>
+
+    <div class="tab-content">
+        <div class="tab-pane show active" id="bento-layout" role="tabpanel">
+            <div class="p-3 bg-light border rounded mt-3">
+                <label class="form-label" for="bentoLayoutPreset">Layout preset</label>
+                <select class="form-select" id="bentoLayoutPreset" x-model="config.layoutPreset">
+                    <option value="default">Default (tall mosaic)</option>
+                    <option value="compact">Compact (shorter grid)</option>
+                </select>
+                <p class="form-text text-muted mb-0 small">Controls overall grid height. Cell spans are fixed for the asymmetric bento layout.</p>
+            </div>
+        </div>
+
+        <div class="tab-pane" id="bento-cells" role="tabpanel">
+            <div class="mt-3">
+                <p class="form-text text-muted mb-3 small">Four-tile bento grid with fixed asymmetric spans. Edit tile copy and icons inline on the page; use Show/Hide to toggle images and links.</p>
+
+                <template x-for="(cell, index) in config.cells" :key="cell.id">
+                    <div class="p-3 bg-light border rounded mb-3">
+                        <div class="d-flex justify-content-between align-items-start gap-2 flex-wrap">
+                            <div>
+                                <strong x-text="cell.label"></strong>
+                                <p class="form-text text-muted mb-0 small">
+                                    Grid span:
+                                    <span x-text="cell.colSpan"></span> columns &times;
+                                    <span x-text="cell.rowSpan"></span> rows
+                                </p>
+                            </div>
+                            <span class="badge text-bg-secondary" x-text="'Cell ' + (index + 1)"></span>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </div>
+
+        <div class="tab-pane" id="bento-show-hide" role="tabpanel">
+            <div class="p-3 bg-light border rounded mt-3">
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" x-model="config.hideSectionDescription" id="bentoHideSectionDescription">
+                    <label class="form-check-label" for="bentoHideSectionDescription">Hide section description</label>
+                </div>
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" x-model="config.hidePrimaryImage" id="bentoHidePrimaryImage">
+                    <label class="form-check-label" for="bentoHidePrimaryImage">Hide primary panel image</label>
+                </div>
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" x-model="config.hidePrimaryLink" id="bentoHidePrimaryLink">
+                    <label class="form-check-label" for="bentoHidePrimaryLink">Hide primary panel link</label>
+                </div>
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" x-model="config.hideSecondaryLink" id="bentoHideSecondaryLink">
+                    <label class="form-check-label" for="bentoHideSecondaryLink">Hide top-right panel link</label>
+                </div>
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" x-model="config.hideTertiaryLink" id="bentoHideTertiaryLink">
+                    <label class="form-check-label" for="bentoHideTertiaryLink">Hide bottom-left panel link</label>
+                </div>
+                <div class="form-check mb-0">
+                    <input class="form-check-input" type="checkbox" x-model="config.hideQuaternaryLink" id="bentoHideQuaternaryLink">
+                    <label class="form-check-label" for="bentoHideQuaternaryLink">Hide bottom-right panel link</label>
+                </div>
+            </div>
+        </div>
+
+        {{> common/dialogs/basic_content hideAlternateBackground=false }}
+    </div>
+</form>
