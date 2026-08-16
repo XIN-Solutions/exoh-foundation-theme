@@ -861,6 +861,111 @@ body:has(> section.bg--alternate:last-of-type) > footer.footer-1 {
   letter-spacing: 0.08em;
 }
 
+.process-steps__list {
+  counter-reset: process-step;
+}
+.process-steps__step {
+  counter-increment: process-step;
+}
+.process-steps__number::before {
+  content: counter(process-step);
+}
+.process-steps__list--horizontal {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+@media (min-width: 992px) {
+  .process-steps__list--horizontal {
+    flex-direction: row;
+    gap: 0;
+  }
+}
+.process-steps__list--vertical {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+.process-steps__step {
+  position: relative;
+  flex: 1 1 auto;
+}
+@media (min-width: 992px) {
+  .process-steps__list--horizontal .process-steps__step {
+    flex: 1 1 0;
+    padding: 0 0.75rem;
+  }
+}
+.process-steps__marker-wrap {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+.process-steps__list--vertical .process-steps__marker-wrap {
+  justify-content: flex-start;
+  margin-bottom: 0;
+}
+.process-steps__list--vertical .process-steps__step.text-center .process-steps__marker-wrap {
+  justify-content: center;
+}
+.process-steps__marker {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  font-weight: 700;
+  font-size: 1.125rem;
+}
+.process-steps__marker i {
+  font-size: 1.25rem;
+  line-height: 1;
+}
+.process-steps__list--vertical .process-steps__step {
+  display: flex;
+  gap: 1.25rem;
+  align-items: flex-start;
+}
+.process-steps__list--vertical .process-steps__step.text-center {
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+@media (min-width: 992px) {
+  .process-steps__list--horizontal .process-steps__step:not(:last-child) .process-steps__marker-wrap::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: calc(50% + 1.5rem);
+    width: calc(100% - 3rem);
+    height: 2px;
+    transform: translateY(-50%);
+    background-color: var(--theme-primaryColor);
+    opacity: 0.25;
+    pointer-events: none;
+  }
+}
+.process-steps__list--vertical .process-steps__step:not(:last-child) .process-steps__marker::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  width: 2px;
+  height: 2.5rem;
+  transform: translateX(-50%);
+  background-color: var(--theme-primaryColor);
+  opacity: 0.25;
+  pointer-events: none;
+}
+.process-steps__content {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
 /*!
  * Bootstrap  v5.3.3 (https://getbootstrap.com/)
  * Copyright 2011-2024 The Bootstrap Authors
