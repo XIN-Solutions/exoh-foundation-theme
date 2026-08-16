@@ -861,6 +861,19 @@ body:has(> section.bg--alternate:last-of-type) > footer.footer-1 {
   letter-spacing: 0.08em;
 }
 
+.comparison-table__scroll {
+  -webkit-overflow-scrolling: touch;
+}
+.comparison-table__table {
+  --comparison-table-highlight-bg: rgba(var(--bs-primary-rgb), 0.06);
+}
+.comparison-table__feature-col {
+  min-width: 10rem;
+}
+.comparison-table__col--highlighted {
+  background-color: var(--comparison-table-highlight-bg);
+}
+
 .process-steps__list {
   counter-reset: process-step;
 }

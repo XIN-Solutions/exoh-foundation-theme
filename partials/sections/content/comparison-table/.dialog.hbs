@@ -1,0 +1,474 @@
+<form class="config-form"
+      x-data="(() => {
+            const MIN_PLANS = 2;
+            const MAX_PLANS = 4;
+
+            const base = componentDialog({
+                defaultConfig: {
+                    featureColumnLabel: 'Features',
+                    useAltBackground: false,
+                    hideHeader: false,
+                    hidePretitle: false,
+                    hideDescription: false,
+                    hideBadge: false,
+                    hideFeatureColumnLabel: false,
+                    spacing: 'comfortable',
+                    noTopSpacing: false,
+                    noBottomSpacing: false,
+                    plans: [
+                        {
+                            name: 'Lorem Starter',
+                            subtitle: 'For individuals',
+                            badge: '',
+                            highlighted: false
+                        },
+                        {
+                            name: 'Lorem Growth',
+                            subtitle: 'Most popular',
+                            badge: 'Popular',
+                            highlighted: true
+                        },
+                        {
+                            name: 'Lorem Scale',
+                            subtitle: 'For teams',
+                            badge: '',
+                            highlighted: false
+                        }
+                    ],
+                    features: [
+                        {
+                            label: 'Projects',
+                            cells: [
+                                { type: 'text', value: '5', highlighted: false },
+                                { type: 'text', value: 'Unlimited', highlighted: true },
+                                { type: 'text', value: 'Unlimited', highlighted: false }
+                            ]
+                        },
+                        {
+                            label: 'Email support',
+                            cells: [
+                                { type: 'check', included: true, highlighted: false },
+                                { type: 'check', included: true, highlighted: true },
+                                { type: 'check', included: true, highlighted: false }
+                            ]
+                        },
+                        {
+                            label: 'Advanced analytics',
+                            cells: [
+                                { type: 'check', included: false, highlighted: false },
+                                { type: 'check', included: true, highlighted: true },
+                                { type: 'check', included: true, highlighted: false }
+                            ]
+                        },
+                        {
+                            label: 'SSO and security',
+                            cells: [
+                                { type: 'check', included: false, highlighted: false },
+                                { type: 'check', included: false, highlighted: true },
+                                { type: 'check', included: true, highlighted: false }
+                            ]
+                        }
+                    ]
+                }
+            });
+
+            return {
+                ...base,
+                minPlans: MIN_PLANS,
+                maxPlans: MAX_PLANS,
+                init() {
+                    this.ensurePlans();
+                    this.ensureFeatures();
+                },
+                ensurePlans() {
+                    if (!Array.isArray(this.config.plans))
+                    {
+                        this.config.plans = [];
+                    }
+
+                    while (this.config.plans.length < MIN_PLANS)
+                    {
+                        this.config.plans.push({
+                            name: 'Lorem Plan',
+                            subtitle: 'Plan subtitle',
+                            badge: '',
+                            highlighted: false
+                        });
+                    }
+
+                    if (this.config.plans.length > MAX_PLANS)
+                    {
+                        this.config.plans = this.config.plans.slice(0, MAX_PLANS);
+                    }
+
+                    this.config.plans.forEach((plan) => this.ensurePlanShape(plan));
+                },
+                ensurePlanShape(plan) {
+                    if (typeof plan.name !== 'string')
+                    {
+                        plan.name = '';
+                    }
+
+                    if (typeof plan.subtitle !== 'string')
+                    {
+                        plan.subtitle = '';
+                    }
+
+                    if (typeof plan.badge !== 'string')
+                    {
+                        plan.badge = '';
+                    }
+
+                    if (typeof plan.highlighted !== 'boolean')
+                    {
+                        plan.highlighted = false;
+                    }
+                },
+                syncAllFeatureCells() {
+                    if (!Array.isArray(this.config.features))
+                    {
+                        return;
+                    }
+
+                    this.config.features.forEach((feature) => this.ensureFeatureShape(feature));
+                },
+                ensureFeatureShape(feature) {
+                    if (!Array.isArray(feature.cells))
+                    {
+                        feature.cells = [];
+                    }
+
+                    const planCount = this.config.plans?.length || 0;
+
+                    while (feature.cells.length < planCount)
+                    {
+                        feature.cells.push({
+                            type: 'check',
+                            included: true,
+                            highlighted: false
+                        });
+                    }
+
+                    if (feature.cells.length > planCount)
+                    {
+                        feature.cells = feature.cells.slice(0, planCount);
+                    }
+
+                    feature.cells.forEach((cell, index) => {
+                        if (cell.type !== 'text' && cell.type !== 'check')
+                        {
+                            cell.type = 'check';
+                        }
+
+                        if (cell.type === 'check' && typeof cell.included !== 'boolean')
+                        {
+                            cell.included = true;
+                        }
+
+                        if (cell.type === 'text' && typeof cell.value !== 'string')
+                        {
+                            cell.value = '';
+                        }
+
+                        cell.highlighted = !!this.config.plans[index]?.highlighted;
+                    });
+                },
+                ensureFeatures() {
+                    if (!Array.isArray(this.config.features))
+                    {
+                        this.config.features = [];
+                    }
+
+                    this.config.features.forEach((feature) => this.ensureFeatureShape(feature));
+                },
+                addPlan() {
+                    this.ensurePlans();
+
+                    if (this.config.plans.length >= MAX_PLANS)
+                    {
+                        return;
+                    }
+
+                    this.config.plans.push({
+                        name: 'Lorem Plan',
+                        subtitle: 'Plan subtitle',
+                        badge: '',
+                        highlighted: false
+                    });
+                    this.syncAllFeatureCells();
+                },
+                removePlan(index) {
+                    if (!Array.isArray(this.config.plans))
+                    {
+                        return;
+                    }
+
+                    if (this.config.plans.length <= MIN_PLANS)
+                    {
+                        return;
+                    }
+
+                    this.config.plans.splice(index, 1);
+                    this.syncAllFeatureCells();
+                },
+                movePlan(fromIndex, toIndex) {
+                    if (!Array.isArray(this.config.plans))
+                    {
+                        return;
+                    }
+
+                    if (fromIndex < 0 || toIndex < 0)
+                    {
+                        return;
+                    }
+
+                    if (fromIndex >= this.config.plans.length || toIndex >= this.config.plans.length)
+                    {
+                        return;
+                    }
+
+                    if (fromIndex === toIndex)
+                    {
+                        return;
+                    }
+
+                    const nextPlans = [...this.config.plans];
+                    const [movedPlan] = nextPlans.splice(fromIndex, 1);
+                    nextPlans.splice(toIndex, 0, movedPlan);
+                    this.config.plans = nextPlans;
+
+                    this.config.features?.forEach((feature) => {
+                        if (!Array.isArray(feature.cells))
+                        {
+                            return;
+                        }
+
+                        const nextCells = [...feature.cells];
+                        const [movedCell] = nextCells.splice(fromIndex, 1);
+                        nextCells.splice(toIndex, 0, movedCell);
+                        feature.cells = nextCells;
+                    });
+
+                    this.syncAllFeatureCells();
+                },
+                addFeature() {
+                    this.ensurePlans();
+                    this.ensureFeatures();
+
+                    const cells = (this.config.plans || []).map((plan) => ({
+                        type: 'check',
+                        included: true,
+                        highlighted: !!plan.highlighted
+                    }));
+
+                    this.config.features.push({
+                        label: 'Lorem feature',
+                        cells
+                    });
+                },
+                removeFeature(index) {
+                    if (!Array.isArray(this.config.features))
+                    {
+                        return;
+                    }
+
+                    this.config.features.splice(index, 1);
+                },
+                moveFeature(fromIndex, toIndex) {
+                    if (!Array.isArray(this.config.features))
+                    {
+                        return;
+                    }
+
+                    if (fromIndex < 0 || toIndex < 0)
+                    {
+                        return;
+                    }
+
+                    if (fromIndex >= this.config.features.length || toIndex >= this.config.features.length)
+                    {
+                        return;
+                    }
+
+                    if (fromIndex === toIndex)
+                    {
+                        return;
+                    }
+
+                    const next = [...this.config.features];
+                    const [moved] = next.splice(fromIndex, 1);
+                    next.splice(toIndex, 0, moved);
+                    this.config.features = next;
+                },
+                setCellType(featureIndex, cellIndex, type) {
+                    const cell = this.config.features?.[featureIndex]?.cells?.[cellIndex];
+                    if (!cell)
+                    {
+                        return;
+                    }
+
+                    cell.type = type;
+
+                    if (type === 'text')
+                    {
+                        cell.value = cell.value || '';
+                        delete cell.included;
+                    }
+                    else
+                    {
+                        cell.included = typeof cell.included === 'boolean' ? cell.included : true;
+                        delete cell.value;
+                    }
+                }
+            };
+      })()"
+      @set="setConfig"
+      @get="getConfig"
+>
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#comparison-plans" role="tab">Plans</a></li>
+        <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#comparison-features" role="tab">Features</a></li>
+        <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#comparison-layout" role="tab">Layout</a></li>
+        <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#comparison-show-hide" role="tab">Show/Hide</a></li>
+        {{> common/dialogs/basic_nav }}
+    </ul>
+
+    <div class="tab-content">
+        <div class="tab-pane show active" id="comparison-plans" role="tabpanel">
+            <div class="mt-3">
+                <div class="d-flex justify-content-between align-items-center gap-2 flex-wrap mb-3">
+                    <div>
+                        <label class="form-label mb-0">Plan columns</label>
+                        <p class="form-text text-muted mb-0 small">Table column headers — naming aligns with the Pricing section (`name`, `subtitle`, `badge`, `highlighted`).</p>
+                    </div>
+                    <button type="button" class="btn btn-primary btn-sm" @click="addPlan()" :disabled="config.plans?.length >= maxPlans">Add plan</button>
+                </div>
+
+                <div class="d-flex flex-column gap-3" x-show="config.plans?.length">
+                    <template x-for="(plan, planIndex) in (config.plans || [])" :key="planIndex">
+                        <div class="p-3 border rounded bg-light">
+                            <div class="d-flex justify-content-between align-items-start gap-2 mb-3 flex-wrap">
+                                <h6 class="mb-0" x-text="plan.name || `Plan ${planIndex + 1}`"></h6>
+                                <div class="btn-group btn-group-sm">
+                                    <button type="button" class="btn btn-outline-secondary" @click="movePlan(planIndex, planIndex - 1)" :disabled="planIndex === 0" aria-label="Move plan up" title="Move plan up">▲</button>
+                                    <button type="button" class="btn btn-outline-secondary" @click="movePlan(planIndex, planIndex + 1)" :disabled="planIndex === (config.plans.length - 1)" aria-label="Move plan down" title="Move plan down">▼</button>
+                                    <button type="button" class="btn btn-outline-danger" @click="removePlan(planIndex)" :disabled="config.plans.length <= minPlans" aria-label="Remove plan" title="Remove plan">✕</button>
+                                </div>
+                            </div>
+
+                            <div class="row g-2 mb-2">
+                                <div class="col-12 col-md-6">
+                                    <label class="form-label small mb-1">Name</label>
+                                    <input type="text" class="form-control form-control-sm" x-model="plan.name" placeholder="Plan name">
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <label class="form-label small mb-1">Subtitle</label>
+                                    <input type="text" class="form-control form-control-sm" x-model="plan.subtitle" placeholder="Plan subtitle">
+                                </div>
+                            </div>
+
+                            <div class="row g-2 mb-3">
+                                <div class="col-12 col-md-6">
+                                    <label class="form-label small mb-1">Badge</label>
+                                    <input type="text" class="form-control form-control-sm" x-model="plan.badge" placeholder="Popular">
+                                </div>
+                                <div class="col-12 col-md-6 d-flex align-items-end">
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" x-model="plan.highlighted" :id="`comparisonPlanHighlighted${planIndex}`" @change="syncAllFeatureCells()">
+                                        <label class="form-check-label" :for="`comparisonPlanHighlighted${planIndex}`">Highlight column</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane" id="comparison-features" role="tabpanel">
+            <div class="mt-3">
+                <div class="d-flex justify-content-between align-items-center gap-2 flex-wrap mb-3">
+                    <div>
+                        <label class="form-label mb-0">Feature rows</label>
+                        <p class="form-text text-muted mb-0 small">Each row compares plans with checkmark or text cells (`included` matches Pricing feature shape).</p>
+                    </div>
+                    <button type="button" class="btn btn-primary btn-sm" @click="addFeature()">Add feature</button>
+                </div>
+
+                <template x-if="!config.features?.length">
+                    <div class="alert alert-warning mb-0" role="alert">
+                        No feature rows configured yet.
+                    </div>
+                </template>
+
+                <div class="d-flex flex-column gap-3" x-show="config.features?.length">
+                    <template x-for="(feature, featureIndex) in (config.features || [])" :key="featureIndex">
+                        <div class="p-3 border rounded bg-light">
+                            <div class="d-flex justify-content-between align-items-start gap-2 mb-3 flex-wrap">
+                                <h6 class="mb-0" x-text="feature.label || `Feature ${featureIndex + 1}`"></h6>
+                                <div class="btn-group btn-group-sm">
+                                    <button type="button" class="btn btn-outline-secondary" @click="moveFeature(featureIndex, featureIndex - 1)" :disabled="featureIndex === 0" aria-label="Move feature up" title="Move feature up">▲</button>
+                                    <button type="button" class="btn btn-outline-secondary" @click="moveFeature(featureIndex, featureIndex + 1)" :disabled="featureIndex === (config.features.length - 1)" aria-label="Move feature down" title="Move feature down">▼</button>
+                                    <button type="button" class="btn btn-outline-danger" @click="removeFeature(featureIndex)" aria-label="Remove feature" title="Remove feature">✕</button>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label small mb-1">Feature label</label>
+                                <input type="text" class="form-control form-control-sm" x-model="feature.label" placeholder="Feature name">
+                            </div>
+
+                            <div class="border rounded p-2 bg-white">
+                                <label class="form-label mb-2 small">Cells per plan</label>
+                                <div class="d-flex flex-column gap-2">
+                                    <template x-for="(cell, cellIndex) in (feature.cells || [])" :key="cellIndex">
+                                        <div class="border rounded p-2">
+                                            <div class="d-flex justify-content-between align-items-center gap-2 mb-2 flex-wrap">
+                                                <strong class="small" x-text="config.plans?.[cellIndex]?.name || `Plan ${cellIndex + 1}`"></strong>
+                                                <select class="form-select form-select-sm w-auto" :value="cell.type || 'check'" @change="setCellType(featureIndex, cellIndex, $event.target.value)">
+                                                    <option value="check">Checkmark</option>
+                                                    <option value="text">Text</option>
+                                                </select>
+                                            </div>
+
+                                            <template x-if="(cell.type || 'check') === 'text'">
+                                                <input type="text" class="form-control form-control-sm" x-model="cell.value" placeholder="Cell value">
+                                            </template>
+
+                                            <template x-if="(cell.type || 'check') !== 'text'">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" x-model="cell.included" :id="`comparisonCellIncluded${featureIndex}-${cellIndex}`">
+                                                    <label class="form-check-label small" :for="`comparisonCellIncluded${featureIndex}-${cellIndex}`">Included</label>
+                                                </div>
+                                            </template>
+                                        </div>
+                                    </template>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane" id="comparison-layout" role="tabpanel">
+            <div class="p-3 bg-light border rounded mt-3">
+                <label class="form-label" for="comparisonFeatureColumnLabel">First column label</label>
+                <input type="text" class="form-control" id="comparisonFeatureColumnLabel" x-model="config.featureColumnLabel" placeholder="Features">
+                <p class="form-text text-muted mb-0 small">Header text for the feature-name column. Hide via Show/Hide tab.</p>
+            </div>
+        </div>
+
+        <div class="tab-pane" id="comparison-show-hide" role="tabpanel">
+            <div class="p-3 bg-light border rounded mt-3">
+                <div class="mb-3"><div class="form-check"><input class="form-check-input" type="checkbox" x-model="config.hideHeader" id="comparisonHideHeader"><label class="form-check-label" for="comparisonHideHeader">Hide header block</label></div></div>
+                <div class="mb-3"><div class="form-check"><input class="form-check-input" type="checkbox" x-model="config.hidePretitle" id="comparisonHidePretitle"><label class="form-check-label" for="comparisonHidePretitle">Hide pretitle</label></div></div>
+                <div class="mb-3"><div class="form-check"><input class="form-check-input" type="checkbox" x-model="config.hideDescription" id="comparisonHideDescription"><label class="form-check-label" for="comparisonHideDescription">Hide description</label></div></div>
+                <div class="mb-3"><div class="form-check"><input class="form-check-input" type="checkbox" x-model="config.hideBadge" id="comparisonHideBadge"><label class="form-check-label" for="comparisonHideBadge">Hide plan badges</label></div></div>
+                <div class="mb-0"><div class="form-check"><input class="form-check-input" type="checkbox" x-model="config.hideFeatureColumnLabel" id="comparisonHideFeatureColumnLabel"><label class="form-check-label" for="comparisonHideFeatureColumnLabel">Hide first column label</label></div></div>
+            </div>
+        </div>
+
+        {{> common/dialogs/basic_content hideAlternateBackground=false }}
+    </div>
+</form>
