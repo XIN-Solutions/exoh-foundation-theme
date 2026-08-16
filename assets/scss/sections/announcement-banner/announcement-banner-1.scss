@@ -1,0 +1,23 @@
+.announcement-banner {
+	&.is-dismissed {
+		display: none !important;
+	}
+
+	&__inner {
+		min-height: 3rem;
+	}
+
+	&__message {
+		font-size: 0.9375rem;
+		line-height: 1.5;
+	}
+
+	&__link {
+		font-size: 0.875rem;
+		font-weight: 600;
+	}
+
+	&__dismiss {
+		margin-left: auto;
+	}
+}

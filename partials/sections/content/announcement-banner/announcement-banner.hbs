@@ -1,0 +1,107 @@
+{{let . bannerId=(?? config.instanceId 'announcement-banner')}}
+{{let . colorVariant=(?? config.colorVariant 'primary')}}
+{{let . isAlternate=(eq colorVariant 'alternate')}}
+{{let . isAccent=(eq colorVariant 'accent')}}
+{{let . resolvedMessage=(?? message (?? config.message "Limited-time offer: save 20% on annual plans. <strong>Offer ends Friday.</strong>"))}}
+{{let . resolvedLinkUrl=(?? linkUrl config.linkUrl)}}
+{{let . resolvedLinkLabel=(?? linkLabel (?? config.linkLabel 'Learn more'))}}
+
+<section
+    id="announcement-banner-{{bannerId}}"
+    class="
+        announcement-banner
+        announcement-banner--{{colorVariant}}
+        {{#if isAlternate}}
+            bg-alternate bg--alternate
+        {{else if isAccent}}
+            tertiaryColor-bg altBackgroundColor-text
+        {{else}}
+            primaryColor-bg altBackgroundColor-text
+        {{/if}}
+        spacing--{{?? config.spacing 'compact'}}
+        {{?: config.noTopSpacing 'spacing--no-top' ''}}
+        {{?: config.noBottomSpacing 'spacing--no-bottom' ''}}
+    "
+    data-announcement-banner
+    data-banner-id="{{bannerId}}"
+    no-edit="children"
+    allowadd="no"
+    allowdelete="no"
+>
+    <div class="container">
+        <div class="announcement-banner__inner d-flex align-items-center gap-3">
+            <div class="announcement-banner__content flex-grow-1 text-center text-lg-start">
+                <p
+                    class="announcement-banner__message mb-0 {{?: isAlternate 'paragraphColor-text' 'altBackgroundColor-text'}}"
+                    edit="message innerHTML"
+                >
+                    {{{resolvedMessage}}}
+                </p>
+
+                {{#unless config.hideLink}}
+                    {{#if resolvedLinkUrl}}
+                        <a
+                            class="announcement-banner__link d-inline-flex align-items-center gap-1 mt-2 {{?: isAlternate 'paragraphColor-text' 'altBackgroundColor-text'}} link link-underline-opacity-100"
+                            href="{{resolvedLinkUrl}}"
+                            edit="
+                                linkLabel span,
+                                linkUrl @href,
+                                linkTitle @title,
+                                linkTarget @target,
+                                linkRel @rel
+                            "
+                            title="{{linkTitle}}"
+                            target="{{linkTarget}}"
+                            rel="{{linkRel}}"
+                        >
+                            <span>{{{resolvedLinkLabel}}}</span>
+                            <i class="las la-arrow-right" aria-hidden="true"></i>
+                        </a>
+                    {{/if}}
+                {{/unless}}
+            </div>
+
+            {{#if config.dismissible}}
+                <button
+                    type="button"
+                    class="announcement-banner__dismiss btn-close flex-shrink-0 {{?: isAlternate '' 'btn-close-white'}}"
+                    data-announcement-dismiss
+                    aria-label="Dismiss announcement"
+                ></button>
+            {{/if}}
+        </div>
+    </div>
+</section>
+
+{{#if config.dismissible}}
+    <script>
+        (function () {
+            var bannerId = '{{bannerId}}';
+            var storageKey = 'announcement-banner-dismissed-' + bannerId;
+            var section = document.getElementById('announcement-banner-' + bannerId);
+
+            if (!section)
+            {
+                return;
+            }
+
+            if (sessionStorage.getItem(storageKey) === '1')
+            {
+                section.classList.add('is-dismissed');
+                return;
+            }
+
+            var dismissButton = section.querySelector('[data-announcement-dismiss]');
+
+            if (!dismissButton)
+            {
+                return;
+            }
+
+            dismissButton.addEventListener('click', function () {
+                sessionStorage.setItem(storageKey, '1');
+                section.classList.add('is-dismissed');
+            });
+        })();
+    </script>
+{{/if}}
