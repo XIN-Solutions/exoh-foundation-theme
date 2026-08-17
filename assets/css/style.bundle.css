@@ -309,9 +309,6 @@
   align-items: center;
   gap: 0.5rem;
 }
-.article-hero .background-container img {
-  opacity: 0.4;
-}
 
 .hero-5 {
   height: 100vh;
