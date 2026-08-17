@@ -14,58 +14,8 @@
                     spacing: 'comfortable',
                     noTopSpacing: false,
                     noBottomSpacing: false,
-                    trustedBy: [
-                        { name: 'LOREM_SYS', url: '#' },
-                        { name: 'IPSUM_LABS', url: '#' },
-                        { name: 'DOLOR_INC', url: '#' }
-                    ],
-                    plans: [
-                        {
-                            name: 'Lorem Starter',
-                            subtitle: 'Lorem ipsum dolor sit amet',
-                            price: '$29',
-                            priceSuffix: '/mo',
-                            badge: '',
-                            highlighted: false,
-                            ctaLabel: 'Get Started',
-                            ctaUrl: '#',
-                            features: [
-                                { label: 'Lorem dashboard access', included: true },
-                                { label: 'Lorem email support', included: true },
-                                { label: 'Lorem API requests', included: false }
-                            ]
-                        },
-                        {
-                            name: 'Lorem Growth',
-                            subtitle: 'Consectetur adipiscing elit',
-                            price: '$79',
-                            priceSuffix: '/mo',
-                            badge: 'Popular',
-                            highlighted: true,
-                            ctaLabel: 'Start Trial',
-                            ctaUrl: '#',
-                            features: [
-                                { label: 'Everything in Starter', included: true },
-                                { label: 'Lorem advanced analytics', included: true },
-                                { label: 'Lorem priority support', included: true }
-                            ]
-                        },
-                        {
-                            name: 'Lorem Scale',
-                            subtitle: 'Sed do eiusmod tempor',
-                            price: '$149',
-                            priceSuffix: '/mo',
-                            badge: '',
-                            highlighted: false,
-                            ctaLabel: 'Contact Sales',
-                            ctaUrl: '#',
-                            features: [
-                                { label: 'Everything in Growth', included: true },
-                                { label: 'Lorem SSO and security', included: true },
-                                { label: 'Lorem dedicated onboarding', included: true }
-                            ]
-                        }
-                    ]
+                    trustedBy: [],
+                    plans: []
                 }
             });
 
@@ -91,18 +41,15 @@
                 addPlan() {
                     this.ensurePlans();
                     this.config.plans.push({
-                        name: 'Lorem Plan',
-                        subtitle: 'Lorem ipsum subtitle',
-                        price: '$49',
-                        priceSuffix: '/mo',
+                        name: '',
+                        subtitle: '',
+                        price: '',
+                        priceSuffix: '',
                         badge: '',
                         highlighted: false,
-                        ctaLabel: 'Choose Plan',
+                        ctaLabel: '',
                         ctaUrl: '#',
-                        features: [
-                            { label: 'Lorem feature one', included: true },
-                            { label: 'Lorem feature two', included: false }
-                        ]
+                        features: []
                     });
                 },
                 removePlan(index) {
@@ -148,7 +95,7 @@
 
                     this.ensurePlanShape(plan);
                     plan.features.push({
-                        label: 'Lorem feature',
+                        label: '',
                         included: true
                     });
                 },
@@ -197,7 +144,7 @@
                 addTrustedBrand() {
                     this.ensureTrustedBy();
                     this.config.trustedBy.push({
-                        name: 'LOREM_BRAND',
+                        name: '',
                         url: '#'
                     });
                 },

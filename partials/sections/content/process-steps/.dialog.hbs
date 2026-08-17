@@ -1,6 +1,5 @@
 <form class="config-form"
       x-data="(() => {
-            const MIN_ITEMS = 3;
             const MAX_ITEMS = 5;
 
             const base = componentDialog({
@@ -15,51 +14,25 @@
                     spacing: 'comfortable',
                     noTopSpacing: false,
                     noBottomSpacing: false,
-                    items: [
-                        {
-                            title: 'Create your account',
-                            description: 'Sign up in minutes with your work email and invite your team.',
-                            iconClass: 'la la-user-plus'
-                        },
-                        {
-                            title: 'Connect your tools',
-                            description: 'Integrate the apps you already use with one-click connectors.',
-                            iconClass: 'la la-plug'
-                        },
-                        {
-                            title: 'Configure your workflow',
-                            description: 'Set up automations and permissions to match how your team works.',
-                            iconClass: 'la la-cog'
-                        },
-                        {
-                            title: 'Launch and grow',
-                            description: 'Go live with confidence and scale as your needs evolve.',
-                            iconClass: 'la la-rocket'
-                        }
-                    ]
+                    items: []
                 }
             });
 
             return {
                 ...base,
-                minItems: MIN_ITEMS,
                 maxItems: MAX_ITEMS,
                 init() {
+                    if (typeof base.init === 'function')
+                    {
+                        base.init.call(this);
+                    }
+
                     this.ensureItems();
                 },
                 ensureItems() {
                     if (!Array.isArray(this.config.items))
                     {
                         this.config.items = [];
-                    }
-
-                    while (this.config.items.length < MIN_ITEMS)
-                    {
-                        this.config.items.push({
-                            title: 'Step title',
-                            description: 'Brief description of this step.',
-                            iconClass: 'la la-check'
-                        });
                     }
 
                     if (this.config.items.length > MAX_ITEMS)
@@ -76,18 +49,13 @@
                     }
 
                     this.config.items.push({
-                        title: 'Step title',
-                        description: 'Brief description of this step.',
+                        title: '',
+                        description: '',
                         iconClass: 'la la-check'
                     });
                 },
                 removeItem(index) {
                     if (!Array.isArray(this.config.items))
-                    {
-                        return;
-                    }
-
-                    if (this.config.items.length <= MIN_ITEMS)
                     {
                         return;
                     }
@@ -138,7 +106,7 @@
                 <div class="d-flex justify-content-between align-items-center gap-2 flex-wrap mb-3">
                     <div>
                         <label class="form-label mb-0">Process steps</label>
-                        <p class="form-text text-muted mb-0 small">Add, remove, and reorder steps. Between <span x-text="minItems"></span> and <span x-text="maxItems"></span> items.</p>
+                        <p class="form-text text-muted mb-0 small">Add, remove, and reorder steps. Up to <span x-text="maxItems"></span> items.</p>
                     </div>
                     <button
                         type="button"
@@ -150,7 +118,13 @@
                     </button>
                 </div>
 
-                <div class="d-flex flex-column gap-3">
+                <template x-if="!(config.items || []).length">
+                    <div class="alert alert-warning mb-0" role="alert">
+                        No process steps configured yet.
+                    </div>
+                </template>
+
+                <div class="d-flex flex-column gap-3" x-show="(config.items || []).length">
                     <template x-for="(item, itemIndex) in (config.items || [])" :key="itemIndex">
                         <div class="p-3 border rounded bg-light">
                             <div class="d-flex justify-content-between align-items-start gap-2 mb-3 flex-wrap">
@@ -158,7 +132,7 @@
                                 <div class="btn-group btn-group-sm">
                                     <button type="button" class="btn btn-outline-secondary" @click="moveItem(itemIndex, itemIndex - 1)" :disabled="itemIndex === 0" aria-label="Move step up" title="Move step up">▲</button>
                                     <button type="button" class="btn btn-outline-secondary" @click="moveItem(itemIndex, itemIndex + 1)" :disabled="itemIndex === (config.items.length - 1)" aria-label="Move step down" title="Move step down">▼</button>
-                                    <button type="button" class="btn btn-outline-danger" @click="removeItem(itemIndex)" :disabled="config.items.length <= minItems" aria-label="Remove step" title="Remove step">✕</button>
+                                    <button type="button" class="btn btn-outline-danger" @click="removeItem(itemIndex)" aria-label="Remove step" title="Remove step">✕</button>
                                 </div>
                             </div>
 

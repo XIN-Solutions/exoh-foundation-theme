@@ -1,6 +1,5 @@
 <form class="config-form"
       x-data="(() => {
-            const MIN_ITEMS = 1;
             const MAX_ITEMS = 20;
 
             const base = componentDialog({
@@ -14,26 +13,12 @@
                     spacing: 'comfortable',
                     noTopSpacing: false,
                     noBottomSpacing: false,
-                    items: [
-                        {
-                            question: 'What is included in the free plan?',
-                            answer: 'The free plan includes core features for individuals and small teams getting started.'
-                        },
-                        {
-                            question: 'Can I change plans later?',
-                            answer: 'Yes. You can upgrade or downgrade at any time from your account settings.'
-                        },
-                        {
-                            question: 'Do you offer refunds?',
-                            answer: 'We offer a 30-day money-back guarantee on annual subscriptions.'
-                        }
-                    ]
+                    items: []
                 }
             });
 
             return {
                 ...base,
-                minItems: MIN_ITEMS,
                 maxItems: MAX_ITEMS,
                 init() {
                     if (!this.config.instanceId)
@@ -43,20 +28,30 @@
 
                     this.ensureItems();
                 },
+                setConfig(configEvent) {
+                    base.setConfig.call(this, configEvent);
+                    this.ensureItems();
+                    this.refreshMarkdownEditors();
+                },
                 newItem(overrides) {
                     return {
-                        question: 'New question',
-                        answer: 'Answer text goes here.',
+                        question: '',
+                        answer: '',
                         _key: Math.random().toString(36).slice(2, 9),
                         ...(overrides || {})
                     };
                 },
                 refreshMarkdownEditors() {
-                    this.$nextTick(() => {
+                    const scan = () => {
                         if (window.VvvebMarkdownEditor && typeof window.VvvebMarkdownEditor.scan === 'function')
                         {
                             window.VvvebMarkdownEditor.scan(this.$el);
                         }
+                    };
+
+                    this.$nextTick(() => {
+                        scan();
+                        requestAnimationFrame(scan);
                     });
                 },
                 ensureItems() {
@@ -74,11 +69,6 @@
                         return this.newItem(item || {});
                     });
 
-                    while (this.config.items.length < MIN_ITEMS)
-                    {
-                        this.config.items.push(this.newItem());
-                    }
-
                     if (this.config.items.length > MAX_ITEMS)
                     {
                         this.config.items = this.config.items.slice(0, MAX_ITEMS);
@@ -92,16 +82,11 @@
                         return;
                     }
 
-                    this.config.items.push(this.newItem());
+                    this.config.items = [...this.config.items, this.newItem()];
                     this.refreshMarkdownEditors();
                 },
                 removeItem(index) {
                     if (!Array.isArray(this.config.items))
-                    {
-                        return;
-                    }
-
-                    if (this.config.items.length <= MIN_ITEMS)
                     {
                         return;
                     }
@@ -152,7 +137,7 @@
                 <div class="d-flex justify-content-between align-items-center gap-2 flex-wrap mb-3">
                     <div>
                         <label class="form-label mb-0">Questions and answers</label>
-                        <p class="form-text text-muted mb-0 small">Add, remove, and reorder FAQ pairs. Between <span x-text="minItems"></span> and <span x-text="maxItems"></span> items.</p>
+                        <p class="form-text text-muted mb-0 small">Add, remove, and reorder FAQ pairs. Up to <span x-text="maxItems"></span> items.</p>
                     </div>
                     <button
                         type="button"
@@ -164,15 +149,21 @@
                     </button>
                 </div>
 
+                <template x-if="!(config.items || []).length">
+                    <div class="alert alert-warning mb-0" role="alert">
+                        No FAQ items configured yet.
+                    </div>
+                </template>
+
                 <div class="d-flex flex-column gap-3">
-                    <template x-for="(item, itemIndex) in (config.items || [])" :key="item._key || itemIndex">
+                    <template x-for="(item, itemIndex) in (config.items || [])" :key="item._key">
                         <div class="p-3 border rounded bg-light">
                             <div class="d-flex justify-content-between align-items-start gap-2 mb-3 flex-wrap">
                                 <h6 class="mb-0" x-text="item.question || `FAQ item ${itemIndex + 1}`"></h6>
                                 <div class="btn-group btn-group-sm">
                                     <button type="button" class="btn btn-outline-secondary" @click="moveItem(itemIndex, itemIndex - 1)" :disabled="itemIndex === 0" aria-label="Move item up" title="Move item up">▲</button>
                                     <button type="button" class="btn btn-outline-secondary" @click="moveItem(itemIndex, itemIndex + 1)" :disabled="itemIndex === (config.items.length - 1)" aria-label="Move item down" title="Move item down">▼</button>
-                                    <button type="button" class="btn btn-outline-danger" @click="removeItem(itemIndex)" :disabled="config.items.length <= minItems" aria-label="Remove item" title="Remove item">✕</button>
+                                    <button type="button" class="btn btn-outline-danger" @click="removeItem(itemIndex)" aria-label="Remove item" title="Remove item">✕</button>
                                 </div>
                             </div>
 

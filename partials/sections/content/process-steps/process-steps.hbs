@@ -18,13 +18,13 @@
     <div class="container">
         {{#unless config.hideTitle}}
             <div class="row justify-content-center mb-4 mb-lg-5">
-                <div class="col-lg-8 {{?: config.centerTitle 'text-center' 'text-start'}}">
+                <div class="col-lg-8 {{?: (eq config.centerTitle false) 'text-start' 'text-center'}}">
                     <h2 class="mb-0 h2-all" edit="title innerHTML">
-                        {{{?? title "How it works"}}}
+                        {{{?? title "Lorem ipsum dolor sit amet"}}}
                     </h2>
                     {{#unless config.hideDescription}}
                         <p class="lead mb-0 mt-3 h3-all" edit="description innerHTML">
-                            {{{?? description "Get started in a few simple steps."}}}
+                            {{{?? description "Lorem ipsum dolor sit amet, consectetur adipiscing elit."}}}
                         </p>
                     {{/unless}}
                 </div>
@@ -37,7 +37,7 @@
                 style="--process-steps-count: {{resolvedItems.length}};"
             >
                 {{#each resolvedItems}}
-                    <li class="process-steps__step {{?: ../config.centerSteps 'text-center' ''}}">
+                    <li class="process-steps__step {{?: (eq ../config.centerSteps false) 'text-start' 'text-center'}}">
                         <div class="process-steps__marker-wrap">
                             <div
                                 class="process-steps__marker primaryColor-bg altBackgroundColor-text"
@@ -51,8 +51,8 @@
                             </div>
                         </div>
                         <div class="process-steps__content">
-                            <h3 class="h5 mb-2">{{?? title "Step title"}}</h3>
-                            <p class="paragraphColor-text mb-0">{{?? description "Brief description of this step."}}</p>
+                            <h3 class="h5 mb-2">{{?? title "Lorem ipsum"}}</h3>
+                            <p class="paragraphColor-text mb-0">{{?? description "Dolor sit amet, consectetur adipiscing elit."}}</p>
                         </div>
                     </li>
                 {{/each}}

@@ -31,6 +31,11 @@
 	&__step {
 		position: relative;
 		flex: 1 1 auto;
+		text-align: center;
+
+		&.text-start {
+			text-align: start;
+		}
 
 		@media (min-width: 992px) {
 			.process-steps__list--horizontal & {

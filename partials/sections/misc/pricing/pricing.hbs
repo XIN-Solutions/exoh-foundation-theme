@@ -4,11 +4,7 @@
 <section
     class="
         pricing-1
-        {{#if config.useAltBackground}}
-            bg-alternate bg--alternate
-        {{else}}
-            primaryColor-bg altBackgroundColor-text
-        {{/if}}
+        {{?: config.useAltBackground 'bg--alternate' ''}}
         spacing--{{?? config.spacing 'comfortable'}}
         {{?: config.noTopSpacing 'spacing--no-top' ''}}
         {{?: config.noBottomSpacing 'spacing--no-bottom' ''}}
@@ -23,15 +19,15 @@
                 <div class="col-lg-8 text-center">
                     {{#unless config.hidePretitle}}
                         <p class="text-uppercase small fw-semibold mb-2 tertiaryColor-text" edit="pretitle innerHTML">
-                            {{{?? pretitle "Plans"}}}
+                            {{{?? pretitle "Lorem ipsum"}}}
                         </p>
                     {{/unless}}
                     <h2 class="mb-3 h2-all" edit="title innerHTML">
-                        {{{?? title "Simple, transparent pricing"}}}
+                        {{{?? title "Lorem ipsum dolor sit amet"}}}
                     </h2>
                     {{#unless config.hideDescription}}
                         <p class="lead mb-0 h3-all" edit="description innerHTML">
-                            {{{?? description "Choose the plan that fits your team. Upgrade or downgrade at any time."}}}
+                            {{{?? description "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas cursus in lectus ut dignissim."}}}
                         </p>
                     {{/unless}}
                 </div>
@@ -55,7 +51,7 @@
                                 <h3 class="h4 mb-1 {{?: highlighted 'tertiaryColor-text' ''}}">
                                     {{?? name "Plan"}}
                                 </h3>
-                                <p class="small text-muted mb-0">{{?? subtitle "Plan subtitle"}}</p>
+                                <p class="small text-muted mb-0">{{?? subtitle "Lorem ipsum"}}</p>
                             </div>
 
                             <div class="mb-4 d-flex align-items-baseline gap-1">
@@ -80,7 +76,7 @@
                                 class="btn w-100 {{?: highlighted 'buttonColor-bg altBackgroundColor-text' 'btn-outline-primary'}}"
                                 href="{{?? ctaUrl '#'}}"
                             >
-                                {{?? ctaLabel "Choose plan"}}
+                                {{?? ctaLabel "Lorem ipsum"}}
                             </a>
                         </div>
                     </div>
@@ -92,7 +88,7 @@
             <div class="text-center mt-5" no-edit>
                 {{#unless config.hideTrustedByLabel}}
                     <p class="small text-uppercase text-muted fw-semibold mb-3" edit="trustedByLabel innerHTML">
-                        {{{?? trustedByLabel "Trusted by teams at"}}}
+                        {{{?? trustedByLabel "Lorem ipsum"}}}
                     </p>
                 {{/unless}}
                 <div class="d-flex flex-wrap justify-content-center align-items-center gap-4 pricing-trusted-by" no-edit>

@@ -1,9 +1,5 @@
 {{let . resolvedItems=(?? items config.items)}}
-{{let .
-      selectedColumnSetting=(?? config.columns 'four')
-      columnsMap=(map two='col-12 col-md-6' three='col-12 col-md-4' four='col-12 col-sm-6 col-lg-3')
-      selectedColumns=(lookup columnsMap selectedColumnSetting)
-}}
+{{let . selectedColumns=(lookup (map two='col-12 col-md-6' three='col-12 col-md-4' four='col-12 col-sm-6 col-lg-3') (?? config.columns 'four'))}}
 
 <section
     class="
@@ -20,9 +16,9 @@
     <div class="container">
         {{#unless config.hideTitle}}
             <div class="row justify-content-center mb-4">
-                <div class="col-lg-8 {{?: config.centerTitle 'text-center' 'text-start'}}">
+                <div class="col-lg-8 {{?: (eq config.centerTitle false) 'text-start' 'text-center'}}">
                     <h2 class="mb-0 h2-all" edit="title innerHTML">
-                        {{{?? title "By the numbers"}}}
+                        {{{?? title "Lorem ipsum dolor sit amet"}}}
                     </h2>
                 </div>
             </div>
@@ -31,7 +27,7 @@
         <div class="row g-4 justify-content-center">
             {{#if resolvedItems.length}}
                 {{#each resolvedItems}}
-                    <div class="{{../selectedColumns}} {{?: ../config.centerStats 'text-center' 'text-start'}}">
+                    <div class="{{?? ../selectedColumns 'col-12 col-sm-6 col-lg-3'}} {{?: (eq ../config.centerStats false) 'text-start' 'text-center'}}">
                         <div class="stats__item">
                             <p class="stats__value mb-1 fw-bold primaryColor-text">
                                 {{#if prefix}}
@@ -43,7 +39,7 @@
                                 {{/if}}
                             </p>
                             <p class="stats__label mb-0 paragraphColor-text">
-                                {{?? label "Metric label"}}
+                                {{?? label "Lorem ipsum"}}
                             </p>
                         </div>
                     </div>

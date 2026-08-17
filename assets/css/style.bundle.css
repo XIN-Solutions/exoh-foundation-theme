@@ -814,32 +814,6 @@ body:has(> section.bg--alternate:last-of-type) > footer.footer-1 {
   opacity: 1;
 }
 
-.subscribe-1 .subscribe-card {
-  background-color: var(--bs-light, #f8f9fa);
-  border-radius: var(--theme-cardBorderRadius);
-  box-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.06);
-}
-.subscribe-1 .subscribe-pattern {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 50%;
-  height: 100%;
-  opacity: 0.08;
-  pointer-events: none;
-  color: currentColor;
-}
-.subscribe-1 .subscribe-pattern svg {
-  width: 100%;
-  height: 100%;
-  transform: scale(1.5) rotate(12deg);
-  transform-origin: top right;
-}
-.subscribe-1 .subscribe-content {
-  z-index: 1;
-  max-width: 42rem;
-}
-
 .faq-accordion__list {
   display: flex;
   flex-direction: column;
@@ -914,6 +888,13 @@ body:has(> section.bg--alternate:last-of-type) > footer.footer-1 {
 }
 .comparison-table__table {
   --comparison-table-highlight-bg: rgba(var(--bs-primary-rgb), 0.06);
+  --bs-table-color: var(--theme-paragraphColor);
+  --bs-table-bg: transparent;
+  --bs-table-border-color: var(--bs-border-color);
+  color: var(--theme-paragraphColor);
+}
+.comparison-table__table > :not(caption) > * > * {
+  color: inherit;
 }
 .comparison-table__feature-col {
   min-width: 10rem;
@@ -950,6 +931,10 @@ body:has(> section.bg--alternate:last-of-type) > footer.footer-1 {
 .process-steps__step {
   position: relative;
   flex: 1 1 auto;
+  text-align: center;
+}
+.process-steps__step.text-start {
+  text-align: start;
 }
 @media (min-width: 992px) {
   .process-steps__list--horizontal .process-steps__step {
