@@ -1,0 +1,114 @@
+<form class="config-form"
+      x-data="componentDialog({
+            defaultConfig: {
+                backgroundImage: '',
+                backgroundImageAlt: '',
+                hideBreadcrumb: false,
+                hideTag: false,
+                hideMeta: false,
+                hideTitleAccent: false,
+                hideOverlay: false,
+                overlayColour: '#000000',
+                overlayOpacity: 0.7,
+                spacing: 'comfortable',
+                noTopSpacing: false,
+                noBottomSpacing: false
+            }
+      })"
+      @set="setConfig"
+      @get="getConfig"
+>
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#article-hero-layout" role="tab">Layout</a></li>
+        <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#article-hero-show-hide" role="tab">Show/Hide</a></li>
+    </ul>
+
+    <div class="tab-content">
+        <div class="tab-pane show active" id="article-hero-layout" role="tabpanel">
+            <div class="p-3 bg-light border rounded mt-3">
+                {{> common/dialogs/image
+                    field="config.backgroundImage"
+                    label="Background image"
+                    hint="Displayed behind the article heading. Pick a wide image (for example 1920px) for best results."
+                }}
+
+                <div class="mb-3">
+                    <label class="form-label">Background image alt text</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        x-model="config.backgroundImageAlt"
+                        placeholder="Describe the image for accessibility"
+                    >
+                    <p class="form-text text-muted mb-0 small">Used for screen readers and accessibility checks.</p>
+                </div>
+
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" x-model="config.hideOverlay" id="articleHeroHideOverlay">
+                    <label class="form-check-label" for="articleHeroHideOverlay">Hide tint overlay</label>
+                </div>
+                <p class="form-text text-muted small mb-2">When off, a semi-transparent layer sits over the background to improve text contrast.</p>
+
+                <div x-show="!config.hideOverlay" class="p-3 mb-0 bg-white border rounded">
+                    <div class="mb-3 d-flex align-items-center gap-2">
+                        <label for="articleHeroOverlayColour" class="form-label mb-0">Tint colour</label>
+                        <input
+                            type="color"
+                            class="form-control form-control-color"
+                            id="articleHeroOverlayColour"
+                            x-model="config.overlayColour"
+                            title="Choose tint colour"
+                        >
+                    </div>
+                    <div class="mb-0 d-flex align-items-center gap-2">
+                        <label for="articleHeroOverlayOpacity" class="form-label mb-0">Tint opacity</label>
+                        <input
+                            type="range"
+                            class="form-range flex-fill"
+                            id="articleHeroOverlayOpacity"
+                            min="0"
+                            max="1"
+                            step="0.01"
+                            x-model="config.overlayOpacity"
+                        >
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane" id="article-hero-show-hide" role="tabpanel">
+            <div class="p-3 bg-light border rounded mt-3">
+                <div class="mb-3">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" x-model="config.hideBreadcrumb" id="articleHeroHideBreadcrumb">
+                        <label class="form-check-label" for="articleHeroHideBreadcrumb">Hide breadcrumb</label>
+                    </div>
+                    <p class="form-text text-muted mb-0 small">Hides the ancestor breadcrumb trail below the tag.</p>
+                </div>
+                <div class="mb-3">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" x-model="config.hideTag" id="articleHeroHideTag">
+                        <label class="form-check-label" for="articleHeroHideTag">Hide tag</label>
+                    </div>
+                    <p class="form-text text-muted mb-0 small">Hides the top category or topic badge.</p>
+                </div>
+                <div class="mb-3">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" x-model="config.hideMeta" id="articleHeroHideMeta">
+                        <label class="form-check-label" for="articleHeroHideMeta">Hide metadata row</label>
+                    </div>
+                    <p class="form-text text-muted mb-0 small">Hides date, read time, and author metadata.</p>
+                </div>
+                <div class="mb-0">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" x-model="config.hideTitleAccent" id="articleHeroHideTitleAccent">
+                        <label class="form-check-label" for="articleHeroHideTitleAccent">Hide title accent line</label>
+                    </div>
+                    <p class="form-text text-muted mb-0 small">Hides the accent-coloured second headline line.</p>
+                </div>
+            </div>
+        </div>
+
+        {{> common/dialogs/basic_content hideAlternateBackground=true }}
+    </div>
+</form>

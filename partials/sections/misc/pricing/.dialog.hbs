@@ -1,0 +1,373 @@
+<form class="config-form"
+      x-data="(() => {
+            const base = componentDialog({
+                defaultConfig: {
+                    currency: '',
+                    useAltBackground: false,
+                    hideHeader: false,
+                    hidePretitle: false,
+                    hideDescription: false,
+                    hideBadge: false,
+                    hidePriceSuffix: false,
+                    hideTrustedBy: false,
+                    hideTrustedByLabel: false,
+                    spacing: 'comfortable',
+                    noTopSpacing: false,
+                    noBottomSpacing: false,
+                    trustedBy: [],
+                    plans: []
+                }
+            });
+
+            return {
+                ...base,
+                init() {
+                    this.ensurePlans();
+                },
+                ensurePlans() {
+                    if (!Array.isArray(this.config.plans))
+                    {
+                        this.config.plans = [];
+                    }
+
+                    this.config.plans.forEach((plan) => this.ensurePlanShape(plan));
+                },
+                ensurePlanShape(plan) {
+                    if (!Array.isArray(plan.features))
+                    {
+                        plan.features = [];
+                    }
+                },
+                addPlan() {
+                    this.ensurePlans();
+                    this.config.plans.push({
+                        name: '',
+                        subtitle: '',
+                        price: '',
+                        priceSuffix: '',
+                        badge: '',
+                        highlighted: false,
+                        ctaLabel: '',
+                        ctaUrl: '#',
+                        features: []
+                    });
+                },
+                removePlan(index) {
+                    if (!Array.isArray(this.config.plans))
+                    {
+                        return;
+                    }
+
+                    this.config.plans.splice(index, 1);
+                },
+                movePlan(fromIndex, toIndex) {
+                    if (!Array.isArray(this.config.plans))
+                    {
+                        return;
+                    }
+
+                    if (fromIndex < 0 || toIndex < 0)
+                    {
+                        return;
+                    }
+
+                    if (fromIndex >= this.config.plans.length || toIndex >= this.config.plans.length)
+                    {
+                        return;
+                    }
+
+                    if (fromIndex === toIndex)
+                    {
+                        return;
+                    }
+
+                    const next = [...this.config.plans];
+                    const [moved] = next.splice(fromIndex, 1);
+                    next.splice(toIndex, 0, moved);
+                    this.config.plans = next;
+                },
+                addFeature(planIndex) {
+                    const plan = this.config.plans?.[planIndex];
+                    if (!plan)
+                    {
+                        return;
+                    }
+
+                    this.ensurePlanShape(plan);
+                    plan.features.push({
+                        label: '',
+                        included: true
+                    });
+                },
+                removeFeature(planIndex, featureIndex) {
+                    const features = this.config.plans?.[planIndex]?.features;
+                    if (!Array.isArray(features))
+                    {
+                        return;
+                    }
+
+                    features.splice(featureIndex, 1);
+                },
+                moveFeature(planIndex, fromIndex, toIndex) {
+                    const features = this.config.plans?.[planIndex]?.features;
+                    if (!Array.isArray(features))
+                    {
+                        return;
+                    }
+
+                    if (fromIndex < 0 || toIndex < 0)
+                    {
+                        return;
+                    }
+
+                    if (fromIndex >= features.length || toIndex >= features.length)
+                    {
+                        return;
+                    }
+
+                    if (fromIndex === toIndex)
+                    {
+                        return;
+                    }
+
+                    const next = [...features];
+                    const [moved] = next.splice(fromIndex, 1);
+                    next.splice(toIndex, 0, moved);
+                    this.config.plans[planIndex].features = next;
+                },
+                ensureTrustedBy() {
+                    if (!Array.isArray(this.config.trustedBy))
+                    {
+                        this.config.trustedBy = [];
+                    }
+                },
+                addTrustedBrand() {
+                    this.ensureTrustedBy();
+                    this.config.trustedBy.push({
+                        name: '',
+                        url: '#'
+                    });
+                },
+                removeTrustedBrand(index) {
+                    if (!Array.isArray(this.config.trustedBy))
+                    {
+                        return;
+                    }
+
+                    this.config.trustedBy.splice(index, 1);
+                },
+                moveTrustedBrand(fromIndex, toIndex) {
+                    if (!Array.isArray(this.config.trustedBy))
+                    {
+                        return;
+                    }
+
+                    if (fromIndex < 0 || toIndex < 0)
+                    {
+                        return;
+                    }
+
+                    if (fromIndex >= this.config.trustedBy.length || toIndex >= this.config.trustedBy.length)
+                    {
+                        return;
+                    }
+
+                    if (fromIndex === toIndex)
+                    {
+                        return;
+                    }
+
+                    const next = [...this.config.trustedBy];
+                    const [moved] = next.splice(fromIndex, 1);
+                    next.splice(toIndex, 0, moved);
+                    this.config.trustedBy = next;
+                }
+            };
+      })()"
+      @set="setConfig"
+      @get="getConfig"
+>
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#pricing-plans" role="tab">Plans</a></li>
+        <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#pricing-trusted-by" role="tab">Trusted brands</a></li>
+        <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#pricing-layout" role="tab">Layout</a></li>
+        <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#pricing-show-hide" role="tab">Show/Hide</a></li>
+        {{> common/dialogs/basic_nav }}
+    </ul>
+
+    <div class="tab-content">
+        <div class="tab-pane show active" id="pricing-plans" role="tabpanel">
+            <div class="mt-3">
+                <div class="d-flex justify-content-between align-items-center gap-2 flex-wrap mb-3">
+                    <div>
+                        <label class="form-label mb-0">Pricing plans</label>
+                        <p class="form-text text-muted mb-0 small">Add plans, adjust their order, and configure included features.</p>
+                    </div>
+                    <button type="button" class="btn btn-primary btn-sm" @click="addPlan()">Add plan</button>
+                </div>
+
+                <template x-if="!config.plans?.length">
+                    <div class="alert alert-warning mb-0" role="alert">
+                        No plans configured yet.
+                    </div>
+                </template>
+
+                <div class="d-flex flex-column gap-3" x-show="config.plans?.length">
+                    <template x-for="(plan, planIndex) in (config.plans || [])" :key="planIndex">
+                        <div class="p-3 border rounded bg-light">
+                            <div class="d-flex justify-content-between align-items-start gap-2 mb-3 flex-wrap">
+                                <h6 class="mb-0" x-text="plan.name || `Plan ${planIndex + 1}`"></h6>
+                                <div class="btn-group btn-group-sm">
+                                    <button type="button" class="btn btn-outline-secondary" @click="movePlan(planIndex, planIndex - 1)" :disabled="planIndex === 0" aria-label="Move plan up" title="Move plan up">▲</button>
+                                    <button type="button" class="btn btn-outline-secondary" @click="movePlan(planIndex, planIndex + 1)" :disabled="planIndex === (config.plans.length - 1)" aria-label="Move plan down" title="Move plan down">▼</button>
+                                    <button type="button" class="btn btn-outline-danger" @click="removePlan(planIndex)" aria-label="Remove plan" title="Remove plan">✕</button>
+                                </div>
+                            </div>
+
+                            <div class="row g-2 mb-2">
+                                <div class="col-12 col-md-6">
+                                    <label class="form-label small mb-1">Name</label>
+                                    <input type="text" class="form-control form-control-sm" x-model="plan.name" placeholder="Plan name">
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <label class="form-label small mb-1">Subtitle</label>
+                                    <input type="text" class="form-control form-control-sm" x-model="plan.subtitle" placeholder="Plan subtitle">
+                                </div>
+                            </div>
+
+                            <div class="row g-2 mb-2">
+                                <div class="col-12 col-md-4">
+                                    <label class="form-label small mb-1">Price</label>
+                                    <input type="text" class="form-control form-control-sm" x-model="plan.price" placeholder="$99">
+                                </div>
+                                <div class="col-12 col-md-4">
+                                    <label class="form-label small mb-1">Price suffix</label>
+                                    <input type="text" class="form-control form-control-sm" x-model="plan.priceSuffix" placeholder="/mo">
+                                </div>
+                                <div class="col-12 col-md-4">
+                                    <label class="form-label small mb-1">Badge</label>
+                                    <input type="text" class="form-control form-control-sm" x-model="plan.badge" placeholder="Popular">
+                                </div>
+                            </div>
+
+                            <div class="row g-2 mb-3">
+                                <div class="col-12 col-md-6">
+                                    <label class="form-label small mb-1">CTA label</label>
+                                    <input type="text" class="form-control form-control-sm" x-model="plan.ctaLabel" placeholder="Choose plan">
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <label class="form-label small mb-1">CTA URL</label>
+                                    <input type="text" class="form-control form-control-sm" x-model="plan.ctaUrl" placeholder="#">
+                                </div>
+                            </div>
+
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="checkbox" x-model="plan.highlighted" :id="`pricingPlanHighlighted${planIndex}`">
+                                <label class="form-check-label" :for="`pricingPlanHighlighted${planIndex}`">Highlight this plan</label>
+                            </div>
+
+                            <div class="border rounded p-2 bg-white">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <label class="form-label mb-0 small">Features</label>
+                                    <button type="button" class="btn btn-outline-primary btn-sm" @click="addFeature(planIndex)">Add feature</button>
+                                </div>
+
+                                <template x-if="!plan.features?.length">
+                                    <p class="form-text text-muted mb-0 small">No features yet.</p>
+                                </template>
+
+                                <div class="d-flex flex-column gap-2" x-show="plan.features?.length">
+                                    <template x-for="(feature, featureIndex) in (plan.features || [])" :key="featureIndex">
+                                        <div class="border rounded p-2">
+                                            <div class="d-flex align-items-center gap-2 mb-2">
+                                                <input class="form-check-input mt-0" type="checkbox" x-model="feature.included" :id="`pricingFeatureIncluded${planIndex}-${featureIndex}`">
+                                                <label class="form-check-label small me-auto" :for="`pricingFeatureIncluded${planIndex}-${featureIndex}`">Included</label>
+                                                <div class="btn-group btn-group-sm">
+                                                    <button type="button" class="btn btn-outline-secondary" @click="moveFeature(planIndex, featureIndex, featureIndex - 1)" :disabled="featureIndex === 0" aria-label="Move feature up" title="Move feature up">▲</button>
+                                                    <button type="button" class="btn btn-outline-secondary" @click="moveFeature(planIndex, featureIndex, featureIndex + 1)" :disabled="featureIndex === (plan.features.length - 1)" aria-label="Move feature down" title="Move feature down">▼</button>
+                                                    <button type="button" class="btn btn-outline-danger" @click="removeFeature(planIndex, featureIndex)" aria-label="Remove feature" title="Remove feature">✕</button>
+                                                </div>
+                                            </div>
+                                            <input type="text" class="form-control form-control-sm" x-model="feature.label" placeholder="Feature label">
+                                        </div>
+                                    </template>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane" id="pricing-trusted-by" role="tabpanel">
+            <div class="mt-3">
+                <div class="d-flex justify-content-between align-items-center gap-2 flex-wrap mb-3">
+                    <div>
+                        <label class="form-label mb-0">Trusted brands</label>
+                        <p class="form-text text-muted mb-0 small">This list powers the trusted-by row at the bottom of the pricing section.</p>
+                    </div>
+                    <button type="button" class="btn btn-primary btn-sm" @click="addTrustedBrand()">Add brand</button>
+                </div>
+
+                <template x-if="!config.trustedBy?.length">
+                    <div class="alert alert-warning mb-0" role="alert">
+                        No trusted brands configured yet.
+                    </div>
+                </template>
+
+                <div class="d-flex flex-column gap-2" x-show="config.trustedBy?.length">
+                    <template x-for="(brand, brandIndex) in (config.trustedBy || [])" :key="brandIndex">
+                        <div class="p-2 border rounded bg-light">
+                            <div class="d-flex align-items-center justify-content-between gap-2 mb-2 flex-wrap">
+                                <strong class="small" x-text="brand.name || `Brand ${brandIndex + 1}`"></strong>
+                                <div class="btn-group btn-group-sm">
+                                    <button type="button" class="btn btn-outline-secondary" @click="moveTrustedBrand(brandIndex, brandIndex - 1)" :disabled="brandIndex === 0" aria-label="Move brand up" title="Move brand up">▲</button>
+                                    <button type="button" class="btn btn-outline-secondary" @click="moveTrustedBrand(brandIndex, brandIndex + 1)" :disabled="brandIndex === (config.trustedBy.length - 1)" aria-label="Move brand down" title="Move brand down">▼</button>
+                                    <button type="button" class="btn btn-outline-danger" @click="removeTrustedBrand(brandIndex)" aria-label="Remove brand" title="Remove brand">✕</button>
+                                </div>
+                            </div>
+                            <div class="row g-2">
+                                <div class="col-12 col-md-6">
+                                    <input type="text" class="form-control form-control-sm" x-model="brand.name" placeholder="Brand name">
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <input type="text" class="form-control form-control-sm" x-model="brand.url" placeholder="https://example.com">
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane" id="pricing-layout" role="tabpanel">
+            <div class="p-3 bg-light border rounded mt-3">
+                <label class="form-label" for="pricingCurrency">Currency disclaimer</label>
+                <select class="form-select" id="pricingCurrency" x-model="config.currency">
+                    <option value="">None (hide disclaimer)</option>
+                    <option value="USD">USD</option>
+                    <option value="EUR">EUR</option>
+                    <option value="GBP">GBP</option>
+                    <option value="AUD">AUD</option>
+                    <option value="NZD">NZD</option>
+                    <option value="CAD">CAD</option>
+                </select>
+                <p class="form-text text-muted mb-0 small">Shows a bottom disclaimer only. Does not change plan price text.</p>
+            </div>
+        </div>
+
+        <div class="tab-pane" id="pricing-show-hide" role="tabpanel">
+            <div class="p-3 bg-light border rounded mt-3">
+                <div class="mb-3"><div class="form-check"><input class="form-check-input" type="checkbox" x-model="config.hideHeader" id="pricingHideHeader"><label class="form-check-label" for="pricingHideHeader">Hide header block</label></div></div>
+                <div class="mb-3"><div class="form-check"><input class="form-check-input" type="checkbox" x-model="config.hidePretitle" id="pricingHidePretitle"><label class="form-check-label" for="pricingHidePretitle">Hide pretitle</label></div></div>
+                <div class="mb-3"><div class="form-check"><input class="form-check-input" type="checkbox" x-model="config.hideDescription" id="pricingHideDescription"><label class="form-check-label" for="pricingHideDescription">Hide description</label></div></div>
+                <div class="mb-3"><div class="form-check"><input class="form-check-input" type="checkbox" x-model="config.hideBadge" id="pricingHideBadge"><label class="form-check-label" for="pricingHideBadge">Hide plan badges</label></div></div>
+                <div class="mb-3"><div class="form-check"><input class="form-check-input" type="checkbox" x-model="config.hidePriceSuffix" id="pricingHidePriceSuffix"><label class="form-check-label" for="pricingHidePriceSuffix">Hide price suffix</label></div></div>
+                <div class="mb-3"><div class="form-check"><input class="form-check-input" type="checkbox" x-model="config.hideTrustedBy" id="pricingHideTrustedBy"><label class="form-check-label" for="pricingHideTrustedBy">Hide trusted-by block</label></div></div>
+                <div class="mb-0"><div class="form-check"><input class="form-check-input" type="checkbox" x-model="config.hideTrustedByLabel" id="pricingHideTrustedByLabel"><label class="form-check-label" for="pricingHideTrustedByLabel">Hide trusted-by label</label></div></div>
+            </div>
+        </div>
+
+        {{> common/dialogs/basic_content hideAlternateBackground=false }}
+    </div>
+</form>

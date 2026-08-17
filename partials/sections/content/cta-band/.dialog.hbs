@@ -1,0 +1,46 @@
+<form class="config-form"
+      x-data="componentDialog({
+            defaultConfig: {
+                hideTitle: false,
+                hideDescription: false,
+                hidePrimaryCta: false,
+                hideSecondaryLink: false,
+                useAltBackground: false,
+                spacing: 'comfortable',
+                noTopSpacing: false,
+                noBottomSpacing: false
+            }
+      })"
+      @set="setConfig"
+      @get="getConfig"
+>
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#cta-band-show-hide" role="tab">Show/Hide</a></li>
+        {{> common/dialogs/basic_nav }}
+    </ul>
+
+    <div class="tab-content">
+        <div class="tab-pane show active" id="cta-band-show-hide" role="tabpanel">
+            <div class="p-3 bg-light border rounded mt-3">
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" x-model="config.hideTitle" id="ctaBandHideTitle">
+                    <label class="form-check-label" for="ctaBandHideTitle">Hide headline</label>
+                </div>
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" x-model="config.hideDescription" id="ctaBandHideDescription">
+                    <label class="form-check-label" for="ctaBandHideDescription">Hide description</label>
+                </div>
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" x-model="config.hidePrimaryCta" id="ctaBandHidePrimaryCta">
+                    <label class="form-check-label" for="ctaBandHidePrimaryCta">Hide primary button</label>
+                </div>
+                <div class="form-check mb-0">
+                    <input class="form-check-input" type="checkbox" x-model="config.hideSecondaryLink" id="ctaBandHideSecondaryLink">
+                    <label class="form-check-label" for="ctaBandHideSecondaryLink">Hide secondary link</label>
+                </div>
+            </div>
+        </div>
+
+        {{> common/dialogs/basic_content hideAlternateBackground=false }}
+    </div>
+</form>

@@ -1,0 +1,25 @@
+.comparison-table {
+	&__scroll {
+		-webkit-overflow-scrolling: touch;
+	}
+
+	&__table {
+		--comparison-table-highlight-bg: rgba(var(--bs-primary-rgb), 0.06);
+		--bs-table-color: var(--theme-paragraphColor);
+		--bs-table-bg: transparent;
+		--bs-table-border-color: var(--bs-border-color);
+		color: var(--theme-paragraphColor);
+	}
+
+	&__table > :not(caption) > * > * {
+		color: inherit;
+	}
+
+	&__feature-col {
+		min-width: 10rem;
+	}
+
+	&__col--highlighted {
+		background-color: var(--comparison-table-highlight-bg);
+	}
+}

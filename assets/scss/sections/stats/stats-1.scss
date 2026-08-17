@@ -1,0 +1,17 @@
+.stats {
+	&__value {
+		font-size: 2.5rem;
+		line-height: 1.2;
+	}
+
+	&__prefix,
+	&__suffix {
+		font-size: 0.85em;
+	}
+
+	@media (min-width: 768px) {
+		&__value {
+			font-size: 3rem;
+		}
+	}
+}
