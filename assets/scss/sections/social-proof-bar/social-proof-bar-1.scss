@@ -1,0 +1,48 @@
+.social-proof-bar {
+	&__inner {
+		padding: 0.5rem 0;
+	}
+
+	&__stars {
+		position: relative;
+		display: inline-block;
+		font-size: 1.25rem;
+		line-height: 1;
+		letter-spacing: 0.1em;
+	}
+
+	&__stars-empty,
+	&__stars-fill {
+		display: block;
+	}
+
+	&__stars-empty {
+		color: rgba(var(--bs-body-color-rgb), 0.2);
+	}
+
+	&__stars-fill {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: calc((var(--rating) / var(--max-rating)) * 100%);
+		overflow: hidden;
+		white-space: nowrap;
+		color: var(--theme-tertiaryColor);
+	}
+
+	&__score-max {
+		font-size: 0.875rem;
+	}
+
+	&__badge-image {
+		max-height: 32px;
+		width: auto;
+		object-fit: contain;
+		opacity: 0.85;
+		transition: opacity 0.2s ease;
+	}
+
+	&__badge:hover &__badge-image {
+		opacity: 1;
+	}
+}

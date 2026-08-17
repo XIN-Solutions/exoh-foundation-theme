@@ -1,6 +1,7 @@
 // Active section styles — paired with partials under partials/sections/ (excluding disabled/)
 @import "sections/hero/hero-1";           // hero/video-hero
 @import "sections/hero/hero-3";           // hero/hero, hero/image-banner
+@import "sections/article-hero/article-hero-1"; // hero/article-hero
 @import "sections/hero/hero-5";           // hero/two-col-hero
 @import "sections/features/features-1";    // misc/belt, content/text-and-image
 @import "sections/content/markdown-text-1"; // content/markdown-text
@@ -12,6 +13,12 @@
 @import "sections/team/team-4";            // misc/team/style4
 @import "sections/team/team-5";            // misc/team/style5 (.card.border-1)
 @import "sections/showcase/showcase-3";   // content/column-showcase/standard (.feature)
+@import "sections/pricing/pricing-1";    // misc/pricing
+@import "sections/faq-accordion/faq-accordion-1"; // content/faq-accordion
+@import "sections/stats/stats-1";          // content/stats
+@import "sections/comparison-table/comparison-table-1"; // content/comparison-table
+@import "sections/process-steps/process-steps-1"; // content/process-steps
+@import "sections/social-proof-bar/social-proof-bar-1"; // content/social-proof-bar
 
 // Unused section styles (original theme inventory — uncomment to re-enable)
 // @import "sections/features/features-2";

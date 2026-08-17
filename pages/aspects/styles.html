@@ -19,10 +19,9 @@
         </div>
     </div>
 
-    <div>
-        <div class="grid grid-cols-1 gap-6 lg:grid-cols-12">
+    <div class="theme-editor__layout">
         <!-- Controls -->
-        <div class="lg:col-span-5 order-2 lg:order-1">
+        <div class="theme-editor__controls">
             <div class="rounded-xl border border-admin-border bg-admin-surface shadow-card-sm">
                 <div class="p-5">
             <div class="mb-4">
@@ -650,7 +649,7 @@
         </div>
 
         <!-- Preview -->
-        <div class="lg:col-span-7 order-1 lg:order-2">
+        <div class="theme-editor__preview-col">
             <div class="theme-editor__preview-sticky">
                 <div class="rounded-xl border border-admin-border bg-admin-surface shadow-card-sm">
                     <div class="p-5">
@@ -731,12 +730,38 @@
             </div>
         </div>
     </div>
-    </div>
 </div>
 
 <style>
 [x-cloak] { display: none !important; }
 
+.theme-editor__layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    align-items: start;
+}
+
+.theme-editor__controls {
+    order: 2;
+    min-width: 0;
+}
+
+.theme-editor__preview-col {
+    order: 1;
+    min-width: 0;
+}
+
+@media (min-width: 992px) {
+    .theme-editor__layout {
+        grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    }
+
+    .theme-editor__controls,
+    .theme-editor__preview-col {
+        order: 0;
+    }
+}
 
 .theme-editor__swatches {
     display: flex;

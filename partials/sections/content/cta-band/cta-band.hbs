@@ -1,0 +1,83 @@
+<section
+    class="
+        cta-band
+        {{#if config.useAltBackground}}
+            bg-alternate bg--alternate
+        {{else}}
+            primaryColor-bg altBackgroundColor-text
+        {{/if}}
+        spacing--{{?? config.spacing 'comfortable'}}
+        {{?: config.noTopSpacing 'spacing--no-top' ''}}
+        {{?: config.noBottomSpacing 'spacing--no-bottom' ''}}
+    "
+    no-edit="children"
+    allowadd="no"
+    allowdelete="no"
+>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 text-center">
+                {{#unless config.hideTitle}}
+                    <h2
+                        class="mb-3 h2-all {{?: config.useAltBackground '' 'altBackgroundColor-text'}}"
+                        edit="title innerHTML"
+                    >
+                        {{{?? title "Lorem ipsum dolor sit amet"}}}
+                    </h2>
+                {{/unless}}
+
+                {{#unless config.hideDescription}}
+                    <p
+                        class="lead mb-4 h3-all {{?: config.useAltBackground 'paragraphColor-text' 'altBackgroundColor-text'}}"
+                        edit="description innerHTML"
+                    >
+                        {{{?? description "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas cursus in lectus ut dignissim."}}}
+                    </p>
+                {{/unless}}
+
+                <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center align-items-center">
+                    {{#unless config.hidePrimaryCta}}
+                        <a
+                            edit="
+                                primaryCtaLabel span,
+                                primaryCtaClasses @class,
+                                primaryCtaUrl @href,
+                                primaryCtaTitle @title,
+                                primaryCtaTarget @target,
+                                primaryCtaRel @rel
+                            "
+                            class="{{?? primaryCtaClasses 'btn buttonColor-bg altBackgroundColor-text'}}"
+                            href="{{?? primaryCtaUrl '#'}}"
+                            title="{{primaryCtaTitle}}"
+                            target="{{primaryCtaTarget}}"
+                            rel="{{primaryCtaRel}}"
+                            role="button"
+                        >
+                            <span>{{{?? primaryCtaLabel "Lorem ipsum"}}}</span>
+                        </a>
+                    {{/unless}}
+
+                    {{#unless config.hideSecondaryLink}}
+                        <a
+                            edit="
+                                secondaryLinkLabel span,
+                                secondaryLinkClasses @class,
+                                secondaryLinkUrl @href,
+                                secondaryLinkTitle @title,
+                                secondaryLinkTarget @target,
+                                secondaryLinkRel @rel
+                            "
+                            class="{{?? secondaryLinkClasses 'link link-underline-opacity-100'}} {{?: config.useAltBackground 'paragraphColor-text' 'altBackgroundColor-text'}}"
+                            href="{{?? secondaryLinkUrl '#'}}"
+                            title="{{secondaryLinkTitle}}"
+                            target="{{secondaryLinkTarget}}"
+                            rel="{{secondaryLinkRel}}"
+                        >
+                            <span>{{{?? secondaryLinkLabel "Dolor sit amet"}}}</span>
+                        </a>
+                    {{/unless}}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

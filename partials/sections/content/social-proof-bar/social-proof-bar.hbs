@@ -1,0 +1,89 @@
+{{let . resolvedBadges=(?? badges config.badges)}}
+{{let . ratingValue=(?? config.rating 4.8)}}
+{{let . maxRatingValue=(?? config.maxRating 5)}}
+
+<section
+    class="
+        social-proof-bar
+        {{?: config.useAltBackground 'bg--alternate' ''}}
+        spacing--{{?? config.spacing 'comfortable'}}
+        {{?: config.noTopSpacing 'spacing--no-top' ''}}
+        {{?: config.noBottomSpacing 'spacing--no-bottom' ''}}
+    "
+    no-edit="children"
+    allowadd="no"
+    allowdelete="no"
+>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div
+                    class="social-proof-bar__inner d-flex flex-column flex-lg-row align-items-center gap-4 {{?: config.centerContent 'justify-content-center text-center' 'justify-content-start text-start'}}"
+                >
+                    {{#unless config.hideRating}}
+                        <div class="social-proof-bar__rating d-flex flex-column align-items-center {{?: config.centerContent 'align-items-center' 'align-items-lg-start'}}">
+                            <div
+                                class="social-proof-bar__stars mb-1"
+                                style="--rating: {{ratingValue}}; --max-rating: {{maxRatingValue}};"
+                                role="img"
+                                aria-label="{{ratingValue}} out of {{maxRatingValue}} stars"
+                            >
+                                <span class="social-proof-bar__stars-empty" aria-hidden="true">★★★★★</span>
+                                <span class="social-proof-bar__stars-fill" aria-hidden="true">★★★★★</span>
+                            </div>
+                            <p class="social-proof-bar__score mb-0 fw-bold h4 primaryColor-text">
+                                <span class="social-proof-bar__score-value">{{ratingValue}}</span>
+                                <span class="social-proof-bar__score-max text-muted fw-normal">/ {{maxRatingValue}}</span>
+                            </p>
+                        </div>
+                    {{/unless}}
+
+                    {{#unless config.hideReviewCount}}
+                        <div class="social-proof-bar__review-count {{?: config.centerContent 'text-center' 'text-lg-start'}}">
+                            <p class="mb-0 paragraphColor-text" edit="reviewText innerHTML">
+                                {{{?? reviewText "Lorem ipsum dolor sit amet, <strong>consectetur</strong> adipiscing elit."}}}
+                            </p>
+                        </div>
+                    {{/unless}}
+
+                    {{#unless config.hideBadges}}
+                        {{#if resolvedBadges.length}}
+                            <div
+                                class="social-proof-bar__badges d-flex flex-wrap align-items-center gap-3 {{?: config.centerContent 'justify-content-center' 'justify-content-lg-start'}}"
+                                no-edit
+                            >
+                                {{#each resolvedBadges}}
+                                    {{#if enabled}}
+                                        {{#if url}}
+                                            <a
+                                                href="{{url}}"
+                                                class="social-proof-bar__badge text-decoration-none"
+                                                aria-label="{{?? label (?? platform 'Review platform')}}"
+                                            >
+                                                <img
+                                                    src="{{?? imageUrl '/assets/img/empty.png'}}"
+                                                    alt="{{?? label (?? platform 'Review platform')}}"
+                                                    loading="lazy"
+                                                    class="img-fluid social-proof-bar__badge-image"
+                                                >
+                                            </a>
+                                        {{else}}
+                                            <div class="social-proof-bar__badge">
+                                                <img
+                                                    src="{{?? imageUrl '/assets/img/empty.png'}}"
+                                                    alt="{{?? label (?? platform 'Review platform')}}"
+                                                    loading="lazy"
+                                                    class="img-fluid social-proof-bar__badge-image"
+                                                >
+                                            </div>
+                                        {{/if}}
+                                    {{/if}}
+                                {{/each}}
+                            </div>
+                        {{/if}}
+                    {{/unless}}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,126 @@
+.process-steps {
+	&__list {
+		counter-reset: process-step;
+	}
+
+	&__step {
+		counter-increment: process-step;
+	}
+
+	&__number::before {
+		content: counter(process-step);
+	}
+
+	&__list--horizontal {
+		display: flex;
+		flex-direction: column;
+		gap: 2rem;
+
+		@media (min-width: 992px) {
+			flex-direction: row;
+			gap: 0;
+		}
+	}
+
+	&__list--vertical {
+		display: flex;
+		flex-direction: column;
+		gap: 2rem;
+	}
+
+	&__step {
+		position: relative;
+		flex: 1 1 auto;
+		text-align: center;
+
+		&.text-start {
+			text-align: start;
+		}
+
+		@media (min-width: 992px) {
+			.process-steps__list--horizontal & {
+				flex: 1 1 0;
+				padding: 0 0.75rem;
+			}
+		}
+	}
+
+	&__marker-wrap {
+		position: relative;
+		display: flex;
+		justify-content: center;
+		margin-bottom: 1rem;
+
+		.process-steps__list--vertical & {
+			justify-content: flex-start;
+			margin-bottom: 0;
+		}
+
+		.process-steps__list--vertical .process-steps__step.text-center & {
+			justify-content: center;
+		}
+	}
+
+	&__marker {
+		position: relative;
+		z-index: 1;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 3rem;
+		height: 3rem;
+		border-radius: 50%;
+		font-weight: 700;
+		font-size: 1.125rem;
+
+		i {
+			font-size: 1.25rem;
+			line-height: 1;
+		}
+	}
+
+	&__list--vertical &__step {
+		display: flex;
+		gap: 1.25rem;
+		align-items: flex-start;
+	}
+
+	&__list--vertical &__step.text-center {
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+	}
+
+	&__list--horizontal &__step:not(:last-child) &__marker-wrap::after {
+		@media (min-width: 992px) {
+			content: "";
+			position: absolute;
+			top: 50%;
+			left: calc(50% + 1.5rem);
+			width: calc(100% - 3rem);
+			height: 2px;
+			transform: translateY(-50%);
+			background-color: var(--theme-primaryColor);
+			opacity: 0.25;
+			pointer-events: none;
+		}
+	}
+
+	&__list--vertical &__step:not(:last-child) &__marker::after {
+		content: "";
+		position: absolute;
+		top: 100%;
+		left: 50%;
+		width: 2px;
+		height: calc(2rem + 0.5rem);
+		transform: translateX(-50%);
+		background-color: var(--theme-primaryColor);
+		opacity: 0.25;
+		pointer-events: none;
+	}
+
+	&__content {
+		flex: 1 1 auto;
+		min-width: 0;
+	}
+}

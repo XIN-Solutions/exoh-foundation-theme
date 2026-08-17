@@ -1,0 +1,110 @@
+{{let . resolvedPlans=(?? plans config.plans)}}
+{{let . resolvedFeatures=(?? features config.features)}}
+
+<section
+    class="
+        comparison-table
+        {{?: config.useAltBackground 'bg--alternate' ''}}
+        spacing--{{?? config.spacing 'comfortable'}}
+        {{?: config.noTopSpacing 'spacing--no-top' ''}}
+        {{?: config.noBottomSpacing 'spacing--no-bottom' ''}}
+    "
+    no-edit="children"
+    allowadd="no"
+    allowdelete="no"
+>
+    <div class="container">
+        {{#unless config.hideHeader}}
+            <div class="row justify-content-center mb-4 mb-lg-5">
+                <div class="col-lg-8 text-center">
+                    {{#unless config.hidePretitle}}
+                        <p class="text-uppercase small fw-semibold mb-2 tertiaryColor-text" edit="pretitle innerHTML">
+                            {{{?? pretitle "Lorem ipsum"}}}
+                        </p>
+                    {{/unless}}
+                    <h2 class="mb-3 h2-all" edit="title innerHTML">
+                        {{{?? title "Lorem ipsum dolor sit amet"}}}
+                    </h2>
+                    {{#unless config.hideDescription}}
+                        <p class="lead mb-0 h3-all" edit="description innerHTML">
+                            {{{?? description "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas cursus in lectus ut dignissim."}}}
+                        </p>
+                    {{/unless}}
+                </div>
+            </div>
+        {{/unless}}
+
+        {{#if resolvedPlans.length}}
+            <div class="table-responsive comparison-table__scroll">
+                <table class="table comparison-table__table align-middle mb-0">
+                    <thead>
+                        <tr>
+                            {{#unless config.hideFeatureColumnLabel}}
+                                <th scope="col" class="comparison-table__feature-col h3Color-text">
+                                    {{?? config.featureColumnLabel "Features"}}
+                                </th>
+                            {{else}}
+                                <th scope="col" class="comparison-table__feature-col" aria-hidden="true"></th>
+                            {{/unless}}
+                            {{#each resolvedPlans}}
+                                <th
+                                    scope="col"
+                                    class="text-center h3Color-text {{?: highlighted 'comparison-table__col--highlighted' ''}}"
+                                >
+                                    {{#unless ../config.hideBadge}}
+                                        {{#if badge}}
+                                            <span class="badge tertiaryColor-bg altBackgroundColor-text text-uppercase small mb-2">
+                                                {{badge}}
+                                            </span>
+                                        {{/if}}
+                                    {{/unless}}
+                                    <span class="d-block fw-semibold h3Color-text">{{?? name "Plan"}}</span>
+                                    {{#if subtitle}}
+                                        <span class="d-block small fw-normal paragraphColor-text mt-1">{{subtitle}}</span>
+                                    {{/if}}
+                                </th>
+                            {{/each}}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#if resolvedFeatures.length}}
+                            {{#each resolvedFeatures}}
+                                <tr>
+                                    <th scope="row" class="comparison-table__feature-col paragraphColor-text">{{?? label "Feature"}}</th>
+                                    {{#each (?? cells values)}}
+                                        <td class="text-center {{?: highlighted 'comparison-table__col--highlighted' ''}}">
+                                            {{#if (eq (?? type 'check') 'text')}}
+                                                <span class="small fw-semibold paragraphColor-text">{{?? value "—"}}</span>
+                                            {{else}}
+                                                <i
+                                                    no-edit
+                                                    class="la {{?: included 'la-check tertiaryColor-text' 'la-times text-muted'}}"
+                                                    aria-hidden="true"
+                                                ></i>
+                                                <span class="visually-hidden">
+                                                    {{?: included "Included" "Not included"}}
+                                                </span>
+                                            {{/if}}
+                                        </td>
+                                    {{/each}}
+                                </tr>
+                            {{/each}}
+                        {{/if}}
+                    </tbody>
+                </table>
+            </div>
+        {{else}}
+            <div class="alert border backgroundColor-bg paragraphColor-text mb-0" role="alert">
+                No plans configured yet.
+            </div>
+        {{/if}}
+
+        {{#if resolvedPlans.length}}
+            {{#unless resolvedFeatures.length}}
+                <div class="alert border backgroundColor-bg paragraphColor-text mt-3 mb-0" role="alert">
+                    No comparison rows configured yet.
+                </div>
+            {{/unless}}
+        {{/if}}
+    </div>
+</section>

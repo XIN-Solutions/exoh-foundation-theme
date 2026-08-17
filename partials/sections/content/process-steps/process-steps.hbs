@@ -1,0 +1,66 @@
+{{let . resolvedItems=(?? items config.items)}}
+{{let . isVertical=(eq (?? config.orientation 'horizontal') 'vertical')}}
+{{let . useIcons=(eq (?? config.markerStyle 'number') 'icon')}}
+
+<section
+    class="
+        process-steps
+        process-steps--{{?? config.orientation 'horizontal'}}
+        {{?: config.useAltBackground 'bg--alternate' ''}}
+        spacing--{{?? config.spacing 'comfortable'}}
+        {{?: config.noTopSpacing 'spacing--no-top' ''}}
+        {{?: config.noBottomSpacing 'spacing--no-bottom' ''}}
+    "
+    no-edit="children"
+    allowadd="no"
+    allowdelete="no"
+>
+    <div class="container">
+        {{#unless config.hideTitle}}
+            <div class="row justify-content-center mb-4 mb-lg-5">
+                <div class="col-lg-8 {{?: (eq config.centerTitle false) 'text-start' 'text-center'}}">
+                    <h2 class="mb-0 h2-all" edit="title innerHTML">
+                        {{{?? title "Lorem ipsum dolor sit amet"}}}
+                    </h2>
+                    {{#unless config.hideDescription}}
+                        <p class="lead mb-0 mt-3 h3-all" edit="description innerHTML">
+                            {{{?? description "Lorem ipsum dolor sit amet, consectetur adipiscing elit."}}}
+                        </p>
+                    {{/unless}}
+                </div>
+            </div>
+        {{/unless}}
+
+        {{#if resolvedItems.length}}
+            <ol
+                class="process-steps__list list-unstyled mb-0 {{?: isVertical 'process-steps__list--vertical' 'process-steps__list--horizontal'}}"
+                style="--process-steps-count: {{resolvedItems.length}};"
+            >
+                {{#each resolvedItems}}
+                    <li class="process-steps__step {{?: (eq ../config.centerSteps false) 'text-start' 'text-center'}}">
+                        <div class="process-steps__marker-wrap">
+                            <div
+                                class="process-steps__marker primaryColor-bg altBackgroundColor-text"
+                                aria-hidden="true"
+                            >
+                                {{#if ../useIcons}}
+                                    <i class="{{?? iconClass 'la la-check'}}" aria-hidden="true"></i>
+                                {{else}}
+                                    <span class="process-steps__number" aria-hidden="true"></span>
+                                {{/if}}
+                            </div>
+                        </div>
+                        <div class="process-steps__content">
+                            <h3 class="h5 mb-2">{{?? title "Lorem ipsum"}}</h3>
+                            <p class="paragraphColor-text mb-0">{{?? description "Dolor sit amet, consectetur adipiscing elit."}}</p>
+                        </div>
+                    </li>
+                {{/each}}
+            </ol>
+        {{else}}
+            <div class="alert alert-warning mb-0" role="alert">
+                No process steps configured yet.
+            </div>
+        {{/if}}
+    </div>
+</section>
