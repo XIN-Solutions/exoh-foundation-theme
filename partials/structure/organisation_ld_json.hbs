@@ -1,0 +1,32 @@
+{{let . site=(ancestor-of-type 'site')}}
+{{let . organisation=(?? site.content.forms.organisation (new-map))}}
+{{#if (not (blank organisation.name))}}
+    {{let . orgPostalAddress=
+        (map
+            [@type]="PostalAddress"
+            addressLocality=(?? organisation.locality '')
+            addressRegion=(?? organisation.region '')
+            postalCode=(?? organisation.postalCode '')
+            addressCountry=(?? organisation.country '')
+    )}}
+    {{let . orgLogoUrl=(?: organisation.logo (image-url organisation.logo organisation.logo.file) '')}}
+    {{let . orgImageUrl=(?: organisation.image (image-url organisation.image organisation.image.file) '')}}
+
+    {{let . organizationLd=
+        (map
+            [@context]="https://schema.org"
+            [@type]="Organization"
+            name=(?? organisation.name '')
+            description=(?? organisation.description '')
+            url=(?? organisation.url '')
+            email=(?? organisation.email '')
+            telephone=(?? organisation.phone '')
+            logo=(?? orgLogoUrl '')
+            image=(?? orgImageUrl '')
+            address=orgPostalAddress
+        )
+    }}
+    <script type="application/ld+json">
+        {{{json organizationLd}}}
+    </script>
+{{/if}}
