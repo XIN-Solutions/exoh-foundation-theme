@@ -220,7 +220,8 @@
             "structure/alerts.hbs",
             "structure/footerscripts.hbs",
             "structure/htmlhead.hbs",
-            "structure/modal.hbs"
+            "structure/modal.hbs",
+            "structure/organisation_ld_json.hbs"
         ],
         "root": [
             "LLM.md"
