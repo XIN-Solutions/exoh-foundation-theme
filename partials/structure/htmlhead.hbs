@@ -26,6 +26,9 @@
 <title>{{pageTitle}} - {{siteSettings.siteName}}</title>
 
 <meta name="description" content="{{ seo.metaDescription }}" />
+{{#if seo.noIndex}}
+<meta name="robots" content="noindex">
+{{/if}}
 <meta name="keywords" content="{{ seo.metaTitle }}">
 <meta name="author" content="{{ seo.keywords }}">
 
