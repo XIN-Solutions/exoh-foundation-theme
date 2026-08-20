@@ -1,0 +1,26 @@
+{{let . site=(ancestor-of-type 'site')}}
+{{let . hostSettings=site.content.forms.host}}
+{{let . siteHost=(?? virtualHost.hosts.[0] hostSettings.hostnames.[0])}}
+{{#unless (blank siteHost)}}
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+        {{#each ancestors}}
+        {
+            "@type": "ListItem",
+            "position": {{add @index 1}},
+            "name": {{{jsonflat (?? navLabel name)}}},
+            "item": {{{jsonflat (concat 'https://' ../siteHost url)}}}
+        }{{#unless @last}},{{/unless}}
+        {{/each}}{{#if (has-items ancestors)}},{{/if}}
+        {
+            "@type": "ListItem",
+            "position": {{add (length ancestors) 1}},
+            "name": {{{jsonflat (?? page.navLabel page.name)}}}
+        }
+    ]
+}
+</script>
+{{/unless}}
