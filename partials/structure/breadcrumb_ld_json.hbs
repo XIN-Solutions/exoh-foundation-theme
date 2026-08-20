@@ -1,7 +1,9 @@
 {{let . site=(ancestor-of-type 'site')}}
 {{let . hostSettings=site.content.forms.host}}
-{{let . siteHost=(?? virtualHost.hosts.[0] hostSettings.hostnames.[0])}}
-{{#unless (blank siteHost)}}
+{{let . httpHost=(?? virtualHost.hosts.[0] hostSettings.hostnames.[0])}}
+{{let . previewOrigin=(?? previewUrl (?: virtualHost.previewHost (concat 'https://' virtualHost.previewHost) ''))}}
+{{let . siteOrigin=(?: httpHost (concat 'https://' httpHost) previewOrigin)}}
+{{#if siteOrigin}}
 <script type="application/ld+json">
 {
     "@context": "https://schema.org",
@@ -12,7 +14,7 @@
             "@type": "ListItem",
             "position": {{add @index 1}},
             "name": {{{jsonflat (?? navLabel name)}}},
-            "item": {{{jsonflat (concat 'https://' ../siteHost url)}}}
+            "item": {{{jsonflat (concat ../siteOrigin url)}}}
         }{{#unless @last}},{{/unless}}
         {{/each}}{{#if (has-items ancestors)}},{{/if}}
         {
@@ -23,4 +25,4 @@
     ]
 }
 </script>
-{{/unless}}
+{{/if}}
