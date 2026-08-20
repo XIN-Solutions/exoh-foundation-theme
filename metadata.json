@@ -218,6 +218,7 @@
             "sections/misc/testimonials/standard_tile.hbs",
             "sections/misc/testimonials/testimonials.hbs",
             "structure/alerts.hbs",
+            "structure/breadcrumb_ld_json.hbs",
             "structure/footerscripts.hbs",
             "structure/htmlhead.hbs",
             "structure/modal.hbs",
