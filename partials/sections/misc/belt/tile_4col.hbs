@@ -4,9 +4,9 @@
             <img
                 alt=""
                 {{#if tile.thumbnail.url}}
-                    src="{{tile.thumbnail.url}}" data-image-hint="width=512"
+                    src="{{tile.thumbnail.url}}" data-image-hint="width=512,height=384,fit=cover"
                 {{else}}
-                    src="{{hinted-image-url tile.defaultThumbnail adjust=(array 'width=512')}}"
+                    src="{{hinted-image-url tile.defaultThumbnail adjust=(array 'width=512' 'height=384' 'fit=cover')}}"
                 {{/if}}
                 loading="lazy" class="img-fluid ratio-4-3"
             >

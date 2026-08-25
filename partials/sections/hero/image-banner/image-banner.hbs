@@ -76,10 +76,10 @@
             <video playsinline loop muted autoplay
                 alt=""
                 src="{{config.backgroundVideo}}"
-                poster="{{hinted-image-url (?? config.backgroundImage '/assets/img/empty.png') adjust=(array 'width=1920')}}"
+                poster="{{hinted-image-url (?? config.backgroundImage '/assets/img/empty.png') adjust=(array 'width=1920' 'height=220' 'fit=cover')}}"
             ></video>
         {{else if config.backgroundImage}}
-            <img src="{{hinted-image-url (?? config.backgroundImage '/assets/img/empty.png') adjust=(array 'width=1920')}}" alt="">
+            <img src="{{hinted-image-url (?? config.backgroundImage '/assets/img/empty.png') adjust=(array 'width=1920' 'height=220' 'fit=cover')}}" alt="">
         {{/if}}
     </div>
 
