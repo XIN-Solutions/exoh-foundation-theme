@@ -12,6 +12,18 @@
                 (?: (eq columnSize '3') '320'
                 (?: (eq columnSize '2') '260'
                 (?: (eq columnSize '1') '200' '1200'))))))))))))
+      heightHint=(?: (eq columnSize '12') '750'
+                (?: (eq columnSize '11') '688'
+                (?: (eq columnSize '10') '625'
+                (?: (eq columnSize '9') '563'
+                (?: (eq columnSize '8') '500'
+                (?: (eq columnSize '7') '438'
+                (?: (eq columnSize '6') '375'
+                (?: (eq columnSize '5') '325'
+                (?: (eq columnSize '4') '263'
+                (?: (eq columnSize '3') '200'
+                (?: (eq columnSize '2') '163'
+                (?: (eq columnSize '1') '125' '750'))))))))))))
 }}
 
 <section
@@ -45,7 +57,7 @@
                                             alt=""
                                             loading="lazy"
                                             class="img-fluid w-100"
-                                            data-image-hint="width={{../widthHint}}"
+                                            data-image-hint="width={{../widthHint}},height={{../heightHint}},fit=cover"
                                         >
                                     </div>
                                 {{/each}}
@@ -65,7 +77,7 @@
                             alt=""
                             loading="lazy"
                             class="img-fluid w-100"
-                            data-image-hint="width={{widthHint}}"
+                            data-image-hint="width={{widthHint}},height={{heightHint}},fit=cover"
                         >
                     {{/if}}
                 {{else}}

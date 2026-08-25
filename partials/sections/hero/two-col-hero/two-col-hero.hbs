@@ -18,16 +18,14 @@
                 >
                     <i class="la la-play"></i>
                 </span>
-                <img src="{{?? config.videoPoster '/assets/img/empty.png'}}"
-                     data-image-hint="width=600"
+                <img src="{{hinted-image-url (?? config.videoPoster '/assets/img/empty.png') adjust=(array 'width=600')}}"
                      loading="lazy"
                      alt=""
                      class="img-fluid"
                 >
             </a>
         {{else}}
-            <img src="{{?? config.videoPoster '/assets/img/empty.png'}}"
-                 data-image-hint="width=600"
+            <img src="{{hinted-image-url (?? config.videoPoster '/assets/img/empty.png') adjust=(array 'width=600')}}"
                  loading="lazy"
                  alt=""
                  class="img-fluid"
@@ -148,7 +146,7 @@
     {{/unless}}
 
     <div class="background-container">
-        <img src="{{?? config.backgroundImage '/assets/img/empty.png'}}" data-image-hint="width=1920" alt="">
+        <img src="{{hinted-image-url (?? config.backgroundImage '/assets/img/empty.png') adjust=(array 'width=1920')}}" alt="">
     </div>
 
 
