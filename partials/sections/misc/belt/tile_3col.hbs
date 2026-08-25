@@ -3,11 +3,8 @@
         <a href="{{?? tile.url '#'}}">
             <img
                 alt=""
-                {{#if tile.thumbnail.url}}
-                    src="{{tile.thumbnail.url}}" data-image-hint="width=512,height=384,fit=cover"
-                {{else}}
-                    src="{{hinted-image-url tile.defaultThumbnail adjust=(array 'width=512' 'height=384' 'fit=cover')}}"
-                {{/if}}
+                src="{{?? tile.thumbnail.url tile.defaultThumbnail}}"
+                data-image-hint="width=512,height=384,fit=cover"
                 loading="lazy" class="img-fluid ratio-4-3"
             >
         </a>
