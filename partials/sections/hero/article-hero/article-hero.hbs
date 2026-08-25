@@ -87,7 +87,8 @@
 
     <div class="background-container">
         <img
-            src="{{hinted-image-url (?? config.backgroundImage '/assets/img/empty.png') adjust=(array 'width=1920')}}"
+            src="{{?? config.backgroundImage '/assets/img/empty.png'}}"
+            data-image-hint="width=1920"
             alt="{{?? config.backgroundImageAlt 'Article hero background'}}"
         >
     </div>
