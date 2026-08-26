@@ -120,7 +120,7 @@
 
             <div class="d-flex flex-column gap-2" x-show="config.images?.length">
                 <template x-for="(img, idx) in (config.images || [])" :key="img + ':' + idx">
-                    <div class="d-flex align-items-center gap-3 p-2 border rounded bg-light"
+                    <div class="d-flex align-items-center gap-3 p-2 border rounded bg-body-secondary"
                          draggable="true"
                          @dragstart="onDragStartImage(idx, $event)"
                          @dragend="onDragEndImage()"
@@ -136,7 +136,7 @@
                               style="cursor: grab; user-select: none; font-size: 18px; line-height: 1;"
                               aria-hidden="true"
                         >≡</span>
-                        <div class="rounded border bg-white overflow-hidden d-flex align-items-center justify-content-center flex-shrink-0"
+                        <div class="rounded border bg-body overflow-hidden d-flex align-items-center justify-content-center flex-shrink-0"
                              style="width: 120px; height: 80px;">
                             <img :src="img" alt="" class="w-100 h-100" style="object-fit: cover;">
                         </div>

@@ -125,7 +125,7 @@
 
                 <div class="d-flex flex-column gap-3" x-show="(config.items || []).length">
                     <template x-for="(item, itemIndex) in (config.items || [])" :key="itemIndex">
-                        <div class="p-3 border rounded bg-light">
+                        <div class="p-3 border rounded bg-body-secondary">
                             <div class="d-flex justify-content-between align-items-start gap-2 mb-3 flex-wrap">
                                 <h6 class="mb-0" x-text="item.label || `Stat ${itemIndex + 1}`"></h6>
                                 <div class="btn-group btn-group-sm">
@@ -161,7 +161,7 @@
         </div>
 
         <div class="tab-pane" id="stats-layout" role="tabpanel">
-            <div class="p-3 bg-light border rounded mt-3">
+            <div class="p-3 bg-body-secondary border rounded mt-3">
                 <div class="mb-3">
                     <label class="form-label">Column count</label>
                     <select class="form-select" x-model="config.columns">
@@ -182,7 +182,7 @@
         </div>
 
         <div class="tab-pane" id="stats-show-hide" role="tabpanel">
-            <div class="p-3 bg-light border rounded mt-3">
+            <div class="p-3 bg-body-secondary border rounded mt-3">
                 <div class="mb-0">
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" x-model="config.hideTitle" id="statsHideTitle">
