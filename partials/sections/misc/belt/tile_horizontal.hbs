@@ -47,13 +47,15 @@
             <a href="{{tile.url}}">
                 <img
                     alt="" loading="lazy" class="img-fluid w-100 ratio-4-3"
-                    src="{{?? tile.thumbnail.url tile.defaultThumbnail }}" data-image-hint="width=768"
+                    src="{{?? tile.thumbnail.url tile.defaultThumbnail}}"
+                    data-image-hint="width=768,height=576,fit=cover"
                 >
             </a>
         {{else}}
             <img
                 alt="" loading="lazy" class="img-fluid w-100 ratio-4-3"
-                src="{{?? tile.thumbnail.url tile.defaultThumbnail }}" data-image-hint="width=768"
+                src="{{?? tile.thumbnail.url tile.defaultThumbnail}}"
+                data-image-hint="width=768,height=576,fit=cover"
             >
         {{/if}}
     </div>
