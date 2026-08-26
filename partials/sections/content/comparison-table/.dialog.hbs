@@ -283,7 +283,7 @@
 
                 <div class="d-flex flex-column gap-3" x-show="config.plans?.length">
                     <template x-for="(plan, planIndex) in (config.plans || [])" :key="planIndex">
-                        <div class="p-3 border rounded bg-light">
+                        <div class="p-3 border rounded bg-body-secondary">
                             <div class="d-flex justify-content-between align-items-start gap-2 mb-3 flex-wrap">
                                 <h6 class="mb-0" x-text="plan.name || `Plan ${planIndex + 1}`"></h6>
                                 <div class="btn-group btn-group-sm">
@@ -340,7 +340,7 @@
 
                 <div class="d-flex flex-column gap-3" x-show="config.features?.length">
                     <template x-for="(feature, featureIndex) in (config.features || [])" :key="featureIndex">
-                        <div class="p-3 border rounded bg-light">
+                        <div class="p-3 border rounded bg-body-secondary">
                             <div class="d-flex justify-content-between align-items-start gap-2 mb-3 flex-wrap">
                                 <h6 class="mb-0" x-text="feature.label || `Feature ${featureIndex + 1}`"></h6>
                                 <div class="btn-group btn-group-sm">
@@ -355,7 +355,7 @@
                                 <input type="text" class="form-control form-control-sm" x-model="feature.label" placeholder="Feature name">
                             </div>
 
-                            <div class="border rounded p-2 bg-white">
+                            <div class="border rounded p-2 bg-body">
                                 <label class="form-label mb-2 small">Cells per plan</label>
                                 <div class="d-flex flex-column gap-2">
                                     <template x-for="(cell, cellIndex) in (feature.cells || [])" :key="cellIndex">
@@ -389,7 +389,7 @@
         </div>
 
         <div class="tab-pane" id="comparison-layout" role="tabpanel">
-            <div class="p-3 bg-light border rounded mt-3">
+            <div class="p-3 bg-body-secondary border rounded mt-3">
                 <label class="form-label" for="comparisonFeatureColumnLabel">First column label</label>
                 <input type="text" class="form-control" id="comparisonFeatureColumnLabel" x-model="config.featureColumnLabel" placeholder="Features">
                 <p class="form-text text-muted mb-0 small">Header text for the feature-name column. Hide via Show/Hide tab.</p>
@@ -397,7 +397,7 @@
         </div>
 
         <div class="tab-pane" id="comparison-show-hide" role="tabpanel">
-            <div class="p-3 bg-light border rounded mt-3">
+            <div class="p-3 bg-body-secondary border rounded mt-3">
                 <div class="mb-3"><div class="form-check"><input class="form-check-input" type="checkbox" x-model="config.hideHeader" id="comparisonHideHeader"><label class="form-check-label" for="comparisonHideHeader">Hide header block</label></div></div>
                 <div class="mb-3"><div class="form-check"><input class="form-check-input" type="checkbox" x-model="config.hidePretitle" id="comparisonHidePretitle"><label class="form-check-label" for="comparisonHidePretitle">Hide pretitle</label></div></div>
                 <div class="mb-3"><div class="form-check"><input class="form-check-input" type="checkbox" x-model="config.hideDescription" id="comparisonHideDescription"><label class="form-check-label" for="comparisonHideDescription">Hide description</label></div></div>
