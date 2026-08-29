@@ -75,8 +75,8 @@
                         </span>
                         <span class="material-symbols-outlined text-[20px] text-admin-muted transition-transform" :class="open ? 'rotate-180' : ''" aria-hidden="true">expand_more</span>
                     </button>
-                    <div x-show="open" class="border-t border-admin-border px-4 py-4"><div class="mt-1 text-xs text-admin-muted mb-3">Core colours used across buttons, links, and sections.</div>
-                            <div class="theme-editor__swatches">
+                    <div x-show="open" class="border-t border-admin-border px-4 py-4"><div class="mt-1 text-xs text-admin-muted mb-3">Core background and text colours used across buttons, links, and sections.</div>
+                            <div class="theme-editor__swatches theme-editor__swatches--brand-grid">
                                 <label class="theme-editor__swatch">
                                     <span class="theme-editor__swatch-label">Brand</span>
                                     <input type="color" class="theme-editor__swatch-input" id="primaryColorInp" name="styles[primaryColor]" x-model="primaryColor">
@@ -93,14 +93,51 @@
                                     <span class="theme-editor__swatch-hex" x-text="tertiaryColor || '—'"></span>
                                 </label>
                                 <label class="theme-editor__swatch">
-                                    <span class="theme-editor__swatch-label">Page background</span>
+                                    <span class="theme-editor__swatch-label">Page</span>
                                     <input type="color" class="theme-editor__swatch-input" id="backgroundColorInp" name="styles[backgroundColor]" x-model="backgroundColor">
                                     <span class="theme-editor__swatch-hex" x-text="backgroundColor || '—'"></span>
                                 </label>
                                 <label class="theme-editor__swatch">
-                                    <span class="theme-editor__swatch-label">Section background</span>
+                                    <span class="theme-editor__swatch-label">Section</span>
                                     <input type="color" class="theme-editor__swatch-input" id="altBackgroundColorInp" name="styles[altBackgroundColor]" x-model="altBackgroundColor">
                                     <span class="theme-editor__swatch-hex" x-text="altBackgroundColor || '—'"></span>
+                                </label>
+                                <label class="theme-editor__swatch">
+                                    <span class="theme-editor__swatch-label">Brand text</span>
+                                    <input type="color" class="theme-editor__swatch-input" id="primaryTextColorInp" name="styles[primaryTextColor]" x-model="primaryTextColor">
+                                    <span class="theme-editor__swatch-hex" x-text="primaryTextColor || '—'"></span>
+                                </label>
+                                <label class="theme-editor__swatch">
+                                    <span class="theme-editor__swatch-label">Secondary text</span>
+                                    <input type="color" class="theme-editor__swatch-input" id="secondaryTextColorInp" name="styles[secondaryTextColor]" x-model="secondaryTextColor">
+                                    <span class="theme-editor__swatch-hex" x-text="secondaryTextColor || '—'"></span>
+                                </label>
+                                <label class="theme-editor__swatch">
+                                    <span class="theme-editor__swatch-label">Accent text</span>
+                                    <input type="color" class="theme-editor__swatch-input" id="tertiaryTextColorInp" name="styles[tertiaryTextColor]" x-model="tertiaryTextColor">
+                                    <span class="theme-editor__swatch-hex" x-text="tertiaryTextColor || '—'"></span>
+                                </label>
+                                <label class="theme-editor__swatch">
+                                    <span class="theme-editor__swatch-label">Page text</span>
+                                    <input type="color" class="theme-editor__swatch-input" id="backgroundTextColorInp" name="styles[backgroundTextColor]" x-model="backgroundTextColor">
+                                    <span class="theme-editor__swatch-hex" x-text="backgroundTextColor || '—'"></span>
+                                </label>
+                                <label class="theme-editor__swatch">
+                                    <span class="theme-editor__swatch-label">Section text</span>
+                                    <input type="color" class="theme-editor__swatch-input" id="altBackgroundTextColorInp" name="styles[altBackgroundTextColor]" x-model="altBackgroundTextColor">
+                                    <span class="theme-editor__swatch-hex" x-text="altBackgroundTextColor || '—'"></span>
+                                </label>
+                            </div>
+                            <div class="theme-editor__swatches mt-4">
+                                <label class="theme-editor__swatch">
+                                    <span class="theme-editor__swatch-label">Heading</span>
+                                    <input type="color" class="theme-editor__swatch-input" id="headingColorInp" :value="headingColor" @input="setHeadingColors($event.target.value)">
+                                    <span class="theme-editor__swatch-hex" x-text="headingColor || '—'"></span>
+                                </label>
+                                <label class="theme-editor__swatch">
+                                    <span class="theme-editor__swatch-label">Body</span>
+                                    <input type="color" class="theme-editor__swatch-input" id="paragraphColorSimpleInp" name="styles[paragraphColor]" x-model="paragraphColor">
+                                    <span class="theme-editor__swatch-hex" x-text="paragraphColor || '—'"></span>
                                 </label>
                             </div>
                             <div class="mt-3"><button type="button" class="inline-flex items-center gap-1.5 rounded-lg border border-admin-border bg-admin-surface px-3 py-1.5 text-sm font-medium text-admin-text hover:bg-admin-surface-muted" @click="randomizeBrandColors()"><span class="material-symbols-outlined text-[18px]" aria-hidden="true">shuffle</span>Randomize colours</button></div>
@@ -141,18 +178,6 @@
                                 </select>
                                 </div>
                                 <div class="mt-1 text-xs text-admin-muted">Adjusts heading and body sizes together.</div>
-                            </div>
-                            <div class="theme-editor__swatches">
-                                <label class="theme-editor__swatch">
-                                    <span class="theme-editor__swatch-label">Heading</span>
-                                    <input type="color" class="theme-editor__swatch-input" id="headingColorInp" :value="headingColor" @input="setHeadingColors($event.target.value)">
-                                    <span class="theme-editor__swatch-hex" x-text="headingColor || '—'"></span>
-                                </label>
-                                <label class="theme-editor__swatch">
-                                    <span class="theme-editor__swatch-label">Body</span>
-                                    <input type="color" class="theme-editor__swatch-input" id="paragraphColorSimpleInp" name="styles[paragraphColor]" x-model="paragraphColor">
-                                    <span class="theme-editor__swatch-hex" x-text="paragraphColor || '—'"></span>
-                                </label>
                             </div></div>
                 </div>
 
@@ -767,6 +792,16 @@
     display: flex;
     flex-wrap: wrap;
     gap: 1rem;
+}
+
+.theme-editor__swatches--brand-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.theme-editor__swatches--brand-grid .theme-editor__swatch {
+    min-width: 0;
 }
 
 .theme-editor__swatch {
