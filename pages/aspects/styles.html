@@ -127,8 +127,6 @@
                                     <input type="color" class="theme-editor__swatch-input" id="altBackgroundTextColorInp" name="styles[altBackgroundTextColor]" x-model="altBackgroundTextColor">
                                     <span class="theme-editor__swatch-hex" x-text="altBackgroundTextColor || '—'"></span>
                                 </label>
-                            </div>
-                            <div class="theme-editor__swatches mt-4">
                                 <label class="theme-editor__swatch">
                                     <span class="theme-editor__swatch-label">Heading</span>
                                     <input type="color" class="theme-editor__swatch-input" id="headingColorInp" :value="headingColor" @input="setHeadingColors($event.target.value)">
@@ -700,7 +698,12 @@
                                     <h3 :style="{ color: h3Color || '#6c757d', fontFamily: h3FontFamily || 'inherit', fontWeight: h3FontWeight || 'inherit', fontSize: h3FontSize || 'inherit' }">This is an H3 heading</h3>
                                     <h4 :style="{ color: h4Color || '#6c757d', fontFamily: h4FontFamily || 'inherit', fontWeight: h4FontWeight || 'inherit', fontSize: h4FontSize || 'inherit' }">This is an H4 heading</h4>
                                     <h5 :style="{ color: h5Color || '#6c757d', fontFamily: h5FontFamily || 'inherit', fontWeight: h5FontWeight || 'inherit', fontSize: h5FontSize || 'inherit' }">This is an H5 heading</h5>
-                                    <p class="mb-0" :style="{ color: paragraphColor || '#212529', fontFamily: paragraphFontFamily || 'inherit', fontWeight: paragraphFontWeight || 'inherit', fontSize: paragraphFontSize || 'inherit' }">This is body text showing how your typography and colours work together on a real page.</p>
+                                    <p class="mb-0" :style="{ color: backgroundTextColor || paragraphColor || '#212529', fontFamily: paragraphFontFamily || 'inherit', fontWeight: paragraphFontWeight || 'inherit', fontSize: paragraphFontSize || 'inherit' }">This is body text showing how your typography and colours work together on a real page.</p>
+                                </div>
+                                <div class="theme-editor__preview-surfaces" aria-label="Brand surface samples">
+                                    <div class="theme-editor__preview-surface" :style="{ background: primaryColor || '#007bff', color: primaryTextColor || '#ffffff' }">Brand</div>
+                                    <div class="theme-editor__preview-surface" :style="{ background: secondaryColor || '#6c757d', color: secondaryTextColor || '#ffffff' }">Secondary</div>
+                                    <div class="theme-editor__preview-surface" :style="{ background: tertiaryColor || '#28a745', color: tertiaryTextColor || '#ffffff' }">Accent</div>
                                 </div>
                                 <div class="theme-editor__preview-components">
                                     <div class="flex flex-wrap items-center gap-2">
@@ -729,7 +732,7 @@
                                     <h3 :style="{ color: h3Color || '#6c757d', fontFamily: h3FontFamily || 'inherit', fontWeight: h3FontWeight || 'inherit', fontSize: h3FontSize || 'inherit' }">This is an H3 heading</h3>
                                     <h4 :style="{ color: h4Color || '#6c757d', fontFamily: h4FontFamily || 'inherit', fontWeight: h4FontWeight || 'inherit', fontSize: h4FontSize || 'inherit' }">This is an H4 heading</h4>
                                     <h5 :style="{ color: h5Color || '#6c757d', fontFamily: h5FontFamily || 'inherit', fontWeight: h5FontWeight || 'inherit', fontSize: h5FontSize || 'inherit' }">This is an H5 heading</h5>
-                                    <p class="mb-0" :style="{ color: paragraphColor || '#212529', fontFamily: paragraphFontFamily || 'inherit', fontWeight: paragraphFontWeight || 'inherit', fontSize: paragraphFontSize || 'inherit' }">This is body text showing how your typography and colours work together on a real page.</p>
+                                    <p class="mb-0" :style="{ color: altBackgroundTextColor || paragraphColor || '#212529', fontFamily: paragraphFontFamily || 'inherit', fontWeight: paragraphFontWeight || 'inherit', fontSize: paragraphFontSize || 'inherit' }">This is body text showing how your typography and colours work together on a real page.</p>
                                 </div>
 
                                 <div class="theme-editor__preview-components">
@@ -913,6 +916,20 @@
     margin: 0;
 }
 
+.theme-editor__preview-surfaces {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.5rem;
+}
+
+.theme-editor__preview-surface {
+    padding: 0.75rem 0.5rem;
+    border-radius: 0.375rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-align: center;
+}
+
 
 .theme-editor__sample-btn {
     display: inline-flex; align-items: center; padding: 0.25rem 0.75rem;
@@ -949,10 +966,10 @@
 }
 
 .theme-editor__preview .theme-editor__sample-btn.theme-editor__sample-btn--cta {
-    --te-btn-color: #fff;
+    --te-btn-color: var(--theme-button-text-color);
     --te-btn-bg: var(--theme-button-color);
     --te-btn-border-color: var(--theme-button-color);
-    --te-btn-hover-color: #fff;
+    --te-btn-hover-color: var(--theme-button-text-color);
     --te-btn-hover-bg: var(--theme-button-color);
     --te-btn-hover-border-color: var(--theme-button-color);
     color: var(--te-btn-color);
@@ -973,13 +990,13 @@
 }
 
 .theme-editor__preview .theme-editor__sample-btn.theme-editor__sample-btn--primary {
-    --te-btn-color: #fff;
+    --te-btn-color: var(--theme-brand-text-color);
     --te-btn-bg: var(--theme-brand-color);
     --te-btn-border-color: var(--theme-brand-color);
-    --te-btn-hover-color: #fff;
+    --te-btn-hover-color: var(--theme-brand-text-color);
     --te-btn-hover-bg: var(--theme-brand-color);
     --te-btn-hover-border-color: var(--theme-brand-color);
-    --te-btn-active-color: #fff;
+    --te-btn-active-color: var(--theme-brand-text-color);
     --te-btn-active-bg: var(--theme-brand-color);
     --te-btn-active-border-color: var(--theme-brand-color);
     color: var(--te-btn-color);
@@ -1005,10 +1022,10 @@
     --te-btn-color: var(--theme-brand-color);
     --te-btn-bg: transparent;
     --te-btn-border-color: var(--theme-brand-color);
-    --te-btn-hover-color: #fff;
+    --te-btn-hover-color: var(--theme-brand-text-color);
     --te-btn-hover-bg: var(--theme-brand-color);
     --te-btn-hover-border-color: var(--theme-brand-color);
-    --te-btn-active-color: #fff;
+    --te-btn-active-color: var(--theme-brand-text-color);
     --te-btn-active-bg: var(--theme-brand-color);
     --te-btn-active-border-color: var(--theme-brand-color);
     color: var(--te-btn-color);
@@ -1031,13 +1048,13 @@
 }
 
 .theme-editor__preview .theme-editor__sample-btn.theme-editor__sample-btn--secondary {
-    --te-btn-color: #fff;
+    --te-btn-color: var(--theme-secondary-text-color);
     --te-btn-bg: var(--theme-secondary-color);
     --te-btn-border-color: var(--theme-secondary-color);
-    --te-btn-hover-color: #fff;
+    --te-btn-hover-color: var(--theme-secondary-text-color);
     --te-btn-hover-bg: var(--theme-secondary-color);
     --te-btn-hover-border-color: var(--theme-secondary-color);
-    --te-btn-active-color: #fff;
+    --te-btn-active-color: var(--theme-secondary-text-color);
     --te-btn-active-bg: var(--theme-secondary-color);
     --te-btn-active-border-color: var(--theme-secondary-color);
     color: var(--te-btn-color);
@@ -1146,6 +1163,20 @@
             return ctx.buttonColorCustom || ctx.primaryColor || '#007bff';
         }
         return ctx.tertiaryColor || '#28a745';
+    }
+
+    function resolveButtonTextColor(ctx) {
+        const source = ctx.buttonColorSource || 'tertiary';
+        if (source === 'primary') {
+            return ctx.primaryTextColor || pickTextColorForFill(ctx.primaryColor || '#007bff');
+        }
+        if (source === 'secondary') {
+            return ctx.secondaryTextColor || pickTextColorForFill(ctx.secondaryColor || '#6c757d');
+        }
+        if (source === 'custom') {
+            return pickTextColorForFill(ctx.buttonColorCustom || ctx.primaryColor || '#007bff');
+        }
+        return ctx.tertiaryTextColor || pickTextColorForFill(ctx.tertiaryColor || '#28a745');
     }
 
     const FONT_FAMILY_KEYS = [
@@ -1969,6 +2000,7 @@
                 '--theme-accent-color': accentColor,
                 '--theme-accent-text-color': ctx.tertiaryTextColor || pickTextColorForFill(accentColor),
                 '--theme-button-color': resolveButtonColor(ctx),
+                '--theme-button-text-color': resolveButtonTextColor(ctx),
                 '--te-btn-radius': btnRadius
             };
         };
