@@ -231,5 +231,42 @@
             "LLM.md"
         ]
     },
-    "description": "Foundation theme with flexible sections, hero layouts, and site-wide style controls."
+    "description": "Foundation theme with flexible sections, hero layouts, and site-wide style controls.",
+    "types": [
+        {
+            "code": "site",
+            "name": "Site homepage",
+            "allowedChildren": [
+                "content_page"
+            ],
+            "allowedAtRoot": true,
+            "enableEditor": true,
+            "maxOnLevel": 0,
+            "protected": false,
+            "editorPage": "theme://editing/blocks",
+            "config": {
+                "aspects": [
+                    "general",
+                    "seo",
+                    "site",
+                    "styles"
+                ]
+            },
+            "disableRender": false
+        },
+        {
+            "code": "content_page",
+            "name": "Content page",
+            "allowedChildren": [
+                "content_page"
+            ],
+            "editorPage": "theme://editing/blocks",
+            "config": {
+                "aspects": [
+                    "general",
+                    "seo"
+                ]
+            }
+        }
+    ]
 }
