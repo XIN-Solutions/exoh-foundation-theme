@@ -61,7 +61,7 @@ const newMetadata = {
     files: filesObj,
 };
 
-for (const field of ["description", "thumbnail", "previewUrl"]) {
+for (const field of ["description", "thumbnail", "previewUrl", "types"]) {
     if (metadata[field] !== undefined) {
         newMetadata[field] = metadata[field];
     }

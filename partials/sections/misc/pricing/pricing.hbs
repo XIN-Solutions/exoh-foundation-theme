@@ -40,7 +40,7 @@
                     <div class="card h-100 shadow-sm pricing-plan-card {{?: highlighted 'pricing-plan-card--highlighted border border-2' ''}}">
                         {{#unless ../config.hideBadge}}
                             {{#if badge}}
-                                <div class="pricing-plan-badge tertiaryColor-bg altBackgroundColor-text text-uppercase small fw-bold">
+                                <div class="pricing-plan-badge tertiaryColor-bg text-uppercase small fw-bold">
                                     {{badge}}
                                 </div>
                             {{/if}}
@@ -73,7 +73,7 @@
                             </ul>
 
                             <a
-                                class="btn w-100 {{?: highlighted 'buttonColor-bg altBackgroundColor-text' 'btn-outline-primary'}}"
+                                class="btn w-100 {{?: highlighted 'buttonColor-bg' 'btn-outline-primary'}}"
                                 href="{{?? ctaUrl '#'}}"
                             >
                                 {{?? ctaLabel "Lorem ipsum"}}

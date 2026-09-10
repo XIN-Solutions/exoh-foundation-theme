@@ -22,6 +22,11 @@
                 "tertiaryColor": "#28a745",
                 "backgroundColor": "#ffffff",
                 "altBackgroundColor": "#f8f9fa",
+                "primaryTextColor": "#ffffff",
+                "secondaryTextColor": "#ffffff",
+                "tertiaryTextColor": "#ffffff",
+                "backgroundTextColor": "#212529",
+                "altBackgroundTextColor": "#212529",
                 "h1Color": "#212529",
                 "h1FontFamily": "'Open Sans', sans-serif",
                 "h1FontWeight": "700",
@@ -226,5 +231,42 @@
             "LLM.md"
         ]
     },
-    "description": "Foundation theme with flexible sections, hero layouts, and site-wide style controls."
+    "description": "Foundation theme with flexible sections, hero layouts, and site-wide style controls.",
+    "types": [
+        {
+            "code": "site",
+            "name": "Site homepage",
+            "allowedChildren": [
+                "content_page"
+            ],
+            "allowedAtRoot": true,
+            "enableEditor": true,
+            "maxOnLevel": 0,
+            "protected": false,
+            "editorPage": "theme://editing/blocks",
+            "config": {
+                "aspects": [
+                    "general",
+                    "seo",
+                    "site",
+                    "styles"
+                ]
+            },
+            "disableRender": false
+        },
+        {
+            "code": "content_page",
+            "name": "Content page",
+            "allowedChildren": [
+                "content_page"
+            ],
+            "editorPage": "theme://editing/blocks",
+            "config": {
+                "aspects": [
+                    "general",
+                    "seo"
+                ]
+            }
+        }
+    ]
 }

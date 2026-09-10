@@ -14,6 +14,11 @@
     --theme-tertiaryColor: {{{?? styles.tertiaryColor 'initial'}}};
     --theme-backgroundColor: {{{?? styles.backgroundColor 'initial'}}};
     --theme-altBackgroundColor: {{{?? styles.altBackgroundColor 'initial'}}};
+    --theme-primaryTextColor: {{{?? styles.primaryTextColor '#ffffff'}}};
+    --theme-secondaryTextColor: {{{?? styles.secondaryTextColor '#ffffff'}}};
+    --theme-tertiaryTextColor: {{{?? styles.tertiaryTextColor '#ffffff'}}};
+    --theme-backgroundTextColor: {{{?? styles.backgroundTextColor (?? styles.paragraphColor '#212529')}}};
+    --theme-altBackgroundTextColor: {{{?? styles.altBackgroundTextColor (?? styles.paragraphColor '#212529')}}};
     --theme-h1Color: {{{?? styles.h1Color 'initial'}}};
     --theme-h2Color: {{{?? styles.h2Color 'initial'}}};
     --theme-h3Color: {{{?? styles.h3Color 'initial'}}};
@@ -45,6 +50,7 @@
     --theme-imageBorderRadius: {{#if (eq styles.imageBorderRadius 'none')}}0{{else if (eq styles.imageBorderRadius 'sm')}}0.25rem{{else if (eq styles.imageBorderRadius 'lg')}}0.5rem{{else if (eq styles.imageBorderRadius 'xl')}}1rem{{else if (eq styles.imageBorderRadius 'pill')}}50rem{{else}}0.375rem{{/if}};
     --theme-cardShadow: {{#if (eq styles.cardShadow 'none')}}none{{else if (eq styles.cardShadow 'default')}}0 0.5rem 1rem rgba(0, 0, 0, 0.15){{else if (eq styles.cardShadow 'lg')}}0 1rem 3rem rgba(0, 0, 0, 0.175){{else if (eq styles.cardShadow 'wide')}}0 0.35rem 1.25rem rgba(0, 0, 0, 0.1), 0 1.25rem 2.5rem rgba(0, 0, 0, 0.08){{else}}0 0.125rem 0.25rem rgba(0, 0, 0, 0.075){{/if}};
     --theme-buttonColor: {{#if (eq styles.buttonColorSource 'primary')}}var(--theme-primaryColor){{else if (eq styles.buttonColorSource 'secondary')}}var(--theme-secondaryColor){{else if (eq styles.buttonColorSource 'custom')}}{{{?? styles.buttonColorCustom '#007bff'}}}{{else}}var(--theme-tertiaryColor){{/if}};
+    --theme-buttonTextColor: {{#if (eq styles.buttonColorSource 'primary')}}var(--theme-primaryTextColor){{else if (eq styles.buttonColorSource 'secondary')}}var(--theme-secondaryTextColor){{else if (eq styles.buttonColorSource 'custom')}}color-contrast({{{?? styles.buttonColorCustom '#007bff'}}} vs #ffffff, #212529){{else}}var(--theme-tertiaryTextColor){{/if}};
 
     {{#if styles.primaryColor}}
     --bs-primary: var(--theme-primaryColor);
@@ -91,7 +97,7 @@
 
 body {
     background-color: var(--theme-backgroundColor);
-    color: var(--theme-paragraphColor);
+    color: var(--theme-backgroundTextColor);
     font-family: var(--theme-paragraphFontFamily);
     font-size: var(--theme-paragraphFontSize);
     font-weight: var(--theme-paragraphFontWeight);
@@ -99,6 +105,7 @@ body {
 
 .bg--alternate {
     background-color: var(--theme-altBackgroundColor);
+    color: var(--theme-altBackgroundTextColor);
 }
 
 .p-all {
@@ -157,14 +164,14 @@ section h5, .h5-all {
 }
 
 .btn.buttonColor-bg {
-    color: #fff;
+    color: var(--theme-buttonTextColor);
     background-color: var(--theme-buttonColor);
     border-color: var(--theme-buttonColor);
 }
 
 .btn.buttonColor-bg:hover,
 .btn.buttonColor-bg:focus-visible {
-    color: #fff;
+    color: var(--theme-buttonTextColor);
     background-color: var(--theme-buttonColor);
     border-color: var(--theme-buttonColor);
     filter: brightness(0.92);
@@ -205,26 +212,19 @@ section h5, .h5-all {
 {{/inline}}
 
 {{#if styles.primaryColor}}
-
-    {{> themeSolidButton variant="primary" colorKey="primaryColor" textColor="#fff"}}
-    {{> themeOutlineButton variant="primary" colorKey="primaryColor" hoverTextColor="#fff"}}
-    {{> themeSolidButton variant="dark" colorKey="primaryColor" textColor="#fff"}}
-
-    [data-bs-theme="dark"] {
-        {{> themeSolidButton variant="primary" colorKey="primaryColor" textColor="#000"}}
-        {{> themeOutlineButton variant="primary" colorKey="primaryColor" hoverTextColor="#000"}}
-        {{> themeSolidButton variant="dark" colorKey="primaryColor" textColor="#000"}}
-    }
+    {{> themeSolidButton variant="primary" colorKey="primaryColor" textColor="var(--theme-primaryTextColor)"}}
+    {{> themeOutlineButton variant="primary" colorKey="primaryColor" hoverTextColor="var(--theme-primaryTextColor)"}}
+    {{> themeSolidButton variant="dark" colorKey="primaryColor" textColor="var(--theme-primaryTextColor)"}}
 {{/if}}
 
 {{#if styles.secondaryColor}}
-    {{> themeSolidButton variant="secondary" colorKey="secondaryColor" textColor="#fff"}}
-    {{> themeOutlineButton variant="secondary" colorKey="secondaryColor" hoverTextColor="#fff"}}
+    {{> themeSolidButton variant="secondary" colorKey="secondaryColor" textColor="var(--theme-secondaryTextColor)"}}
+    {{> themeOutlineButton variant="secondary" colorKey="secondaryColor" hoverTextColor="var(--theme-secondaryTextColor)"}}
 {{/if}}
 
 {{#if styles.tertiaryColor}}
-{{> themeSolidButton variant="info" colorKey="tertiaryColor" textColor="#fff"}}
-{{> themeOutlineButton variant="info" colorKey="tertiaryColor" hoverTextColor="#fff"}}
+{{> themeSolidButton variant="info" colorKey="tertiaryColor" textColor="var(--theme-tertiaryTextColor)"}}
+{{> themeOutlineButton variant="info" colorKey="tertiaryColor" hoverTextColor="var(--theme-tertiaryTextColor)"}}
 .btn-link {
     --bs-btn-color: var(--theme-tertiaryColor);
     --bs-btn-bg: transparent;
@@ -294,11 +294,44 @@ header img:not(.rounded-circle) {
 .{{name}}-border-focus:focus-visible { border-color: var(--theme-{{name}}) !important; }
 {{/inline}}
 
-{{> themeColorUtilities name="primaryColor"}}
-{{> themeColorUtilities name="secondaryColor"}}
-{{> themeColorUtilities name="tertiaryColor"}}
-{{> themeColorUtilities name="backgroundColor"}}
-{{> themeColorUtilities name="altBackgroundColor"}}
+{{#*inline "themeSurfaceFillUtilities"}}
+.{{fillName}}-text { color: var(--theme-{{fillName}}) !important; }
+.{{fillName}}-bg {
+    background-color: var(--theme-{{fillName}}) !important;
+    color: var(--theme-{{textName}}) !important;
+}
+.{{fillName}}-border { border-color: var(--theme-{{fillName}}) !important; }
+
+.{{fillName}}-text-hover:hover,
+.{{fillName}}-text-hover:focus-visible { color: var(--theme-{{fillName}}) !important; }
+.{{fillName}}-bg-hover:hover,
+.{{fillName}}-bg-hover:focus-visible { background-color: var(--theme-{{fillName}}) !important; }
+.{{fillName}}-border-hover:hover,
+.{{fillName}}-border-hover:focus-visible { border-color: var(--theme-{{fillName}}) !important; }
+
+.{{fillName}}-text-active:active,
+.{{fillName}}-text-active.active { color: var(--theme-{{fillName}}) !important; }
+.{{fillName}}-bg-active:active,
+.{{fillName}}-bg-active.active { background-color: var(--theme-{{fillName}}) !important; }
+
+.{{fillName}}-text-focus:focus,
+.{{fillName}}-text-focus:focus-visible { color: var(--theme-{{fillName}}) !important; }
+.{{fillName}}-bg-focus:focus,
+.{{fillName}}-bg-focus:focus-visible { background-color: var(--theme-{{fillName}}) !important; }
+.{{fillName}}-border-focus:focus,
+.{{fillName}}-border-focus:focus-visible { border-color: var(--theme-{{fillName}}) !important; }
+{{/inline}}
+
+{{> themeSurfaceFillUtilities fillName="primaryColor" textName="primaryTextColor"}}
+{{> themeSurfaceFillUtilities fillName="secondaryColor" textName="secondaryTextColor"}}
+{{> themeSurfaceFillUtilities fillName="tertiaryColor" textName="tertiaryTextColor"}}
+{{> themeSurfaceFillUtilities fillName="backgroundColor" textName="backgroundTextColor"}}
+{{> themeSurfaceFillUtilities fillName="altBackgroundColor" textName="altBackgroundTextColor"}}
+{{> themeColorUtilities name="primaryTextColor"}}
+{{> themeColorUtilities name="secondaryTextColor"}}
+{{> themeColorUtilities name="tertiaryTextColor"}}
+{{> themeColorUtilities name="backgroundTextColor"}}
+{{> themeColorUtilities name="altBackgroundTextColor"}}
 {{> themeColorUtilities name="h1Color"}}
 {{> themeColorUtilities name="h2Color"}}
 {{> themeColorUtilities name="h3Color"}}
@@ -318,6 +351,23 @@ header img:not(.rounded-circle) {
 {{> themeTypographyUtilities prefix="h4"}}
 {{> themeTypographyUtilities prefix="h5"}}
 {{> themeTypographyUtilities prefix="paragraph"}}
+
+body .p-all,
+body .paragraphColor-text,
+.primaryColor-bg .p-all,
+.primaryColor-bg .paragraphColor-text,
+.secondaryColor-bg .p-all,
+.secondaryColor-bg .paragraphColor-text,
+.tertiaryColor-bg .p-all,
+.tertiaryColor-bg .paragraphColor-text,
+.backgroundColor-bg .p-all,
+.backgroundColor-bg .paragraphColor-text,
+.altBackgroundColor-bg .p-all,
+.altBackgroundColor-bg .paragraphColor-text,
+.bg--alternate .p-all,
+.bg--alternate .paragraphColor-text {
+    color: inherit !important;
+}
 
 {{#unless (eq styles.menuStylingEnabled 'no')}}
 .navigation-1 .navbar .navbar-nav a.nav-link,

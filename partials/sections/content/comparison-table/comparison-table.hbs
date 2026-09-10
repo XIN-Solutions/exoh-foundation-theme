@@ -53,7 +53,7 @@
                                 >
                                     {{#unless ../config.hideBadge}}
                                         {{#if badge}}
-                                            <span class="badge tertiaryColor-bg altBackgroundColor-text text-uppercase small mb-2">
+                                            <span class="badge tertiaryColor-bg text-uppercase small mb-2">
                                                 {{badge}}
                                             </span>
                                         {{/if}}
@@ -94,14 +94,14 @@
                 </table>
             </div>
         {{else}}
-            <div class="alert border backgroundColor-bg paragraphColor-text mb-0" role="alert">
+            <div class="alert border backgroundColor-bg mb-0" role="alert">
                 No plans configured yet.
             </div>
         {{/if}}
 
         {{#if resolvedPlans.length}}
             {{#unless resolvedFeatures.length}}
-                <div class="alert border backgroundColor-bg paragraphColor-text mt-3 mb-0" role="alert">
+                <div class="alert border backgroundColor-bg mt-3 mb-0" role="alert">
                     No comparison rows configured yet.
                 </div>
             {{/unless}}
