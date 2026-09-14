@@ -248,8 +248,7 @@
                 "aspects": [
                     "general",
                     "seo",
-                    "site",
-                    "styles"
+                    "site"
                 ]
             },
             "disableRender": false
