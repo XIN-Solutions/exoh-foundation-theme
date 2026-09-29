@@ -248,6 +248,7 @@
                 "aspects": [
                     "general",
                     "seo",
+                    "child_ordering",
                     "site"
                 ]
             },
@@ -263,7 +264,8 @@
             "config": {
                 "aspects": [
                     "general",
-                    "seo"
+                    "seo",
+                    "child_ordering"
                 ]
             }
         }
