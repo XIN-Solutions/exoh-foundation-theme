@@ -8,8 +8,8 @@ Intended for marketing and brochure sites: clear hierarchy, one hero per page, a
 
 | `contentType` | Aspects to set | Body sections |
 |---------------|----------------|---------------|
-| `site` | `general`, `seo`, `child_ordering`, `site`, `styles` | Ordered blocks edited with **`list_sections`**, **`append_section`**, **`update_section`**, **`insert_section_*`**, **`delete_section`** |
-| `content_page` | `general`, `seo`, `child_ordering` | Same section tools as `site` |
+| `site` | `general`, `seo`, `child_ordering`, `site`, `organisation`, `navigation`, `footer`, `redirects`, `logbook`, `styles` | Ordered blocks edited with **`list_sections`**, **`append_section`**, **`update_section`**, **`insert_section_*`**, **`delete_section`** |
+| `content_page` | `general`, `seo`, `child_ordering`, `logbook` | Same section tools as `site` |
 
 Create pages with **`create_page`** (use **`page_types_at_root`** or **`page_types_as_children`** to discover allowed types). Set aspects after create with **`update_aspect`**; load field contracts with **`aspect_documentation`** or **`get_aspect`**.
 
@@ -76,7 +76,12 @@ Recipes list section display names and **`type`** codes for **`append_section`**
 | `general` | All public pages | **`get_aspect`** / **`update_aspect`** — page title, slug, publish state |
 | `seo` | All public pages | **`get_aspect`** / **`update_aspect`** — meta title, description, social preview |
 | `child_ordering` | Pages with direct children | **`get_aspect`** / **`update_aspect`** — display order of direct child pages (`orderedChildIds`) |
-| `site` | `site` page type only | **`get_aspect`** / **`update_aspect`** — site name, logo, global settings |
+| `site` | `site` page type only | **`get_aspect`** / **`update_aspect`** / **`aspect_documentation`** — site name, logo, global settings |
+| `organisation` | `site` page type only | **`get_aspect`** / **`update_aspect`** / **`aspect_documentation`** — organisation profile linked to the site |
+| `navigation` | `site` page type only | **`get_aspect`** / **`update_aspect`** / **`aspect_documentation`** — primary menu structure and CTA |
+| `footer` | `site` page type only | **`get_aspect`** / **`update_aspect`** / **`aspect_documentation`** — footer links and columns |
+| `redirects` | `site` page type only | **`get_aspect`** / **`update_aspect`** / **`aspect_documentation`** — URL redirect rules |
+| `logbook` | All public pages | **`get_aspect`** / **`update_aspect`** / **`aspect_documentation`** — page change history and notes |
 | `styles` | `site` page type only (site root) | **`get_aspect`** / **`update_aspect`** / **`aspect_documentation`** — brand colours, typography, borders |
 
 Load built-in aspect field detail with **`aspect_documentation`**. Load theme **`styles`** detail with **`aspect_documentation`** and `aspect: "styles"`.

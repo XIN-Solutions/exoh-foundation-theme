@@ -2,7 +2,12 @@
     "name": "Belt",
     "enableConfig": true,
     "priority": 10,
-
+    "relations": [
+        {
+            "property": "config.basePageSlug",
+            "scope": "{{?: (equals config.searchType 'all') 'subtree' 'exact'}}"
+        }
+    ],
     "loaders": {
         "children": {
             "loader": "pages",

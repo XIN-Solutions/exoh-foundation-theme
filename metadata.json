@@ -249,7 +249,12 @@
                     "general",
                     "seo",
                     "child_ordering",
-                    "site"
+                    "site",
+                    "organisation",
+                    "navigation",
+                    "footer",
+                    "redirects",
+                    "logbook"
                 ]
             },
             "disableRender": false
@@ -265,7 +270,8 @@
                 "aspects": [
                     "general",
                     "seo",
-                    "child_ordering"
+                    "child_ordering",
+                    "logbook"
                 ]
             }
         }
