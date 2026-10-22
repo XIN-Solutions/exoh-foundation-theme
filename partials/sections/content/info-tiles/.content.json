@@ -1,5 +1,23 @@
 {
     "name": "Info Tiles",
     "enableConfig": true,
-    "priority": 15
+    "priority": 15,
+    "relations": [
+        {
+            "property": "model.tile1ImageSrc",
+            "scope": "exact"
+        },
+        {
+            "property": "model.tile2ImageSrc",
+            "scope": "exact"
+        },
+        {
+            "property": "model.tile3ImageSrc",
+            "scope": "exact"
+        },
+        {
+            "property": "model.tile4ImageSrc",
+            "scope": "exact"
+        }
+    ]
 }

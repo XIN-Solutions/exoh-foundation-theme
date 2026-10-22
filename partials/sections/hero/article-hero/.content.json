@@ -1,6 +1,12 @@
 {
     "name": "Article Hero",
     "enableConfig": true,
+    "relations": [
+        {
+            "property": "config.backgroundImage",
+            "scope": "exact"
+        }
+    ],
     "loaders": {
         "breadcrumbPage": {
             "loader": "page",

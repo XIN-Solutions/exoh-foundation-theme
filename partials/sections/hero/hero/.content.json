@@ -1,3 +1,13 @@
 {
-    "name": "Hero Image"
+    "name": "Hero Image",
+    "relations": [
+        {
+            "property": "config.backgroundImage",
+            "scope": "exact"
+        },
+        {
+            "property": "config.backgroundVideo",
+            "scope": "exact"
+        }
+    ]
 }

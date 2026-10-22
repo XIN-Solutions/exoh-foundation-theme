@@ -1,3 +1,13 @@
 {
-    "name": "Two Column Hero"
+    "name": "Two Column Hero",
+    "relations": [
+        {
+            "property": "config.backgroundImage",
+            "scope": "exact"
+        },
+        {
+            "property": "config.videoPoster",
+            "scope": "exact"
+        }
+    ]
 }

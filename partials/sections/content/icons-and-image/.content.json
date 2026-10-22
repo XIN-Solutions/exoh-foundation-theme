@@ -1,5 +1,11 @@
 {
     "name": "Icons & Image",
     "enableConfig": true,
-    "priority": 25
+    "priority": 25,
+    "relations": [
+        {
+            "property": "model.imageSrc",
+            "scope": "exact"
+        }
+    ]
 }

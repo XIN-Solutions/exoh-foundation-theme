@@ -1,3 +1,13 @@
 {
-    "name": "Image Banner"
+    "name": "Image Banner",
+    "relations": [
+        {
+            "property": "config.backgroundImage",
+            "scope": "exact"
+        },
+        {
+            "property": "config.backgroundVideo",
+            "scope": "exact"
+        }
+    ]
 }

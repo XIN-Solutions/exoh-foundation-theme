@@ -1,3 +1,21 @@
 {
-    "name": "Team"
+    "name": "Team",
+    "relations": [
+        {
+            "property": "model.member1ImageSrc",
+            "scope": "exact"
+        },
+        {
+            "property": "model.member2ImageSrc",
+            "scope": "exact"
+        },
+        {
+            "property": "model.member3ImageSrc",
+            "scope": "exact"
+        },
+        {
+            "property": "model.member4ImageSrc",
+            "scope": "exact"
+        }
+    ]
 }
