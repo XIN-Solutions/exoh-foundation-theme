@@ -1,3 +1,13 @@
 {
-  "name": "Video Hero"
+  "name": "Video Hero",
+  "relations": [
+    {
+      "property": "model.videoSrc",
+      "scope": "exact"
+    },
+    {
+      "property": "model.posterSrc",
+      "scope": "exact"
+    }
+  ]
 }

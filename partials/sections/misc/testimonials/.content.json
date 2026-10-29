@@ -1,6 +1,24 @@
 {
     "name": "Testimonials",
     "enableConfig": true,
+    "relations": [
+        {
+            "property": "model.testimonial1ImageSrc",
+            "scope": "exact"
+        },
+        {
+            "property": "model.testimonial2ImageSrc",
+            "scope": "exact"
+        },
+        {
+            "property": "model.testimonial3ImageSrc",
+            "scope": "exact"
+        },
+        {
+            "property": "model.testimonial4ImageSrc",
+            "scope": "exact"
+        }
+    ],
     "defaults": {
         "config": {
             "styleVariant": "style1",

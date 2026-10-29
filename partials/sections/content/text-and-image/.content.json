@@ -1,5 +1,11 @@
 {
     "name": "Text & Image",
     "enableConfig": true,
-    "priority": 5
+    "priority": 5,
+    "relations": [
+        {
+            "property": "model.imageSrc",
+            "scope": "exact"
+        }
+    ]
 }
