@@ -34,14 +34,14 @@
           <p><small class="text-muted">{{basicInfo.slogan}}</small></p>
         {{/if}}
 
-        {{#if (or footer.contactInfo.address footer.contactInfo.phone footer.contactInfo.email)}}
+        {{#if (or footer.contactInfo.address (or footer.contactInfo.phone footer.contactInfo.email))}}
           <div class="mt-2">
             {{#if footer.contactInfo.address}}
               <div class="footer-contact-address text-muted">{{footer.contactInfo.address}}</div>
             {{/if}}
             {{#if footer.contactInfo.phone}}
               <div>
-                <a href="tel:{{footer.contactInfo.phone}}">
+                <a href="tel:{{footer.contactInfo.phone}}" class="secondaryColor-text secondaryColor-text-hover text-decoration-none">
                   <i class="la la-phone" aria-hidden="true"></i>
                   <span>{{footer.contactInfo.phone}}</span>
                 </a>
@@ -49,7 +49,7 @@
             {{/if}}
             {{#if footer.contactInfo.email}}
               <div>
-                <a href="mailto:{{footer.contactInfo.email}}">
+                <a href="mailto:{{footer.contactInfo.email}}" class="secondaryColor-text secondaryColor-text-hover text-decoration-none">
                   <i class="la la-envelope" aria-hidden="true"></i>
                   <span>{{footer.contactInfo.email}}</span>
                 </a>
@@ -58,29 +58,29 @@
           </div>
         {{/if}}
 
-        {{#if (or footer.socialMedia.facebook footer.socialMedia.twitter footer.socialMedia.instagram footer.socialMedia.linkedin)}}
+        {{#if (or footer.socialMedia.facebook (or footer.socialMedia.twitter (or footer.socialMedia.instagram footer.socialMedia.linkedin)))}}
           <div class="mt-2">
             {{#if footer.socialMedia.facebook}}
-              <a href="{{footer.socialMedia.facebook}}" target="_blank" rel="noopener noreferrer" class="me-2">
-                <i class="la la-facebook" aria-hidden="true"></i>
+              <a href="{{footer.socialMedia.facebook}}" target="_blank" rel="noopener noreferrer" class="secondaryColor-text secondaryColor-text-hover text-decoration-none me-2">
+                <i class="lab la-facebook" aria-hidden="true"></i>
                 <span class="visually-hidden">Facebook</span>
               </a>
             {{/if}}
             {{#if footer.socialMedia.twitter}}
-              <a href="{{footer.socialMedia.twitter}}" target="_blank" rel="noopener noreferrer" class="me-2">
-                <i class="la la-twitter" aria-hidden="true"></i>
+              <a href="{{footer.socialMedia.twitter}}" target="_blank" rel="noopener noreferrer" class="secondaryColor-text secondaryColor-text-hover text-decoration-none me-2">
+                <i class="lab la-twitter" aria-hidden="true"></i>
                 <span class="visually-hidden">Twitter</span>
               </a>
             {{/if}}
             {{#if footer.socialMedia.instagram}}
-              <a href="{{footer.socialMedia.instagram}}" target="_blank" rel="noopener noreferrer" class="me-2">
-                <i class="la la-instagram" aria-hidden="true"></i>
+              <a href="{{footer.socialMedia.instagram}}" target="_blank" rel="noopener noreferrer" class="secondaryColor-text secondaryColor-text-hover text-decoration-none me-2">
+                <i class="lab la-instagram" aria-hidden="true"></i>
                 <span class="visually-hidden">Instagram</span>
               </a>
             {{/if}}
             {{#if footer.socialMedia.linkedin}}
-              <a href="{{footer.socialMedia.linkedin}}" target="_blank" rel="noopener noreferrer" class="me-2">
-                <i class="la la-linkedin" aria-hidden="true"></i>
+              <a href="{{footer.socialMedia.linkedin}}" target="_blank" rel="noopener noreferrer" class="secondaryColor-text secondaryColor-text-hover text-decoration-none me-2">
+                <i class="lab la-linkedin" aria-hidden="true"></i>
                 <span class="visually-hidden">LinkedIn</span>
               </a>
             {{/if}}
