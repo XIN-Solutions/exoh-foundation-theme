@@ -2,8 +2,7 @@
       isStyle1=(eq (?? config.styleVariant "style1") "style1")
       isStyle3=(eq config.styleVariant "style3")
       selectedColumnSetting=(?? config.columns 'four')
-      columnsMap=(map one='col-12 col-lg-8' two='col-12 col-md-6' three='col-12 col-md-6 col-lg-4' four='col-12 col-sm-6 col-xl-3')
-      selectedColumns=(lookup columnsMap selectedColumnSetting)
+      selectedColumns=(lookup (map one='col-12 col-lg-8' two='col-12 col-md-6' three='col-12 col-md-6 col-lg-4' four='col-12 col-sm-6 col-xl-3') (?? config.columns 'four'))
 }}
 
 <section
