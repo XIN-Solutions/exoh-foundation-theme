@@ -20,11 +20,69 @@
             }}
             <img src="{{footerImage}}" alt="Site logo" loading="lazy" class="logo-default mb-1" height="50">
             <img src="{{footerImage}}" alt="Site logo" loading="lazy" class="logo-default-dark mb-1" height="50">
-            {{#if basicInfo.slogan}}
-              <p>
-                <strong>{{?? basicInfo.footerTitle siteName}}</strong><br>
-                <small class="text-muted">{{basicInfo.slogan}}</small>
-              </p>
+          </div>
+        {{/if}}
+
+        {{#if basicInfo.footerTitle}}
+          <p class="mb-0"><strong>{{basicInfo.footerTitle}}</strong></p>
+        {{else}}
+          {{#if basicInfo.slogan}}
+            <p class="mb-0"><strong>{{siteName}}</strong></p>
+          {{/if}}
+        {{/if}}
+        {{#if basicInfo.slogan}}
+          <p><small class="text-muted">{{basicInfo.slogan}}</small></p>
+        {{/if}}
+
+        {{#if (or footer.contactInfo.address (or footer.contactInfo.phone footer.contactInfo.email))}}
+          <div class="mt-2">
+            {{#if footer.contactInfo.address}}
+              <div class="footer-contact-address text-muted">{{footer.contactInfo.address}}</div>
+            {{/if}}
+            {{#if footer.contactInfo.phone}}
+              <div>
+                <a href="tel:{{footer.contactInfo.phone}}" class="secondaryColor-text secondaryColor-text-hover text-decoration-none">
+                  <i class="la la-phone" aria-hidden="true"></i>
+                  <span>{{footer.contactInfo.phone}}</span>
+                </a>
+              </div>
+            {{/if}}
+            {{#if footer.contactInfo.email}}
+              <div>
+                <a href="mailto:{{footer.contactInfo.email}}" class="secondaryColor-text secondaryColor-text-hover text-decoration-none">
+                  <i class="la la-envelope" aria-hidden="true"></i>
+                  <span>{{footer.contactInfo.email}}</span>
+                </a>
+              </div>
+            {{/if}}
+          </div>
+        {{/if}}
+
+        {{#if (or footer.socialMedia.facebook (or footer.socialMedia.twitter (or footer.socialMedia.instagram footer.socialMedia.linkedin)))}}
+          <div class="mt-2">
+            {{#if footer.socialMedia.facebook}}
+              <a href="{{footer.socialMedia.facebook}}" target="_blank" rel="noopener noreferrer" class="secondaryColor-text secondaryColor-text-hover text-decoration-none me-2">
+                <i class="lab la-facebook" aria-hidden="true"></i>
+                <span class="visually-hidden">Facebook</span>
+              </a>
+            {{/if}}
+            {{#if footer.socialMedia.twitter}}
+              <a href="{{footer.socialMedia.twitter}}" target="_blank" rel="noopener noreferrer" class="secondaryColor-text secondaryColor-text-hover text-decoration-none me-2">
+                <i class="lab la-twitter" aria-hidden="true"></i>
+                <span class="visually-hidden">Twitter</span>
+              </a>
+            {{/if}}
+            {{#if footer.socialMedia.instagram}}
+              <a href="{{footer.socialMedia.instagram}}" target="_blank" rel="noopener noreferrer" class="secondaryColor-text secondaryColor-text-hover text-decoration-none me-2">
+                <i class="lab la-instagram" aria-hidden="true"></i>
+                <span class="visually-hidden">Instagram</span>
+              </a>
+            {{/if}}
+            {{#if footer.socialMedia.linkedin}}
+              <a href="{{footer.socialMedia.linkedin}}" target="_blank" rel="noopener noreferrer" class="secondaryColor-text secondaryColor-text-hover text-decoration-none me-2">
+                <i class="lab la-linkedin" aria-hidden="true"></i>
+                <span class="visually-hidden">LinkedIn</span>
+              </a>
             {{/if}}
           </div>
         {{/if}}

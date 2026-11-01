@@ -25,6 +25,7 @@
             "columns": "four",
             "hideTitle": false,
             "hideDescription": false,
+            "hideImages": false,
             "spacing": "comfortable"
         },
         "title": "Some of our users",

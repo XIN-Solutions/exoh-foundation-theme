@@ -551,6 +551,9 @@ footer.footer-1 nav a {
     margin-bottom: 1rem;
   }
 }
+footer.footer-1 .footer-contact-address {
+  white-space: pre-line;
+}
 footer.footer-1 img {
   margin: 2rem auto;
 }
