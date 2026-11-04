@@ -1,4 +1,13 @@
 {
     "name": "Contact Form & Map",
-    "image": "/editing/screenshots/sections/misc/contact-form-thumb.jpeg"
+    "image": "/editing/screenshots/sections/misc/contact-form-thumb.jpeg",
+    "loaders": {
+        "sitePage": {
+            "loader": "page",
+            "params": {
+                "pageSlug": "/",
+                "children": false
+            }
+        }
+    }
 }
