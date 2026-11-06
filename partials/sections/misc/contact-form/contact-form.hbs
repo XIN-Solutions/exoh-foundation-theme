@@ -29,6 +29,12 @@
 
     {{!-- content and form --}}
     <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-8 col-lg-7">
+                <div id="form-error"></div>
+            </div>
+        </div>
+
         {{#if isContentTop}}
             <div class="row text-center justify-content-center">
                 <div class="col-12 col-md-8 col-lg-7">
@@ -96,7 +102,19 @@
 </section>
 
 {{#*inline "formBlock"}}
-    <form hx-post="/contact" hx-disabled-elt="find button">
+    {{#if editing}}
+        {{#unless data.sitePage.content.forms.site.emailAddress}}
+            <div class="mb-3">
+                <span class="badge bg-danger">Invalid or missing contact configuration</span>
+            </div>
+        {{/unless}}
+    {{/if}}
+    <form
+        hx-post="/api/contact"
+        hx-target="this"
+        hx-swap="innerHTML"
+        hx-disabled-elt="find a"
+    >
         <div class="row">
             <div class="col">
                 <label>{{?? config.nameLabel "Name"}}</label>
@@ -126,10 +144,11 @@
         <div class="row mt-4">
             <div class="col text-end">
                 <a
-                    type="submit"
+                    role="button"
                     class="{{?? sendButtonClass 'btn btn-dark'}}"
                     {{#if sendButtonId}}id="{{sendButtonId}}"{{/if}}
                     edit="sendButtonText innerHTML, sendButtonClass @class, sendButtonId @id"
+                    {{#unless editing}}hx-on:click="this.closest('form').requestSubmit()"{{/unless}}
                 >
                     {{?? sendButtonText "Send"}}
                 </a>
