@@ -138,6 +138,7 @@ Discover all types with **`list_section_types`**. Load per-type field contracts 
 | Icons & Image | `content/icons-and-image` | Icons grouped with a supporting image |
 | Image Gallery | `content/gallery` | Image grid or carousel |
 | Embedded Video | `content/embedded-video` | Mid-page video embed |
+| Iframe | `content/iframe` | Third-party https embed (forms and similar) |
 
 ### Misc
 
