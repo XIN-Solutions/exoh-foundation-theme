@@ -131,6 +131,7 @@ Discover all types with **`list_section_types`**. Load per-type field contracts 
 | Icon Banner | `content/icon-banner` | Row of icon + label tiles |
 | Text & Image | `content/text-and-image` | Prose beside an image |
 | Markdown Text | `content/markdown-text` | Rich text body block |
+| Two Column Markdown | `content/two-column-markdown` | Two side-by-side markdown columns |
 | Statements | `content/statements` | Highlighted quote or value statements |
 | Info Tiles | `content/info-tiles` | Card grid for facts or features |
 | Showcase | `content/column-showcase` | Multi-column feature showcase |

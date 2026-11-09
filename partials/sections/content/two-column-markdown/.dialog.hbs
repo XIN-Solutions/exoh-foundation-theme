@@ -1,0 +1,89 @@
+<form id="twoColumnMarkdownConfigForm" class="config-form"
+      x-data="componentDialog((() => {
+            function sanitiseTwoColumnMarkdown(c) {
+                const alignments = ['left', 'center', 'right', 'justified'];
+                const splits = ['4-8', '5-7', '6-6', '7-5', '8-4'];
+                const textAlignment = alignments.includes(c.textAlignment) ? c.textAlignment : 'left';
+                const split = splits.includes(c.split) ? c.split : '6-6';
+                return {
+                    ...c,
+                    markdownLeft: c.markdownLeft || '',
+                    markdownRight: c.markdownRight || '',
+                    textAlignment,
+                    split
+                };
+            }
+            return {
+                defaultConfig: {
+                    markdownLeft: '',
+                    markdownRight: '',
+                    textAlignment: 'left',
+                    split: '6-6',
+                    useAltBackground: false,
+                    spacing: 'comfortable',
+                    noTopSpacing: false,
+                    noBottomSpacing: false
+                },
+                beforeSetConfig: sanitiseTwoColumnMarkdown,
+                beforeGetConfig: sanitiseTwoColumnMarkdown
+            };
+      })())"
+      @set="setConfig"
+      @get="getConfig"
+>
+
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" data-bs-toggle="tab" href="#two-column-markdown-left" role="tab">Left</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" href="#two-column-markdown-right" role="tab">Right</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" href="#two-column-markdown-layout" role="tab">Layout</a>
+        </li>
+        {{> common/dialogs/basic_nav}}
+    </ul>
+
+    <div class="tab-content">
+        <div class="tab-pane show active" id="two-column-markdown-left" role="tabpanel">
+            <div class="mb-3">
+                <label class="form-label">Left column markdown</label>
+                <textarea data-markdown-editor x-model="config.markdownLeft" rows="20" style="width: 100%"></textarea>
+            </div>
+        </div>
+
+        <div class="tab-pane" id="two-column-markdown-right" role="tabpanel">
+            <div class="mb-3">
+                <label class="form-label">Right column markdown</label>
+                <textarea data-markdown-editor x-model="config.markdownRight" rows="20" style="width: 100%"></textarea>
+            </div>
+        </div>
+
+        <div class="tab-pane" id="two-column-markdown-layout" role="tabpanel">
+            <div class="mb-3">
+                <label class="form-label">Text alignment</label>
+                <select class="form-select" x-model="config.textAlignment">
+                    <option value="left">Left</option>
+                    <option value="center">Center</option>
+                    <option value="right">Right</option>
+                    <option value="justified">Justified</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Column split</label>
+                <select class="form-select" x-model="config.split">
+                    <option value="4-8">Small left, large right</option>
+                    <option value="5-7">Narrow left, wide right</option>
+                    <option value="6-6">Equal</option>
+                    <option value="7-5">Wide left, narrow right</option>
+                    <option value="8-4">Large left, small right</option>
+                </select>
+            </div>
+        </div>
+
+        {{> common/dialogs/basic_content }}
+    </div>
+
+</form>
