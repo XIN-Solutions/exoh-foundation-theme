@@ -22,7 +22,7 @@
             {{else}}
                 {{#each beltItems as |child|}}
                     {{let . tile=(map
-                        title=(?? child.content.forms.seo.metaTitle child.page.name)
+                        title=(?? child.content.forms.general.pageTitle (?? child.content.forms.seo.metaTitle child.page.name))
                         thumbnail=(?? child.content.forms.general.image child.content.forms.seo.thumbnail)
                         defaultThumbnail=(?? ../config.defaultImage '/assets/img/empty.png')
                         description=(?? child.content.forms.general.description child.content.forms.seo.metaDescription)
