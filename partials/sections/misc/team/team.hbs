@@ -22,7 +22,7 @@
     <div class="container">
         {{#unless (and config.hideTitle config.hideDescription)}}
             <div class="row justify-content-center mb-4">
-                <div class="col-md-7 text-center">
+                <div class="col-md-7 text-center" data-item-aos="lead">
                     {{#unless config.hideTitle}}
                         <h2 class="mb-3 h2-all" edit="title innerHTML">{{{?? title "Meet Our Team"}}}</h2>
                     {{/unless}}

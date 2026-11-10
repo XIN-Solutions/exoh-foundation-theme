@@ -37,7 +37,7 @@
 
         {{#if isContentTop}}
             <div class="row text-center justify-content-center">
-                <div class="col-12 col-md-8 col-lg-7">
+                <div class="col-12 col-md-8 col-lg-7" data-item-aos="sequence">
                     <div class="mb-5">
                         {{> contentBlock}}
                     </div>
@@ -47,7 +47,7 @@
             <div class="row-50"></div>
 
             <div class="row justify-content-center">
-                <div class="col-12 col-md-8 col-lg-7">
+                <div class="col-12 col-md-8 col-lg-7" data-item-aos="sequence">
                     {{> formBlock}}
                 </div>
             </div>
@@ -55,7 +55,7 @@
 
         {{#if isContentBottom}}
             <div class="row justify-content-center">
-                <div class="col-12 col-md-8 col-lg-7">
+                <div class="col-12 col-md-8 col-lg-7" data-item-aos="sequence">
                     {{> formBlock}} 
                 </div>
             </div>
@@ -63,7 +63,7 @@
             <div class="row-50"></div>
 
             <div class="row text-center justify-content-center">
-                <div class="col-12 col-md-8 col-lg-7">
+                <div class="col-12 col-md-8 col-lg-7" data-item-aos="sequence">
                     <div class="mt-5">
                         {{> contentBlock}}
                     </div>
@@ -73,10 +73,10 @@
 
         {{#if isContentLeft}}
             <div class="row justify-content-center align-items-start gy-4">
-                <div class="col-12 col-lg-4">
+                <div class="col-12 col-lg-4" data-item-aos="pair-start">
                     {{> contentBlock}}
                 </div>
-                <div class="col-12 col-lg-7">
+                <div class="col-12 col-lg-7" data-item-aos="pair-end">
                     {{> formBlock}}
                 </div>
             </div>
@@ -84,10 +84,10 @@
 
         {{#if isContentRight}}
             <div class="row justify-content-center align-items-start gy-4">
-                <div class="col-12 col-lg-7">
+                <div class="col-12 col-lg-7" data-item-aos="pair-start">
                     {{> formBlock}}
                 </div>
-                <div class="col-12 col-lg-4">
+                <div class="col-12 col-lg-4" data-item-aos="pair-end">
                     {{> contentBlock}}
                 </div>
             </div>

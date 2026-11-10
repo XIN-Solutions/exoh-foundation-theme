@@ -23,7 +23,7 @@
                 {{> imageCol}}
             {{/if}}
 
-            <div class="col-lg-6 d-flex align-items-center">
+            <div class="col-lg-6 d-flex align-items-center" data-item-aos="{{#if isRight}}pair-start{{else}}pair-end{{/if}}">
                 <div class="row">
                 
                     <div class="col-md-12 mb-4">
@@ -152,7 +152,7 @@
 </section>
 
 {{#*inline "imageCol"}}
-    <div class="col-lg-6">
+    <div class="col-lg-6" data-item-aos="{{#if isRight}}pair-end{{else}}pair-start{{/if}}">
         <img
             edit="imageAlt @alt, imageSrc @src, imageId @id"
             {{#if imageId}} id="{{imageId}}" {{/if}}
