@@ -6,6 +6,18 @@
 
 <nav class="navigation-1 clearfix" data-exoh-scope="site">
 
+  {{#if navigation.messageBar.enabled}}
+    {{#if (eq navigation.messageBar.scope 'homepage')}}
+      {{#if (eq contentType.code 'site')}}
+        <div id="message-bar" hidden></div>
+        <script type="application/json" id="message-bar-data">{{{jsonForScript navigation.messageBarView}}}</script>
+      {{/if}}
+    {{else}}
+      <div id="message-bar" hidden></div>
+      <script type="application/json" id="message-bar-data">{{{jsonForScript navigation.messageBarView}}}</script>
+    {{/if}}
+  {{/if}}
+
   {{#if navigation.enableTopBar}}
     <div id="top" class="top-nav clearfix">
       <div class="container">
