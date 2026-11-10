@@ -77,11 +77,23 @@
     {{#if styles.menuItemColor}}
     --theme-menuItemColor: {{{styles.menuItemColor}}};
     {{/if}}
+    {{#if styles.menuBackgroundColor}}
+    --theme-menuBackgroundColor: {{{styles.menuBackgroundColor}}};
+    {{/if}}
+    {{#if styles.menuItemHoverColor}}
+    --theme-menuItemHoverColor: {{{styles.menuItemHoverColor}}};
+    {{/if}}
     {{#if styles.menuCtaColor}}
     --theme-menuCtaColor: {{{styles.menuCtaColor}}};
     {{/if}}
     {{#if styles.menuCtaTextColor}}
     --theme-menuCtaTextColor: {{{styles.menuCtaTextColor}}};
+    {{/if}}
+    {{#if styles.menuCtaHoverColor}}
+    --theme-menuCtaHoverColor: {{{styles.menuCtaHoverColor}}};
+    {{/if}}
+    {{#if styles.menuCtaHoverTextColor}}
+    --theme-menuCtaHoverTextColor: {{{styles.menuCtaHoverTextColor}}};
     {{/if}}
     {{#if styles.menuFontFamily}}
     --theme-menuFontFamily: {{{styles.menuFontFamily}}};
@@ -397,6 +409,13 @@ body .paragraphColor-text,
 }
 
 {{#unless (eq styles.menuStylingEnabled 'no')}}
+{{#if styles.menuBackgroundColor}}
+.navigation-1,
+.navigation-1 .navbar {
+    background-color: var(--theme-menuBackgroundColor);
+}
+{{/if}}
+
 .navigation-1 .navbar .navbar-nav a.nav-link,
 .navigation-1 .navbar .navbar-nav .nav-item.dropdown .dropdown-item {
     {{#if styles.menuItemColor}}
@@ -413,6 +432,20 @@ body .paragraphColor-text,
     {{/if}}
 }
 
+{{#if styles.menuItemHoverColor}}
+.navigation-1 .navbar .navbar-nav a.nav-link:hover,
+.navigation-1 .navbar .navbar-nav a.nav-link:focus-visible,
+.navigation-1 .navbar .navbar-nav a.nav-link:hover span,
+.navigation-1 .navbar .navbar-nav a.nav-link:focus-visible span,
+.navigation-1 .navbar .navbar-nav .nav-item.dropdown .dropdown-item:hover,
+.navigation-1 .navbar .navbar-nav .nav-item.dropdown .dropdown-item:focus-visible,
+.navigation-1 .navbar .navbar-nav .nav-item.dropdown .dropdown-item:active,
+.navigation-1 .navbar .navbar-nav .nav-item.active > a.nav-link,
+.navigation-1 .navbar .navbar-nav .nav-item.active > a.nav-link span {
+    color: var(--theme-menuItemHoverColor);
+    opacity: 1;
+}
+{{else}}
 {{#if styles.menuItemColor}}
 .navigation-1 .navbar .navbar-nav a.nav-link:hover,
 .navigation-1 .navbar .navbar-nav a.nav-link:focus-visible,
@@ -423,8 +456,9 @@ body .paragraphColor-text,
     opacity: 0.85;
 }
 {{/if}}
+{{/if}}
 
-{{#if (or styles.menuCtaColor styles.menuCtaTextColor styles.menuFontFamily styles.menuFontSize styles.menuFontWeight)}}
+{{#if (or styles.menuCtaColor styles.menuCtaTextColor styles.menuCtaHoverColor styles.menuCtaHoverTextColor styles.menuFontFamily styles.menuFontSize styles.menuFontWeight)}}
 .navigation-1 .btn.btn-primary {
     {{#if styles.menuFontFamily}}
     font-family: var(--theme-menuFontFamily);
@@ -437,26 +471,39 @@ body .paragraphColor-text,
     {{/if}}
     {{#if styles.menuCtaTextColor}}
     --bs-btn-color: var(--theme-menuCtaTextColor);
-    --bs-btn-hover-color: var(--theme-menuCtaTextColor);
     --bs-btn-active-color: var(--theme-menuCtaTextColor);
     --bs-btn-disabled-color: var(--theme-menuCtaTextColor);
+    {{#unless styles.menuCtaHoverTextColor}}
+    --bs-btn-hover-color: var(--theme-menuCtaTextColor);
+    {{/unless}}
     {{else}}
     {{#if styles.menuCtaColor}}
     --bs-btn-color: #fff;
-    --bs-btn-hover-color: #fff;
     --bs-btn-active-color: #fff;
     --bs-btn-disabled-color: #fff;
+    {{#unless styles.menuCtaHoverTextColor}}
+    --bs-btn-hover-color: #fff;
+    {{/unless}}
     {{/if}}
+    {{/if}}
+    {{#if styles.menuCtaHoverTextColor}}
+    --bs-btn-hover-color: var(--theme-menuCtaHoverTextColor);
     {{/if}}
     {{#if styles.menuCtaColor}}
     --bs-btn-bg: var(--theme-menuCtaColor);
     --bs-btn-border-color: var(--theme-menuCtaColor);
+    {{#unless styles.menuCtaHoverColor}}
     --bs-btn-hover-bg: var(--theme-menuCtaColor);
     --bs-btn-hover-border-color: var(--theme-menuCtaColor);
+    {{/unless}}
     --bs-btn-active-bg: var(--theme-menuCtaColor);
     --bs-btn-active-border-color: var(--theme-menuCtaColor);
     --bs-btn-disabled-bg: var(--theme-menuCtaColor);
     --bs-btn-disabled-border-color: var(--theme-menuCtaColor);
+    {{/if}}
+    {{#if styles.menuCtaHoverColor}}
+    --bs-btn-hover-bg: var(--theme-menuCtaHoverColor);
+    --bs-btn-hover-border-color: var(--theme-menuCtaHoverColor);
     {{/if}}
 }
 {{/if}}

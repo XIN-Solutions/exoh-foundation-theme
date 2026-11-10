@@ -319,6 +319,26 @@
                                         <input type="color" class="theme-editor__swatch-input" id="menuCtaTextColorInp" name="styles[menuCtaTextColor]" x-model="menuCtaTextColor">
                                         <span class="theme-editor__swatch-hex" x-text="menuCtaTextColor || '—'"></span>
                                     </label>
+                                    <label class="theme-editor__swatch">
+                                        <span class="theme-editor__swatch-label">Header background</span>
+                                        <input type="color" class="theme-editor__swatch-input" id="menuBackgroundColorInp" name="styles[menuBackgroundColor]" x-model="menuBackgroundColor">
+                                        <span class="theme-editor__swatch-hex" x-text="menuBackgroundColor || '—'"></span>
+                                    </label>
+                                    <label class="theme-editor__swatch">
+                                        <span class="theme-editor__swatch-label">Menu item hover</span>
+                                        <input type="color" class="theme-editor__swatch-input" id="menuItemHoverColorInp" name="styles[menuItemHoverColor]" x-model="menuItemHoverColor">
+                                        <span class="theme-editor__swatch-hex" x-text="menuItemHoverColor || '—'"></span>
+                                    </label>
+                                    <label class="theme-editor__swatch">
+                                        <span class="theme-editor__swatch-label">Menu CTA hover</span>
+                                        <input type="color" class="theme-editor__swatch-input" id="menuCtaHoverColorInp" name="styles[menuCtaHoverColor]" x-model="menuCtaHoverColor">
+                                        <span class="theme-editor__swatch-hex" x-text="menuCtaHoverColor || '—'"></span>
+                                    </label>
+                                    <label class="theme-editor__swatch">
+                                        <span class="theme-editor__swatch-label">Menu CTA hover text</span>
+                                        <input type="color" class="theme-editor__swatch-input" id="menuCtaHoverTextColorInp" name="styles[menuCtaHoverTextColor]" x-model="menuCtaHoverTextColor">
+                                        <span class="theme-editor__swatch-hex" x-text="menuCtaHoverTextColor || '—'"></span>
+                                    </label>
                                 </div>
                                 <div class="mt-3">
                                     <label class="block font-label text-sm font-medium text-admin-text" for="menuFontInp">Menu font</label>
@@ -955,6 +975,11 @@
     font-weight: inherit;
 }
 
+.theme-editor__preview-nav .theme-editor__sample-nav-link:hover,
+.theme-editor__preview-nav .theme-editor__sample-nav-link:focus-visible {
+    color: var(--te-menu-link-hover-color, var(--te-menu-link-color, inherit));
+}
+
 .theme-editor__preview-nav .theme-editor__sample-nav-cta { display:inline-flex; align-items:center; padding:0.25rem 0.75rem; font-size:0.875rem; border:1px solid transparent; text-decoration:none;
     border-radius: var(--te-btn-radius);
     font-family: inherit;
@@ -963,6 +988,13 @@
     color: var(--te-menu-cta-color, #fff);
     background-color: var(--te-menu-cta-bg, var(--theme-brand-color));
     border-color: var(--te-menu-cta-border, var(--theme-brand-color));
+}
+
+.theme-editor__preview-nav .theme-editor__sample-nav-cta:hover,
+.theme-editor__preview-nav .theme-editor__sample-nav-cta:focus-visible {
+    color: var(--te-menu-cta-hover-color, var(--te-menu-cta-color, #fff));
+    background-color: var(--te-menu-cta-hover-bg, var(--te-menu-cta-bg, var(--theme-brand-color)));
+    border-color: var(--te-menu-cta-hover-border, var(--te-menu-cta-border, var(--theme-brand-color)));
 }
 
 .theme-editor__preview .theme-editor__sample-btn.theme-editor__sample-btn--cta {
@@ -1122,7 +1154,8 @@
         'paragraphColor', 'paragraphFontFamily', 'paragraphFontWeight', 'paragraphFontSize',
         'cardBorderRadius', 'buttonBorderRadius', 'imageBorderRadius', 'cardShadow',
         'buttonColorSource', 'buttonColorCustom',
-        'menuStylingEnabled', 'menuItemColor', 'menuCtaColor', 'menuCtaTextColor',
+        'menuStylingEnabled', 'menuItemColor', 'menuBackgroundColor', 'menuItemHoverColor',
+        'menuCtaColor', 'menuCtaTextColor', 'menuCtaHoverColor', 'menuCtaHoverTextColor',
         'menuFontFamily', 'menuFontSize', 'menuFontWeight'
     ];
 
@@ -1969,6 +2002,10 @@
         ctx.googleFontsHref = '';
         ctx.selectedStylePreset = '';
         ctx._applyingPreset = false;
+        ctx.menuBackgroundColor = ctx.menuBackgroundColor ?? '';
+        ctx.menuItemHoverColor = ctx.menuItemHoverColor ?? '';
+        ctx.menuCtaHoverColor = ctx.menuCtaHoverColor ?? '';
+        ctx.menuCtaHoverTextColor = ctx.menuCtaHoverTextColor ?? '';
 
         ctx.applyLoadedThemeState = function(options) {
             normalizeFontFamilies(ctx);
@@ -2039,9 +2076,15 @@
             if (ctx.menuStylingEnabled !== 'yes') {
                 return style;
             }
+            if (ctx.menuBackgroundColor) {
+                style.backgroundColor = ctx.menuBackgroundColor;
+            }
             if (ctx.menuItemColor) {
                 style.color = ctx.menuItemColor;
                 style['--te-menu-link-color'] = ctx.menuItemColor;
+            }
+            if (ctx.menuItemHoverColor) {
+                style['--te-menu-link-hover-color'] = ctx.menuItemHoverColor;
             }
             if (ctx.menuFontFamily) {
                 style.fontFamily = ctx.menuFontFamily;
@@ -2058,6 +2101,13 @@
             }
             if (ctx.menuCtaTextColor) {
                 style['--te-menu-cta-color'] = ctx.menuCtaTextColor;
+            }
+            if (ctx.menuCtaHoverColor) {
+                style['--te-menu-cta-hover-bg'] = ctx.menuCtaHoverColor;
+                style['--te-menu-cta-hover-border'] = ctx.menuCtaHoverColor;
+            }
+            if (ctx.menuCtaHoverTextColor) {
+                style['--te-menu-cta-hover-color'] = ctx.menuCtaHoverTextColor;
             }
             return style;
         };
@@ -2230,8 +2280,12 @@
                 ctx.menuStylingEnabled = 'no';
             }
             ctx.menuItemColor = preset.menuItemColor || '';
+            ctx.menuBackgroundColor = preset.menuBackgroundColor || '';
+            ctx.menuItemHoverColor = preset.menuItemHoverColor || '';
             ctx.menuCtaColor = preset.menuCtaColor || '';
             ctx.menuCtaTextColor = preset.menuCtaTextColor || '';
+            ctx.menuCtaHoverColor = preset.menuCtaHoverColor || '';
+            ctx.menuCtaHoverTextColor = preset.menuCtaHoverTextColor || '';
             ctx.menuFontFamily = preset.menuFontFamily || '';
             ctx.menuFontSize = preset.menuFontSize || '';
             ctx.menuFontWeight = preset.menuFontWeight || '';

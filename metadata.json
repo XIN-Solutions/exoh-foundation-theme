@@ -60,8 +60,12 @@
                 "buttonColorCustom": "",
                 "menuStylingEnabled": "no",
                 "menuItemColor": "",
+                "menuBackgroundColor": "",
+                "menuItemHoverColor": "",
                 "menuCtaColor": "",
                 "menuCtaTextColor": "",
+                "menuCtaHoverColor": "",
+                "menuCtaHoverTextColor": "",
                 "menuFontFamily": "",
                 "menuFontSize": "",
                 "menuFontWeight": ""
