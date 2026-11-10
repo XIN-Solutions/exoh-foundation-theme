@@ -69,6 +69,14 @@ Defaults: Open Sans stack; h1 `#212529` / 700 / 48px; h2 `#495057` / 600 / 36px;
 | `paragraphFontSize` | string | `16px` | Body size |
 | `googleFonts` | string (JSON array) | `"[]"` | Serialized list of Google Font families to load |
 
+### Animation
+
+| Field | Type | Default | Allowed values |
+|-------|------|---------|----------------|
+| `animationSpeed` | string | `normal` | `slow` (1400ms duration, 180ms stagger), `normal` (1000ms, 100ms), `fast` (600ms, 60ms) |
+
+Drives scroll-animation **item** timing: elements stamped with `data-aos-order` get duration and stagger delay from this setting. **Section** animate-on-scroll duration and delay stay on each section’s General tab (`config.aos`, etc.), not on this field.
+
 ### Components
 
 | Field | Type | Default | Allowed values |

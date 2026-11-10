@@ -71,7 +71,8 @@
                 "menuCtaHoverTextColor": "",
                 "menuFontFamily": "",
                 "menuFontSize": "",
-                "menuFontWeight": ""
+                "menuFontWeight": "",
+                "animationSpeed": "normal"
             }
         }
     ],

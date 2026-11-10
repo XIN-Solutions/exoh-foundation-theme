@@ -287,6 +287,16 @@
                                 </div>
                             </div>
                             <div class="mb-4">
+                                <label class="block font-label text-sm font-medium text-admin-text" for="animationSpeedInp">Animation speed</label>
+                                <div class="">
+                                <select class="mt-1 block w-full rounded-lg border border-admin-border bg-admin-surface px-4 py-2.5 text-sm text-admin-text shadow-sm focus:border-admin-primary focus:ring-admin-primary" id="animationSpeedInp" name="styles[animationSpeed]" x-model="animationSpeed">
+                                    <option value="slow">Slow (1400ms, stagger 180ms)</option>
+                                    <option value="normal">Normal (1000ms, stagger 100ms)</option>
+                                    <option value="fast">Fast (600ms, stagger 60ms)</option>
+                                </select>
+                                </div>
+                            </div>
+                            <div class="mb-4">
                                 <label class="flex items-center justify-between gap-3">
                                     <span class="text-sm text-admin-text">Dark mode</span>
                                     <button type="button"
@@ -1170,6 +1180,7 @@
     const STYLE_KEYS = [
         'themeStylingEnabled',
         'darkMode',
+        'animationSpeed',
         'primaryColor', 'secondaryColor', 'tertiaryColor', 'backgroundColor', 'altBackgroundColor',
         'primaryTextColor', 'secondaryTextColor', 'tertiaryTextColor', 'backgroundTextColor', 'altBackgroundTextColor',
         'h1Color', 'h1FontFamily', 'h1FontWeight', 'h1FontSize',
@@ -2036,6 +2047,9 @@
         ctx.cardBorderEnabled = ctx.cardBorderEnabled === 'yes' ? 'yes' : 'no';
         ctx.cardBorderColor = ctx.cardBorderColor ?? '';
         ctx.cardBorderWidth = ctx.cardBorderWidth === '1px' || ctx.cardBorderWidth === '3px' ? ctx.cardBorderWidth : '2px';
+        if (ctx.animationSpeed !== 'slow' && ctx.animationSpeed !== 'fast') {
+            ctx.animationSpeed = 'normal';
+        }
 
         ctx.applyLoadedThemeState = function(options) {
             normalizeFontFamilies(ctx);
