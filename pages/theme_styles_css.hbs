@@ -103,6 +103,13 @@ body {
     font-weight: var(--theme-paragraphFontWeight);
 }
 
+{{#if styles.primaryColor}}
+.markdown-text__body a:not(.btn):not(.nav-link),
+.markdown-text__body a:not(.btn):not(.nav-link):hover {
+    color: var(--theme-primaryColor);
+}
+{{/if}}
+
 .bg--alternate {
     background-color: var(--theme-altBackgroundColor);
     color: var(--theme-altBackgroundTextColor);
