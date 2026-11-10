@@ -49,6 +49,9 @@
     --theme-buttonBorderRadius: {{#if (eq styles.buttonBorderRadius 'none')}}0{{else if (eq styles.buttonBorderRadius 'sm')}}0.25rem{{else if (eq styles.buttonBorderRadius 'lg')}}0.5rem{{else if (eq styles.buttonBorderRadius 'xl')}}1rem{{else if (eq styles.buttonBorderRadius 'pill')}}50rem{{else}}0.375rem{{/if}};
     --theme-imageBorderRadius: {{#if (eq styles.imageBorderRadius 'none')}}0{{else if (eq styles.imageBorderRadius 'sm')}}0.25rem{{else if (eq styles.imageBorderRadius 'lg')}}0.5rem{{else if (eq styles.imageBorderRadius 'xl')}}1rem{{else if (eq styles.imageBorderRadius 'pill')}}50rem{{else}}0.375rem{{/if}};
     --theme-cardShadow: {{#if (eq styles.cardShadow 'none')}}none{{else if (eq styles.cardShadow 'default')}}0 0.5rem 1rem rgba(0, 0, 0, 0.15){{else if (eq styles.cardShadow 'lg')}}0 1rem 3rem rgba(0, 0, 0, 0.175){{else if (eq styles.cardShadow 'wide')}}0 0.35rem 1.25rem rgba(0, 0, 0, 0.1), 0 1.25rem 2.5rem rgba(0, 0, 0, 0.08){{else}}0 0.125rem 0.25rem rgba(0, 0, 0, 0.075){{/if}};
+    {{#if styles.cardBorderColor}}
+    --theme-cardBorderColor: {{{styles.cardBorderColor}}};
+    {{/if}}
     --theme-buttonColor: {{#if (eq styles.buttonColorSource 'primary')}}var(--theme-primaryColor){{else if (eq styles.buttonColorSource 'secondary')}}var(--theme-secondaryColor){{else if (eq styles.buttonColorSource 'custom')}}{{{?? styles.buttonColorCustom '#007bff'}}}{{else}}var(--theme-tertiaryColor){{/if}};
     --theme-buttonTextColor: {{#if (eq styles.buttonColorSource 'primary')}}var(--theme-primaryTextColor){{else if (eq styles.buttonColorSource 'secondary')}}var(--theme-secondaryTextColor){{else if (eq styles.buttonColorSource 'custom')}}color-contrast({{{?? styles.buttonColorCustom '#007bff'}}} vs #ffffff, #212529){{else}}var(--theme-tertiaryTextColor){{/if}};
 
@@ -286,6 +289,19 @@ section h5, .h5-all {
     border-radius: var(--theme-cardBorderRadius);
     box-shadow: var(--theme-cardShadow);
 }
+
+{{#if (eq styles.cardBorderEnabled 'yes')}}
+{{#if styles.cardBorderColor}}
+.info-tiles .row.g-4 > [class*="col"] > div,
+.features-1 .row.wrap > [class*="col"] > .h-100,
+.testimonial,
+.stats__item,
+.pricing-1 .pricing-plan-card,
+.faq-accordion__item {
+    border: {{#if (eq styles.cardBorderWidth '1px')}}1px{{else if (eq styles.cardBorderWidth '3px')}}3px{{else}}2px{{/if}} solid var(--theme-cardBorderColor) !important;
+}
+{{/if}}
+{{/if}}
 
 textarea.form-control {
     border-radius: var(--theme-cardBorderRadius);

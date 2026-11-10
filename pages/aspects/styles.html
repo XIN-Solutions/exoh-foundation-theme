@@ -243,6 +243,32 @@
                                 </div>
                             </div>
                             <div class="mb-4">
+                                <label class="flex items-center justify-between gap-3">
+                                    <span class="text-sm text-admin-text">Enable card borders</span>
+                                    <button type="button" data-guide-switch role="switch" :aria-checked="cardBorderEnabled === 'yes' ? 'true' : 'false'" @click="cardBorderEnabled = cardBorderEnabled === 'yes' ? 'no' : 'yes'" :class="cardBorderEnabled === 'yes' ? 'bg-admin-primary' : 'bg-admin-border'" class="relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors focus:outline-none focus:ring-2 focus:ring-admin-primary focus:ring-offset-2">
+                                        <span data-guide-switch-knob class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition" :class="cardBorderEnabled === 'yes' ? 'translate-x-5' : 'translate-x-0'"></span>
+                                    </button>
+                                    <input type="checkbox" class="sr-only" id="cardBorderEnabledInp" :checked="cardBorderEnabled === 'yes'" @change="cardBorderEnabled = $event.target.checked ? 'yes' : 'no'">
+                                </label>
+                                <input type="hidden" name="styles[cardBorderEnabled]" x-model="cardBorderEnabled">
+                                <div class="mt-1 text-xs text-admin-muted">Off by default. When on, info tiles, belt cards, testimonials, stats, pricing cards, and FAQ items use this border; roundedness follows the card roundedness setting.</div>
+                            </div>
+                            <div class="mb-4" x-show="cardBorderEnabled === 'yes'" x-cloak>
+                                <div class="theme-editor__swatches">
+                                    <label class="theme-editor__swatch">
+                                        <span class="theme-editor__swatch-label">Card border colour</span>
+                                        <input type="color" class="theme-editor__swatch-input" id="cardBorderColorInp" name="styles[cardBorderColor]" x-model="cardBorderColor">
+                                        <span class="theme-editor__swatch-hex" x-text="cardBorderColor || '—'"></span>
+                                    </label>
+                                </div>
+                                <label class="block font-label text-sm font-medium text-admin-text mt-3" for="cardBorderWidthInp">Card border width</label>
+                                <select class="mt-1 block w-full rounded-lg border border-admin-border bg-admin-surface px-4 py-2.5 text-sm text-admin-text shadow-sm focus:border-admin-primary focus:ring-admin-primary" id="cardBorderWidthInp" name="styles[cardBorderWidth]" x-model="cardBorderWidth">
+                                    <option value="1px">1px</option>
+                                    <option value="2px">2px</option>
+                                    <option value="3px">3px</option>
+                                </select>
+                            </div>
+                            <div class="mb-4">
                                 <label class="block font-label text-sm font-medium text-admin-text" for="buttonColorSourceInp">Button background colour</label>
                                 <div class="">
                                 <select class="mt-1 block w-full rounded-lg border border-admin-border bg-admin-surface px-4 py-2.5 text-sm text-admin-text shadow-sm focus:border-admin-primary focus:ring-admin-primary" id="buttonColorSourceInp" name="styles[buttonColorSource]" x-model="buttonColorSource">
@@ -1153,6 +1179,7 @@
         'h5Color', 'h5FontFamily', 'h5FontWeight', 'h5FontSize',
         'paragraphColor', 'paragraphFontFamily', 'paragraphFontWeight', 'paragraphFontSize',
         'cardBorderRadius', 'buttonBorderRadius', 'imageBorderRadius', 'cardShadow',
+        'cardBorderEnabled', 'cardBorderColor', 'cardBorderWidth',
         'buttonColorSource', 'buttonColorCustom',
         'menuStylingEnabled', 'menuItemColor', 'menuBackgroundColor', 'menuItemHoverColor',
         'menuCtaColor', 'menuCtaTextColor', 'menuCtaHoverColor', 'menuCtaHoverTextColor',
@@ -2006,6 +2033,9 @@
         ctx.menuItemHoverColor = ctx.menuItemHoverColor ?? '';
         ctx.menuCtaHoverColor = ctx.menuCtaHoverColor ?? '';
         ctx.menuCtaHoverTextColor = ctx.menuCtaHoverTextColor ?? '';
+        ctx.cardBorderEnabled = ctx.cardBorderEnabled === 'yes' ? 'yes' : 'no';
+        ctx.cardBorderColor = ctx.cardBorderColor ?? '';
+        ctx.cardBorderWidth = ctx.cardBorderWidth === '1px' || ctx.cardBorderWidth === '3px' ? ctx.cardBorderWidth : '2px';
 
         ctx.applyLoadedThemeState = function(options) {
             normalizeFontFamilies(ctx);
@@ -2057,12 +2087,17 @@
         };
 
         ctx.previewCardStyle = function() {
-            return {
+            const style = {
                 borderRadius: borderRadiusValue(ctx.cardBorderRadius),
                 boxShadow: cardShadowValue(ctx.cardShadow),
                 backgroundColor: ctx.backgroundColor || '#ffffff',
                 border: '1px solid rgba(0, 0, 0, 0.08)'
             };
+            if (ctx.cardBorderEnabled === 'yes' && ctx.cardBorderColor) {
+                const width = ctx.cardBorderWidth === '1px' || ctx.cardBorderWidth === '3px' ? ctx.cardBorderWidth : '2px';
+                style.border = `${width} solid ${ctx.cardBorderColor}`;
+            }
+            return style;
         };
 
         ctx.previewImageStyle = function() {
@@ -2273,6 +2308,9 @@
             if (preset.cardShadow) {
                 ctx.cardShadow = preset.cardShadow;
             }
+            ctx.cardBorderEnabled = preset.cardBorderEnabled === 'yes' ? 'yes' : 'no';
+            ctx.cardBorderColor = preset.cardBorderColor || '';
+            ctx.cardBorderWidth = preset.cardBorderWidth === '1px' || preset.cardBorderWidth === '3px' ? preset.cardBorderWidth : '2px';
             if (preset.menuStylingEnabled) {
                 ctx.menuStylingEnabled = preset.menuStylingEnabled === 'yes' ? 'yes' : 'no';
             }
