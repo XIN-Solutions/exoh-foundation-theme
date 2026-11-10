@@ -1,5 +1,5 @@
 {{#*inline "imageColumn"}}
-    <div class="col-12 col-md-6 {{orderClass}}">
+    <div class="col-12 col-md-6 {{orderClass}}" data-item-aos="{{#if (eq ../config.imageColumnPosition 'left')}}pair-start{{else}}pair-end{{/if}}">
         {{#if config.youtubeUrl}}
             <a href="{{config.youtubeUrl}}"
                class="video-wrap glightbox d-block position-relative"
@@ -57,13 +57,14 @@
                 {{/if}}
             {{/unless}}
 
-            <div class="col-12 {{#if (eq config.imageColumnPosition 'hidden')}}col-lg-8 text-center{{else}}col-md-6{{/if}} pb-5 {{#if (eq config.imageColumnPosition 'left')}}order-2 order-sm-2{{else}}order-2 order-sm-2{{/if}}">
+            <div class="col-12 {{#if (eq config.imageColumnPosition 'hidden')}}col-lg-8 text-center{{else}}col-md-6{{/if}} pb-5 {{#if (eq config.imageColumnPosition 'left')}}order-2 order-sm-2{{else}}order-2 order-sm-2{{/if}}"{{#unless (eq config.imageColumnPosition 'hidden')}} data-item-aos="{{#if (eq config.imageColumnPosition 'left')}}pair-end{{else}}pair-start{{/if}}"{{/unless}}>
 
                 {{#unless config.hideTitle}}
                     <h1
                         edit="title, titleId @id, titleClass @class"
                         {{#if titleId}} id="{{titleId}}"{{/if}}
                         class="{{?? titleClass 'fw-bold mb-3 mt-5 display-3 h1-all'}}"
+                        {{#if (eq config.imageColumnPosition 'hidden')}}data-item-aos="sequence"{{/if}}
                     >
                         {{{?? title 'Lorem ipsum dolor sit amet.'}}}
                     </h1>
@@ -74,6 +75,7 @@
                         edit="description, descriptionId @id, descriptionClass @class"
                         class="{{?? descriptionClass 'lead h3-all'}}"
                         {{#if descriptionId}} id="{{descriptionId}}"{{/if}}
+                        {{#if (eq config.imageColumnPosition 'hidden')}}data-item-aos="sequence"{{/if}}
                     >
                         {{#if description}}
                             {{{description}}}
@@ -84,7 +86,7 @@
                 {{/unless}}
 
                 {{#unless config.hideButton}}
-                    <div class="d-flex mt-3 mb-1 {{#if (eq config.imageColumnPosition 'hidden')}}justify-content-center{{/if}}">
+                    <div class="d-flex mt-3 mb-1 {{#if (eq config.imageColumnPosition 'hidden')}}justify-content-center{{/if}}"{{#if (eq config.imageColumnPosition 'hidden')}} data-item-aos="sequence"{{/if}}>
                         <a edit="
                                 buttonUrl @href,
                                 buttonId @id,

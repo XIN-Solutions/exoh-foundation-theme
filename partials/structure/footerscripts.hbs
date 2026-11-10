@@ -28,7 +28,27 @@
 
 
 <script>
-        
+
+    (function () {
+        var rootStyles = getComputedStyle(document.documentElement);
+        var duration = parseInt(rootStyles.getPropertyValue('--theme-aos-duration'), 10);
+        var stagger = parseInt(rootStyles.getPropertyValue('--theme-aos-stagger'), 10);
+        if (!isFinite(duration)) {
+            duration = 1000;
+        }
+        if (!isFinite(stagger)) {
+            stagger = 100;
+        }
+        document.querySelectorAll('[data-aos-order]').forEach(function (el) {
+            var order = parseInt(el.getAttribute('data-aos-order'), 10);
+            if (!isFinite(order)) {
+                order = 0;
+            }
+            el.setAttribute('data-aos-duration', String(duration));
+            el.setAttribute('data-aos-delay', String(order * stagger));
+        });
+    })();
+
     AOS.init({
         once: true
     });

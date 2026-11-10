@@ -16,7 +16,7 @@
     <div class="container">
         {{#unless config.hideTitle}}
             <div class="row justify-content-center mb-4">
-                <div class="col-lg-8 {{?: config.centerTitle 'text-center' 'text-start'}}">
+                <div class="col-lg-8 {{?: config.centerTitle 'text-center' 'text-start'}}" data-item-aos="sequence">
                     <h2 class="mb-3 h2-all" edit="title innerHTML">
                         {{{?? title "Lorem ipsum dolor sit amet"}}}
                     </h2>
@@ -34,7 +34,7 @@
                 {{#if resolvedItems.length}}
                     <div class="faq-accordion__list w-100" id="faq-accordion-{{accordionId}}">
                         {{#each resolvedItems}}
-                            <div class="faq-accordion__item backgroundColor-bg w-100 border mb-2" style="border-radius: var(--theme-cardBorderRadius);">
+                            <div class="faq-accordion__item backgroundColor-bg w-100 border mb-2" data-item-aos="sequence" style="border-radius: var(--theme-cardBorderRadius);">
                                 <h3 class="faq-accordion__header mb-0" id="faq-heading-{{../accordionId}}-{{@index}}">
                                     <button
                                         class="faq-accordion__button h3Color-text w-100 d-flex align-items-center justify-content-between border-0 bg-transparent p-3 text-start {{?: (and ../config.expandFirst (eq @index 0)) '' 'collapsed'}}"

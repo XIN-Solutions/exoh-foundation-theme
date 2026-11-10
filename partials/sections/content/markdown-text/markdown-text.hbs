@@ -21,7 +21,7 @@
         <div class="row">
             <div class="col-md-{{?? config.columnSize '12'}} col-sm-12 mx-auto">
                 {{#if config.markdown}}
-                    <div class="markdown-text__body {{selectedTextAlignment}}" style="column-count: {{?? config.textColumns '1'}};">
+                    <div class="markdown-text__body {{selectedTextAlignment}}" data-item-aos="sequence" style="column-count: {{?? config.textColumns '1'}};">
                         {{{markdown-to-html config.markdown}}}
                     </div>
                 {{else}}

@@ -20,14 +20,14 @@
     <div class="container">
         {{#unless config.hideTitle}}
             <div class="row text-center">
-                <div class="col-12">
+                <div class="col-12" data-item-aos="lead">
                     <h2 edit="title">{{{?? title 'Lorem ipsum dolor sit amet.'}}}</h2>
                 </div>
             </div>
         {{/unless}}
 
         <div class="row g-4 {{?: config.centerTileText 'text-center' 'text-start'}} justify-content-center">
-            <div class="col-12 {{#if isThreeColumns}}col-md-6 col-lg-4{{else}}col-sm-6 col-md-6 col-lg-3{{/if}}">
+            <div class="col-12 {{#if isThreeColumns}}col-md-6 col-lg-4{{else}}col-sm-6 col-md-6 col-lg-3{{/if}}" data-item-aos="grid">
                 <div>
                     {{#unless isImageBelow}}
                         <img
@@ -71,7 +71,7 @@
                 </div>
             </div>
 
-            <div class="col-12 {{#if isThreeColumns}}col-md-6 col-lg-4{{else}}col-sm-6 col-md-6 col-lg-3{{/if}}">
+            <div class="col-12 {{#if isThreeColumns}}col-md-6 col-lg-4{{else}}col-sm-6 col-md-6 col-lg-3{{/if}}" data-item-aos="grid">
                 <div>
                     {{#unless isImageBelow}}
                         <img
@@ -115,7 +115,7 @@
                 </div>
             </div>
 
-            <div class="col-12 {{#if isThreeColumns}}col-md-6 col-lg-4{{else}}col-sm-6 col-md-6 col-lg-3{{/if}}">
+            <div class="col-12 {{#if isThreeColumns}}col-md-6 col-lg-4{{else}}col-sm-6 col-md-6 col-lg-3{{/if}}" data-item-aos="grid">
                 <div>
                     {{#unless isImageBelow}}
                         <img
@@ -160,7 +160,7 @@
             </div>
 
             {{#if isFourColumns}}
-                <div class="col-12 col-sm-6 col-md-6 col-lg-3">
+                <div class="col-12 col-sm-6 col-md-6 col-lg-3" data-item-aos="grid">
                     <div>
                         {{#unless isImageBelow}}
                             <img

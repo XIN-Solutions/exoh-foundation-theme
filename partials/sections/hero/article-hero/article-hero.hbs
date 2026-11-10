@@ -15,7 +15,7 @@
     <div class="container">
         <div class="article-hero__content">
             {{#unless config.hideTag}}
-                <div>
+                <div data-item-aos="sequence">
                     <span class="article-hero__tag" edit="tag innerHTML">
                         {{{?? tag "Lorem ipsum"}}}
                     </span>
@@ -49,7 +49,7 @@
                 {{/unless}}
             {{/if}}
 
-            <h1 class="article-hero__title display-3 fw-bold mb-4 h1-all">
+            <h1 class="article-hero__title display-3 fw-bold mb-4 h1-all" data-item-aos="sequence">
                 <span edit="title innerHTML">{{{?? title "Lorem ipsum dolor sit amet"}}}</span>
                 {{#unless config.hideTitleAccent}}
                     <br>

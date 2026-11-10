@@ -45,6 +45,9 @@
     --theme-paragraphFontSize: {{{?? styles.paragraphFontSize '16px'}}};
     --theme-paragraphFontWeight: {{{?? styles.paragraphFontWeight '400'}}};
 
+    --theme-aos-duration: {{#if (eq styles.animationSpeed 'slow')}}1400{{else if (eq styles.animationSpeed 'fast')}}600{{else}}1000{{/if}};
+    --theme-aos-stagger: {{#if (eq styles.animationSpeed 'slow')}}180{{else if (eq styles.animationSpeed 'fast')}}60{{else}}100{{/if}};
+
     --theme-cardBorderRadius: {{#if (eq styles.cardBorderRadius 'none')}}0{{else if (eq styles.cardBorderRadius 'sm')}}0.25rem{{else if (eq styles.cardBorderRadius 'lg')}}0.5rem{{else if (eq styles.cardBorderRadius 'xl')}}1rem{{else if (eq styles.cardBorderRadius 'pill')}}50rem{{else}}0.375rem{{/if}};
     --theme-buttonBorderRadius: {{#if (eq styles.buttonBorderRadius 'none')}}0{{else if (eq styles.buttonBorderRadius 'sm')}}0.25rem{{else if (eq styles.buttonBorderRadius 'lg')}}0.5rem{{else if (eq styles.buttonBorderRadius 'xl')}}1rem{{else if (eq styles.buttonBorderRadius 'pill')}}50rem{{else}}0.375rem{{/if}};
     --theme-imageBorderRadius: {{#if (eq styles.imageBorderRadius 'none')}}0{{else if (eq styles.imageBorderRadius 'sm')}}0.25rem{{else if (eq styles.imageBorderRadius 'lg')}}0.5rem{{else if (eq styles.imageBorderRadius 'xl')}}1rem{{else if (eq styles.imageBorderRadius 'pill')}}50rem{{else}}0.375rem{{/if}};
