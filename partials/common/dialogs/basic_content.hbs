@@ -1,5 +1,11 @@
 <div class="tab-pane {{?: active 'show active' ''}}" id="dialog-basic" role="tabpanel">
     <div class="mb-3">
+        <label class="form-label">Section ID</label>
+        <input type="text" class="form-control" x-model="config.sectionId">
+        <p class="form-text text-muted mb-0 small">Optional HTML id for this section; leave blank for none.</p>
+    </div>
+
+    <div class="mb-3">
         <label class="form-label">Section spacing</label>
         <select class="form-select" x-model="config.spacing">
             <option value="no_spacing">No spacing</option>
@@ -26,7 +32,7 @@
         <p class="form-text text-muted mb-0 small">Removes padding on that edge only; the spacing preset still applies on the other side.</p>
     </div>
 
-    <div class="mb-3" x-init="config.aos ??= ''; config.aosDuration ??= 1000; config.aosDelay ??= 0; playSectionAos = () => { const node = element; if (!node) { return; } node.classList.remove('aos-init', 'aos-animate'); const aos = String(config.aos || '').trim(); if (!aos) { node.removeAttribute('data-aos'); node.removeAttribute('data-aos-duration'); node.removeAttribute('data-aos-delay'); return; } const duration = Number(config.aosDuration); const delayMs = Number(config.aosDelay); const durationValue = Number.isFinite(duration) ? duration : 1000; const delayValue = Number.isFinite(delayMs) ? delayMs : 0; node.setAttribute('data-aos', aos); node.setAttribute('data-aos-duration', String(durationValue)); node.setAttribute('data-aos-delay', String(delayValue)); window.setTimeout(() => { node.classList.add('aos-init', 'aos-animate'); }, durationValue); }">
+    <div class="mb-3" x-init="config.sectionId ??= ''; config.aos ??= ''; config.aosDuration ??= 1000; config.aosDelay ??= 0; playSectionAos = () => { const node = element; if (!node) { return; } node.classList.remove('aos-init', 'aos-animate'); const aos = String(config.aos || '').trim(); if (!aos) { node.removeAttribute('data-aos'); node.removeAttribute('data-aos-duration'); node.removeAttribute('data-aos-delay'); return; } const duration = Number(config.aosDuration); const delayMs = Number(config.aosDelay); const durationValue = Number.isFinite(duration) ? duration : 1000; const delayValue = Number.isFinite(delayMs) ? delayMs : 0; node.setAttribute('data-aos', aos); node.setAttribute('data-aos-duration', String(durationValue)); node.setAttribute('data-aos-delay', String(delayValue)); window.setTimeout(() => { node.classList.add('aos-init', 'aos-animate'); }, durationValue); }">
         <label class="form-label">Animation type</label>
         <select class="form-select" x-model="config.aos">
             <option value="">[none]</option>
