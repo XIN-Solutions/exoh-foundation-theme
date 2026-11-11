@@ -3,6 +3,7 @@
 {{let . siteSettings=content.forms.site}}
 {{let . navigation=content.expand.navigation}}
 {{let . footer=content.forms.footer}}
+{{let . topBar=content.forms.top_bar}}
 
 <nav class="navigation-1 clearfix" data-exoh-scope="site">
 
@@ -18,7 +19,7 @@
     {{/if}}
   {{/if}}
 
-  {{#if navigation.enableTopBar}}
+  {{#if (eq topBar.enabled 'yes')}}
     <div id="top" class="top-nav clearfix">
       <div class="container">
         <div class="d-flex justify-content-between flex-md-row d-flex flex-column flex-md-row">

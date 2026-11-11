@@ -74,6 +74,19 @@
                 "menuFontWeight": "",
                 "animationSpeed": "normal"
             }
+        },
+        {
+            "name": "top_bar",
+            "title": "Top Bar",
+            "pageTypes": [
+                "site"
+            ],
+            "template": "pages/aspects/top_bar.html",
+            "mcpDoc": "pages/aspects/top_bar.mcp.md",
+            "showAfter": "navigation",
+            "defaults": {
+                "enabled": "no"
+            }
         }
     ],
     "editor": {
@@ -90,6 +103,7 @@
         ],
         "pages": [
             "aspects/styles.mcp.md",
+            "aspects/top_bar.mcp.md",
             "content_page.hbs",
             "editing/blocks.hbs",
             "editing/empty.hbs",
