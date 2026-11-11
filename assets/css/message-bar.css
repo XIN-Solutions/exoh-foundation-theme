@@ -1,6 +1,6 @@
 #message-bar {
     width: 100%;
-    font-size: 0.875rem;
+    font-size: 0.8125rem;
     line-height: 1.4;
 }
 
@@ -40,43 +40,63 @@
     text-decoration: underline;
 }
 
+.message-bar__fade .message-bar__messages {
+    display: grid;
+    gap: 0;
+    justify-items: center;
+    align-items: center;
+}
+
 .message-bar__fade .message-bar__message {
-    display: none;
+    grid-area: 1 / 1;
+    opacity: 0;
+    transition: opacity var(--message-bar-motion, 400ms) ease;
+    pointer-events: none;
 }
 
 .message-bar__fade .message-bar__message.is-active {
-    display: inline-flex;
+    opacity: 1;
+    pointer-events: auto;
 }
 
-.message-bar__scroll .message-bar__messages {
+.message-bar__scroll .message-bar__inner {
     flex-wrap: nowrap;
+}
+
+.message-bar__scroll .message-bar__viewport {
+    position: relative;
     overflow: hidden;
-    justify-content: flex-start;
+    flex: 1 1 auto;
+    min-width: 0;
+    height: 1.4em;
 }
 
-.message-bar__scroll-track {
+.message-bar__scroll .message-bar__message {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
     display: flex;
-    gap: 2rem;
-    white-space: nowrap;
-    animation: message-bar-marquee 24s linear infinite;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    box-sizing: border-box;
+    transform: translateY(100%);
+    transition: transform var(--message-bar-motion, 400ms) ease;
 }
 
-.message-bar__scroll-track:hover {
-    animation-play-state: paused;
+.message-bar__scroll .message-bar__message.is-active {
+    transform: translateY(0);
 }
 
-@keyframes message-bar-marquee {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-50%);
-  }
+.message-bar__scroll .message-bar__message.is-above {
+    transform: translateY(-100%);
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .message-bar__scroll-track {
-        animation: none;
+    .message-bar__fade .message-bar__message,
+    .message-bar__scroll .message-bar__message {
+        transition: none;
     }
 }
 

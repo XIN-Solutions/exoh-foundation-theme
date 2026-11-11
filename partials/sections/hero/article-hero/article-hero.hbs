@@ -24,7 +24,7 @@
 
             {{#if (has-items breadcrumbAncestors)}}
                 {{#unless config.hideBreadcrumb}}
-                    <nav aria-label="Breadcrumb" class="article-hero__breadcrumb">
+                    <nav aria-label="Breadcrumb" class="article-hero__breadcrumb" data-item-aos="sequence">
                         <ol class="breadcrumb flex-wrap align-items-center mb-0">
                             {{#each breadcrumbAncestors}}
                                 <li class="breadcrumb-item">

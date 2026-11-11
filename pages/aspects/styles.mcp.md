@@ -73,9 +73,9 @@ Defaults: Open Sans stack; h1 `#212529` / 700 / 48px; h2 `#495057` / 600 / 36px;
 
 | Field | Type | Default | Allowed values |
 |-------|------|---------|----------------|
-| `animationSpeed` | string | `normal` | `slow` (1400ms duration, 180ms stagger), `normal` (1000ms, 100ms), `fast` (600ms, 60ms) |
+| `animationSpeed` | string | `normal` | `off` (no motion), `slow` (1400ms duration, 180ms stagger), `normal` (1000ms, 100ms), `fast` (600ms, 60ms) |
 
-Drives scroll-animation **item** timing: elements stamped with `data-aos-order` get duration and stagger delay from this setting. **Section** animate-on-scroll duration and delay stay on each section’s General tab (`config.aos`, etc.), not on this field.
+`slow`, `normal`, and `fast` set scroll-animation **item** timing: elements stamped with `data-aos-order` get that duration and stagger. **Section** animate-on-scroll duration and delay stay on each section’s General tab (`config.aos`, etc.). `off` disables section and item motion, and the message bar stays static. Content stays visible.
 
 ### Components
 

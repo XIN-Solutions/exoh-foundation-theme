@@ -1,5 +1,6 @@
 (function () {
-    const FADE_MS = 4000;
+    const DWELL_MS = 4000;
+    const MOTION_MS = 400;
     const HEX_COLOR = /^#[0-9a-fA-F]{6}$/;
 
     function parseBound(value) {
@@ -32,6 +33,13 @@
             return [];
         }
         return messages.filter((message) => isMessageActive(message, now));
+    }
+
+    function nextMessageFrame(index, count) {
+        if (count < 2) {
+            return { index: index, animate: false };
+        }
+        return { index: (index + 1) % count, animate: true };
     }
 
     function applyColors(mount, config) {
@@ -104,7 +112,16 @@
 
         const row = document.createElement('div');
         row.className = 'message-bar__messages';
-        const nodes = messages.map((message) => messageNode(message));
+        const nodes = messages.map((message, i) => {
+            const node = messageNode(message);
+            if (i === 0) {
+                node.classList.add('is-active');
+            }
+            else {
+                node.setAttribute('aria-hidden', 'true');
+            }
+            return node;
+        });
         for (const node of nodes) {
             row.appendChild(node);
         }
@@ -115,17 +132,41 @@
         let index = 0;
         function showIndex(i) {
             for (let n = 0; n < nodes.length; n++) {
-                nodes[n].classList.toggle('is-active', n === i);
+                const active = n === i;
+                nodes[n].classList.toggle('is-active', active);
+                nodes[n].setAttribute('aria-hidden', active ? 'false' : 'true');
             }
         }
         showIndex(0);
 
-        if (nodes.length > 1) {
+        if (nextMessageFrame(index, nodes.length).animate) {
             setInterval(function () {
-                index = (index + 1) % nodes.length;
+                const frame = nextMessageFrame(index, nodes.length);
+                index = frame.index;
                 showIndex(index);
-            }, FADE_MS);
+            }, DWELL_MS);
         }
+    }
+
+    function lockMessageViewport(viewport, nodes) {
+        let height = 0;
+        for (const node of nodes) {
+            height = Math.max(height, Math.ceil(node.offsetHeight));
+        }
+        if (height < 1) {
+            return;
+        }
+        viewport.style.height = height + 'px';
+        for (const node of nodes) {
+            node.style.height = height + 'px';
+        }
+    }
+
+    function parkBelow(node) {
+        node.style.transition = 'none';
+        node.classList.remove('is-above');
+        void node.offsetWidth;
+        node.style.transition = '';
     }
 
     function renderScroll(mount, config, messages) {
@@ -133,24 +174,58 @@
         const inner = document.createElement('div');
         inner.className = 'message-bar__inner';
 
-        const row = document.createElement('div');
-        row.className = 'message-bar__messages';
+        const viewport = document.createElement('div');
+        viewport.className = 'message-bar__viewport';
 
-        const track = document.createElement('div');
-        track.className = 'message-bar__scroll-track';
-
-        const appendAll = function () {
-            for (const message of messages) {
-                track.appendChild(messageNode(message));
+        const nodes = messages.map((message, i) => {
+            const node = messageNode(message);
+            if (i === 0) {
+                node.classList.add('is-active');
             }
-        };
-        appendAll();
-        appendAll();
+            else {
+                node.setAttribute('aria-hidden', 'true');
+            }
+            return node;
+        });
+        for (const node of nodes) {
+            viewport.appendChild(node);
+        }
 
-        row.appendChild(track);
-        inner.appendChild(row);
+        inner.appendChild(viewport);
         appendButton(inner, config.button);
         mount.appendChild(inner);
+
+        queueMicrotask(() => {
+            lockMessageViewport(viewport, nodes);
+        });
+
+        let index = 0;
+        if (!nextMessageFrame(index, nodes.length).animate) {
+            return;
+        }
+
+        function step() {
+            const outgoing = nodes[index];
+            const frame = nextMessageFrame(index, nodes.length);
+            const incoming = nodes[frame.index];
+
+            incoming.classList.remove('is-above');
+            incoming.classList.add('is-active');
+            incoming.setAttribute('aria-hidden', 'false');
+
+            outgoing.classList.remove('is-active');
+            outgoing.classList.add('is-above');
+            outgoing.setAttribute('aria-hidden', 'true');
+
+            index = frame.index;
+
+            window.setTimeout(() => {
+                parkBelow(outgoing);
+                window.setTimeout(step, DWELL_MS);
+            }, MOTION_MS);
+        }
+
+        window.setTimeout(step, DWELL_MS);
     }
 
     function initMessageBar() {
@@ -178,12 +253,17 @@
         }
 
         applyColors(mount, config);
+        mount.style.setProperty('--message-bar-motion', MOTION_MS + 'ms');
 
         const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         const animation = config.animation || 'static';
+        const siteAnimationsDisabled = getComputedStyle(document.documentElement).getPropertyValue('--theme-aos-disabled').trim() === '1';
 
         if (reduced) {
             renderReduced(mount, config, current);
+        }
+        else if (siteAnimationsDisabled) {
+            renderStatic(mount, config, current);
         }
         else if (animation === 'fade') {
             renderFade(mount, config, current);
@@ -202,7 +282,9 @@
         module.exports = {
             activeMessages,
             parseBound,
-            isMessageActive
+            isMessageActive,
+            nextMessageFrame,
+            DWELL_MS
         };
     }
     else {

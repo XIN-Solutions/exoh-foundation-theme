@@ -1,12 +1,12 @@
 {{let . right=(not left)}}
 
-<div class="row wrap mb-5">
+<div class="row wrap mb-5" data-item-aos="sequence" data-belt-tile>
 
     {{#if left}}
         {{> image }}
     {{/if}}
 
-    <div class="col-md-7 align-self-center" data-item-aos="{{#if left}}pair-end{{else}}pair-start{{/if}}">
+    <div class="col-md-7 align-self-center">
         <div class="max-box">
 
             {{#if tile.title}}
@@ -42,7 +42,7 @@
 </div>
 
 {{#*inline "image"}}
-    <div class="col-md-5 {{#if right}} order-first order-md-0{{/if}}" data-item-aos="{{#if left}}pair-start{{else}}pair-end{{/if}}">
+    <div class="col-md-5 {{#if right}} order-first order-md-0{{/if}}">
         {{#if tile.url}}
             <a href="{{tile.url}}">
                 <img
