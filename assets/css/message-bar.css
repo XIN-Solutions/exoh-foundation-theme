@@ -2,6 +2,8 @@
     width: 100%;
     font-size: 0.8125rem;
     line-height: 1.4;
+    background-color: var(--theme-messageBarBackgroundColor, #ffffff);
+    color: var(--theme-messageBarTextColor, #000000);
 }
 
 #message-bar[hidden] {
@@ -102,4 +104,14 @@
 
 .message-bar__button {
     flex-shrink: 0;
+    color: inherit;
+    border-color: currentColor;
+    background-color: transparent;
+}
+
+#message-bar .message-bar__button:hover,
+#message-bar .message-bar__button:focus {
+    color: var(--theme-messageBarBackgroundColor, #ffffff);
+    background-color: var(--theme-messageBarTextColor, #000000);
+    border-color: var(--theme-messageBarTextColor, #000000);
 }

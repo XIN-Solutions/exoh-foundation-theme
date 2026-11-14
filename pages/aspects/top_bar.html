@@ -58,12 +58,6 @@
         if (messageBar.scope !== 'homepage') {
             messageBar.scope = 'all';
         }
-        if (!messageBar.backgroundColor) {
-            messageBar.backgroundColor = '#ffffff';
-        }
-        if (!messageBar.textColor) {
-            messageBar.textColor = '#000000';
-        }
         messageBar.messages.forEach(function (row, index) {
             if (!row._key) {
                 row._key = 'msg-' + index;
@@ -259,28 +253,6 @@
                             <option value="all">All pages</option>
                             <option value="homepage">Homepage only</option>
                         </select>
-                    </div>
-                    <div>
-                        <label class="inline-flex cursor-pointer flex-col items-center gap-1.5" for="topBarMessageBg">
-                            <span class="text-center text-xs font-medium text-admin-muted">Background colour</span>
-                            <input type="color"
-                                   class="h-12 w-12 cursor-pointer rounded-lg border-2 border-admin-border bg-admin-surface p-0.5"
-                                   id="topBarMessageBg"
-                                   name="top_bar[messageBar][backgroundColor]"
-                                   x-model="messageBar.backgroundColor">
-                            <span class="font-mono text-xs uppercase text-admin-muted" x-text="messageBar.backgroundColor"></span>
-                        </label>
-                    </div>
-                    <div>
-                        <label class="inline-flex cursor-pointer flex-col items-center gap-1.5" for="topBarMessageText">
-                            <span class="text-center text-xs font-medium text-admin-muted">Text colour</span>
-                            <input type="color"
-                                   class="h-12 w-12 cursor-pointer rounded-lg border-2 border-admin-border bg-admin-surface p-0.5"
-                                   id="topBarMessageText"
-                                   name="top_bar[messageBar][textColor]"
-                                   x-model="messageBar.textColor">
-                            <span class="font-mono text-xs uppercase text-admin-muted" x-text="messageBar.textColor"></span>
-                        </label>
                     </div>
                 </div>
 

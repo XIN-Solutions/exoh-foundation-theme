@@ -4,7 +4,7 @@
 
 ## Purpose
 
-Site header strip above the main navigation: an optional contact row (phone and email) and the message bar (rotating banner, schedule, colours, and button).
+Site header strip above the main navigation: an optional contact row (phone and email) and the message bar (rotating banner, schedule, and button). Message bar background and text colours are theme styles (`messageBarBackgroundColor`, `messageBarTextColor`) on the **styles** aspect, in the Navigation accordion.
 
 Load field detail with **`aspect_documentation`** (`aspect: "top_bar"`). Read current values with **`get_aspect`** on the **site root page**. Set values with **`update_aspect`** on the site root page.
 
@@ -29,8 +29,6 @@ Only the **site root page** (`contentType: site`) carries this aspect.
 |-------|------|--------|
 | `enabled` | boolean | Show the message bar |
 | `animation` | string | `static`, `fade`, or `scroll` |
-| `backgroundColor` | string | `#rrggbb`. Empty uses the theme default in the editor |
-| `textColor` | string | `#rrggbb` |
 | `scope` | string | `all` or `homepage` (`contentType.code === 'site'` at render) |
 | `messages` | array | Ordered banner messages |
 | `button` | object | Optional bar button (`enabled`, `label`, `isExternal`, `pageId`, `externalUrl`) |
@@ -58,8 +56,6 @@ Pass as the unwrapped aspect payload to **`update_aspect`** with `aspect: "top_b
   "messageBar": {
     "enabled": true,
     "animation": "fade",
-    "backgroundColor": "#112233",
-    "textColor": "#ffffff",
     "scope": "all",
     "messages": [
       {

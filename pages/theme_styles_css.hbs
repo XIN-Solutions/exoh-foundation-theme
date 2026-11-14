@@ -45,6 +45,8 @@
     --theme-paragraphFontSize: {{{?? styles.paragraphFontSize '16px'}}};
     --theme-paragraphFontWeight: {{{?? styles.paragraphFontWeight '400'}}};
 
+    --theme-messageBarBackgroundColor: {{{?? styles.messageBarBackgroundColor '#ffffff'}}};
+    --theme-messageBarTextColor: {{{?? styles.messageBarTextColor '#000000'}}};
     --theme-aos-disabled: {{#if (eq styles.animationSpeed 'off')}}1{{else}}0{{/if}};
     --theme-aos-duration: {{#if (eq styles.animationSpeed 'off')}}0{{else if (eq styles.animationSpeed 'slow')}}1400{{else if (eq styles.animationSpeed 'fast')}}600{{else}}1000{{/if}};
     --theme-aos-stagger: {{#if (eq styles.animationSpeed 'off')}}0{{else if (eq styles.animationSpeed 'slow')}}180{{else if (eq styles.animationSpeed 'fast')}}60{{else}}100{{/if}};
@@ -112,6 +114,11 @@
     --theme-menuFontWeight: {{{styles.menuFontWeight}}};
     {{/if}}
     {{/unless}}
+}
+
+#message-bar {
+    background-color: var(--theme-messageBarBackgroundColor, #ffffff);
+    color: var(--theme-messageBarTextColor, #000000);
 }
 
 {{#if (eq styles.animationSpeed 'off')}}

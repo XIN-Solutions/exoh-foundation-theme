@@ -72,6 +72,8 @@
                 "menuFontFamily": "",
                 "menuFontSize": "",
                 "menuFontWeight": "",
+                "messageBarBackgroundColor": "#ffffff",
+                "messageBarTextColor": "#000000",
                 "animationSpeed": "normal"
             }
         },
@@ -89,8 +91,6 @@
                 "messageBar": {
                     "enabled": false,
                     "animation": "static",
-                    "backgroundColor": "#ffffff",
-                    "textColor": "#000000",
                     "scope": "all",
                     "messages": [],
                     "button": {

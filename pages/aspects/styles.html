@@ -339,6 +339,21 @@
                                 </label>
                                 <input type="hidden" name="styles[menuStylingEnabled]" x-model="menuStylingEnabled">
                             </div>
+                            <div class="mb-4">
+                                <div class="mb-2 text-xs font-semibold text-admin-muted">Message bar</div>
+                                <div class="theme-editor__swatches">
+                                    <label class="theme-editor__swatch">
+                                        <span class="theme-editor__swatch-label">Background</span>
+                                        <input type="color" class="theme-editor__swatch-input" id="messageBarBackgroundColorInp" name="styles[messageBarBackgroundColor]" x-model="messageBarBackgroundColor">
+                                        <span class="theme-editor__swatch-hex" x-text="messageBarBackgroundColor || '—'"></span>
+                                    </label>
+                                    <label class="theme-editor__swatch">
+                                        <span class="theme-editor__swatch-label">Text</span>
+                                        <input type="color" class="theme-editor__swatch-input" id="messageBarTextColorInp" name="styles[messageBarTextColor]" x-model="messageBarTextColor">
+                                        <span class="theme-editor__swatch-hex" x-text="messageBarTextColor || '—'"></span>
+                                    </label>
+                                </div>
+                            </div>
                             <div x-show="menuStylingEnabled === 'yes'" x-cloak>
                                 <div class="mt-1 text-xs text-admin-muted mb-3">Override navigation menu colours and typography. Section buttons are not affected.</div>
                                 <div class="space-y-5">
@@ -1221,7 +1236,8 @@
         'buttonColorSource', 'buttonColorCustom',
         'menuStylingEnabled', 'menuItemColor', 'menuBackgroundColor', 'menuItemHoverColor',
         'menuCtaColor', 'menuCtaTextColor', 'menuCtaHoverColor', 'menuCtaHoverTextColor',
-        'menuFontFamily', 'menuFontSize', 'menuFontWeight'
+        'menuFontFamily', 'menuFontSize', 'menuFontWeight',
+        'messageBarBackgroundColor', 'messageBarTextColor'
     ];
 
     const BORDER_RADIUS_VALUES = {
@@ -2076,6 +2092,12 @@
         ctx.cardBorderWidth = ctx.cardBorderWidth === '1px' || ctx.cardBorderWidth === '3px' ? ctx.cardBorderWidth : '2px';
         if (ctx.animationSpeed !== 'slow' && ctx.animationSpeed !== 'fast' && ctx.animationSpeed !== 'off') {
             ctx.animationSpeed = 'normal';
+        }
+        if (!ctx.messageBarBackgroundColor) {
+            ctx.messageBarBackgroundColor = '#ffffff';
+        }
+        if (!ctx.messageBarTextColor) {
+            ctx.messageBarTextColor = '#000000';
         }
 
         ctx.applyLoadedThemeState = function(options) {

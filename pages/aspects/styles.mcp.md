@@ -106,6 +106,8 @@ Defaults: Open Sans stack; h1 `#212529` / 700 / 48px; h2 `#495057` / 600 / 36px;
 | `menuFontFamily` | string | `""` | Nav font stack |
 | `menuFontSize` | string | `""` | Nav font size |
 | `menuFontWeight` | string | `""` | Nav font weight |
+| `messageBarBackgroundColor` | string (hex) | `#ffffff` | Message bar background. Edited in the Navigation accordion. Not gated by `menuStylingEnabled` |
+| `messageBarTextColor` | string (hex) | `#000000` | Message bar text. Edited in the Navigation accordion. Not gated by `menuStylingEnabled` |
 
 Empty strings for menu fields mean "use theme default" (no custom header background; link hover at 85% opacity when a link colour is set; CTA hover matches resting CTA colours).
 

@@ -1,7 +1,6 @@
 (function () {
     const DWELL_MS = 4000;
     const MOTION_MS = 400;
-    const HEX_COLOR = /^#[0-9a-fA-F]{6}$/;
 
     function parseBound(value) {
         if (value == null || String(value).trim() === '') {
@@ -40,15 +39,6 @@
             return { index: index, animate: false };
         }
         return { index: (index + 1) % count, animate: true };
-    }
-
-    function applyColors(mount, config) {
-        if (HEX_COLOR.test(config.backgroundColor || '')) {
-            mount.style.backgroundColor = config.backgroundColor;
-        }
-        if (HEX_COLOR.test(config.textColor || '')) {
-            mount.style.color = config.textColor;
-        }
     }
 
     function messageNode(message) {
@@ -263,7 +253,6 @@
             return;
         }
 
-        applyColors(mount, config);
         mount.style.setProperty('--message-bar-motion', MOTION_MS + 'ms');
 
         const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
