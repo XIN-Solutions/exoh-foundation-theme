@@ -79,7 +79,7 @@ Recipes list section display names and **`type`** codes for **`append_section`**
 | `site` | `site` page type only | **`get_aspect`** / **`update_aspect`** / **`aspect_documentation`** — site name, logo, global settings |
 | `organisation` | `site` page type only | **`get_aspect`** / **`update_aspect`** / **`aspect_documentation`** — organisation profile linked to the site |
 | `navigation` | `site` page type only | **`get_aspect`** / **`update_aspect`** / **`aspect_documentation`** — primary menu structure and CTA |
-| `top_bar` | `site` page type only | **`get_aspect`** / **`update_aspect`** / **`aspect_documentation`** — contact strip above navigation (`enabled`; phone/email from `footer`) |
+| `top_bar` | `site` page type only | **`get_aspect`** / **`update_aspect`** / **`aspect_documentation`** — contact strip and message bar above navigation (phone/email from `footer`) |
 | `footer` | `site` page type only | **`get_aspect`** / **`update_aspect`** / **`aspect_documentation`** — footer links and columns |
 | `redirects` | `site` page type only | **`get_aspect`** / **`update_aspect`** / **`aspect_documentation`** — URL redirect rules |
 | `logbook` | All public pages | **`get_aspect`** / **`update_aspect`** / **`aspect_documentation`** — page change history and notes |

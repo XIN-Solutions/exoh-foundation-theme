@@ -4,27 +4,32 @@
 {{let . navigation=content.expand.navigation}}
 {{let . footer=content.forms.footer}}
 {{let . topBar=content.forms.top_bar}}
+{{let . topBarExpanded=content.expand.top_bar}}
+{{let . activeMessageBar=(?: topBar.messageBar topBar.messageBar navigation.messageBar)}}
+{{let . activeMessageBarView=(?: topBar.messageBar topBarExpanded.messageBarView navigation.messageBarView)}}
 
 <nav class="navigation-1 clearfix" data-exoh-scope="site">
 
-  {{#if navigation.messageBar.enabled}}
-    {{#if (eq navigation.messageBar.scope 'homepage')}}
+  {{#if activeMessageBar.enabled}}
+    {{#if (eq activeMessageBar.scope 'homepage')}}
       {{#if (eq contentType.code 'site')}}
-        <div id="message-bar" hidden></div>
-        <script type="application/json" id="message-bar-data">{{{jsonForScript navigation.messageBarView}}}</script>
+        <div id="message-bar" hidden>
+          <div class="container" data-message-bar-slot></div>
+        </div>
+        <script type="application/json" id="message-bar-data">{{{jsonForScript activeMessageBarView}}}</script>
       {{/if}}
     {{else}}
-      <div id="message-bar" hidden></div>
-      <script type="application/json" id="message-bar-data">{{{jsonForScript navigation.messageBarView}}}</script>
+      <div id="message-bar" hidden>
+        <div class="container" data-message-bar-slot></div>
+      </div>
+      <script type="application/json" id="message-bar-data">{{{jsonForScript activeMessageBarView}}}</script>
     {{/if}}
   {{/if}}
 
   {{#if (eq topBar.enabled 'yes')}}
     <div id="top" class="top-nav clearfix">
       <div class="container">
-        <div class="d-flex justify-content-between flex-md-row d-flex flex-column flex-md-row">
-          <div class="nav">
-            <ul class="list-inline">
+        <ul class="list-inline mb-0">
 
               {{#if footer.contactInfo.phone}}
                 <li class="list-inline-item">
@@ -43,9 +48,7 @@
                   </a>
                 </li>
               {{/if}}
-            </ul>
-          </div>
-        </div>
+        </ul>
       </div>
     </div>
   {{/if}}

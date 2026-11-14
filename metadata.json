@@ -85,7 +85,22 @@
             "mcpDoc": "pages/aspects/top_bar.mcp.md",
             "showAfter": "navigation",
             "defaults": {
-                "enabled": "no"
+                "enabled": "no",
+                "messageBar": {
+                    "enabled": false,
+                    "animation": "static",
+                    "backgroundColor": "#ffffff",
+                    "textColor": "#000000",
+                    "scope": "all",
+                    "messages": [],
+                    "button": {
+                        "enabled": false,
+                        "label": "",
+                        "isExternal": false,
+                        "pageId": "",
+                        "externalUrl": ""
+                    }
+                }
             }
         }
     ],

@@ -86,8 +86,19 @@
         inner.appendChild(btn);
     }
 
+    function messageBarHost(mount) {
+        return mount.querySelector('[data-message-bar-slot]') || mount;
+    }
+
+    function setMessageBarMode(mount, mode) {
+        mount.classList.remove('message-bar__fade', 'message-bar__scroll');
+        if (mode) {
+            mount.classList.add(mode);
+        }
+    }
+
     function renderStatic(mount, config, messages) {
-        mount.className = '';
+        setMessageBarMode(mount, '');
         const inner = document.createElement('div');
         inner.className = 'message-bar__inner';
 
@@ -98,7 +109,7 @@
         }
         inner.appendChild(row);
         appendButton(inner, config.button);
-        mount.appendChild(inner);
+        messageBarHost(mount).appendChild(inner);
     }
 
     function renderReduced(mount, config, messages) {
@@ -106,7 +117,7 @@
     }
 
     function renderFade(mount, config, messages) {
-        mount.className = 'message-bar__fade';
+        setMessageBarMode(mount, 'message-bar__fade');
         const inner = document.createElement('div');
         inner.className = 'message-bar__inner';
 
@@ -127,7 +138,7 @@
         }
         inner.appendChild(row);
         appendButton(inner, config.button);
-        mount.appendChild(inner);
+        messageBarHost(mount).appendChild(inner);
 
         let index = 0;
         function showIndex(i) {
@@ -170,7 +181,7 @@
     }
 
     function renderScroll(mount, config, messages) {
-        mount.className = 'message-bar__scroll';
+        setMessageBarMode(mount, 'message-bar__scroll');
         const inner = document.createElement('div');
         inner.className = 'message-bar__inner';
 
@@ -193,7 +204,7 @@
 
         inner.appendChild(viewport);
         appendButton(inner, config.button);
-        mount.appendChild(inner);
+        messageBarHost(mount).appendChild(inner);
 
         queueMicrotask(() => {
             lockMessageViewport(viewport, nodes);

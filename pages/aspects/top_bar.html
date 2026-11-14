@@ -1,34 +1,373 @@
-<div class="space-y-6">
+<script>
+    (function () {
+        const OFFSET_DATETIME_RE = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[+-]\d{2}:\d{2}$/;
+
+        function pad(n) {
+            return String(n).padStart(2, '0');
+        }
+
+        window.topBarOffsetToLocal = function (iso) {
+            if (!iso || !OFFSET_DATETIME_RE.test(iso)) {
+                return '';
+            }
+
+            const date = new Date(iso);
+            if (Number.isNaN(date.getTime())) {
+                return '';
+            }
+
+            return date.getFullYear() + '-' + pad(date.getMonth() + 1) + '-' + pad(date.getDate())
+                + 'T' + pad(date.getHours()) + ':' + pad(date.getMinutes());
+        };
+
+        window.topBarFormatOffset = function (localValue) {
+            if (!localValue) {
+                return '';
+            }
+
+            const date = new Date(localValue);
+            if (Number.isNaN(date.getTime())) {
+                return '';
+            }
+
+            const offsetMinutes = -date.getTimezoneOffset();
+            const sign = offsetMinutes >= 0 ? '+' : '-';
+            const abs = Math.abs(offsetMinutes);
+
+            return date.getFullYear() + '-' + pad(date.getMonth() + 1) + '-' + pad(date.getDate())
+                + 'T' + pad(date.getHours()) + ':' + pad(date.getMinutes()) + ':00'
+                + sign + pad(Math.floor(abs / 60)) + ':' + pad(abs % 60);
+        };
+    })();
+</script>
+
+<div class="mx-auto max-w-4xl space-y-6"
+     x-init="
+        if (!messageBar || typeof messageBar !== 'object') {
+            messageBar = {};
+        }
+        if (!Array.isArray(messageBar.messages)) {
+            messageBar.messages = [];
+        }
+        if (!messageBar.button || typeof messageBar.button !== 'object') {
+            messageBar.button = { enabled: false, label: '', isExternal: false, pageId: '', externalUrl: '' };
+        }
+        if (messageBar.animation !== 'fade' && messageBar.animation !== 'scroll') {
+            messageBar.animation = 'static';
+        }
+        if (messageBar.scope !== 'homepage') {
+            messageBar.scope = 'all';
+        }
+        if (!messageBar.backgroundColor) {
+            messageBar.backgroundColor = '#ffffff';
+        }
+        if (!messageBar.textColor) {
+            messageBar.textColor = '#000000';
+        }
+        messageBar.messages.forEach(function (row, index) {
+            if (!row._key) {
+                row._key = 'msg-' + index;
+            }
+        });
+     ">
     <div>
         <h2 class="font-headline text-lg font-semibold tracking-tight text-admin-text">Top Bar</h2>
         <p class="mt-1 text-sm text-admin-muted">
-            Control the contact strip shown above the main navigation on the live site.
+            Contact strip and message bar shown above the main navigation.
         </p>
     </div>
 
-    <div class="rounded-xl border border-admin-border bg-admin-surface p-5 shadow-card-sm">
-        <label class="flex items-center justify-between gap-3">
-            <span class="text-sm text-admin-text">Show top bar</span>
-            <button type="button"
-                    data-guide-switch
-                    role="switch"
-                    :aria-checked="enabled === 'yes' ? 'true' : 'false'"
-                    @click="enabled = enabled === 'yes' ? 'no' : 'yes'"
-                    :class="enabled === 'yes' ? 'bg-admin-primary' : 'bg-admin-border'"
-                    class="relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors focus:outline-none focus:ring-2 focus:ring-admin-primary focus:ring-offset-2">
-                <span data-guide-switch-knob
-                      class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition"
-                      :class="enabled === 'yes' ? 'translate-x-5' : 'translate-x-0'"></span>
-            </button>
-            <input type="checkbox"
-                   class="sr-only"
-                   id="topBarEnabledInp"
-                   :checked="enabled === 'yes'"
-                   @change="enabled = $event.target.checked ? 'yes' : 'no'">
-        </label>
-        <input type="hidden" name="top_bar[enabled]" x-model="enabled">
-        <p class="mt-3 text-xs text-admin-muted">
-            Phone and email in the strip come from Footer contact details.
+    <div>
+        <h3 class="text-sm font-semibold text-admin-text">Contact strip</h3>
+        <div class="mt-2 rounded-xl border border-admin-border bg-admin-surface p-5 shadow-card-sm">
+            <label class="flex items-center justify-between gap-3">
+                <span class="text-sm text-admin-text">Show top bar</span>
+                <button type="button"
+                        data-guide-switch
+                        role="switch"
+                        :aria-checked="enabled === 'yes' ? 'true' : 'false'"
+                        @click="enabled = enabled === 'yes' ? 'no' : 'yes'"
+                        :class="enabled === 'yes' ? 'bg-admin-primary' : 'bg-admin-border'"
+                        class="relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors focus:outline-none focus:ring-2 focus:ring-admin-primary focus:ring-offset-2">
+                    <span data-guide-switch-knob
+                          class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition"
+                          :class="enabled === 'yes' ? 'translate-x-5' : 'translate-x-0'"></span>
+                </button>
+                <input type="checkbox"
+                       class="sr-only"
+                       id="topBarEnabledInp"
+                       :checked="enabled === 'yes'"
+                       @change="enabled = $event.target.checked ? 'yes' : 'no'">
+            </label>
+            <input type="hidden" name="top_bar[enabled]" x-model="enabled">
+            <p class="mt-3 text-xs text-admin-muted">
+                Phone and email in the strip come from Footer contact details.
+            </p>
+        </div>
+    </div>
+
+    <div>
+        <h3 class="text-sm font-semibold text-admin-text">Message bar</h3>
+        <p class="mt-1 text-xs text-admin-muted">
+            Rotating banner above the navigation. Messages can be limited to a date window.
         </p>
+        <div class="mt-2 rounded-xl border border-admin-border bg-admin-surface-muted/50 p-5 shadow-card-sm">
+            <label class="flex cursor-pointer items-center justify-between gap-3">
+                <span class="text-sm text-admin-text">Show message bar</span>
+                <button type="button"
+                        role="switch"
+                        :aria-checked="messageBar.enabled ? 'true' : 'false'"
+                        @click="messageBar.enabled = !messageBar.enabled"
+                        :class="messageBar.enabled ? 'bg-admin-primary' : 'bg-admin-border'"
+                        class="relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors focus:outline-none focus:ring-2 focus:ring-admin-primary focus:ring-offset-2">
+                    <span class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition"
+                          :class="messageBar.enabled ? 'translate-x-5' : 'translate-x-0'"></span>
+                </button>
+            </label>
+            <input type="hidden" name="top_bar[messageBar][enabled]" :value="messageBar.enabled ? 'yes' : 'no'">
+
+            <div x-show="messageBar.enabled" class="mt-4 space-y-4">
+                <div class="flex flex-col gap-3">
+                    <template x-for="(message, index) in messageBar.messages" :key="message._key || index">
+                        <div data-message-bar-item data-link-picker class="rounded-xl border border-admin-border bg-admin-surface-muted/50 p-4 shadow-card-sm">
+                            <div class="flex flex-wrap items-start gap-3">
+                                <div class="min-w-0 flex-1 space-y-4">
+                                    <div>
+                                        <label class="block font-label text-sm font-medium text-admin-text">Message</label>
+                                        <input type="text"
+                                               class="mt-1 block w-full rounded-lg border border-admin-border bg-admin-surface px-4 py-2.5 text-sm text-admin-text shadow-sm focus:border-admin-primary focus:ring-admin-primary"
+                                               :name="'top_bar[messageBar][messages][' + index + '][text]'"
+                                               placeholder="Banner message"
+                                               x-model="message.text"
+                                               data-form-item="message-bar-text">
+                                    </div>
+                                    <div class="grid gap-4 sm:grid-cols-2">
+                                        <div>
+                                            <label class="block font-label text-sm font-medium text-admin-text">Show from</label>
+                                            <input type="datetime-local"
+                                                   class="mt-1 block w-full rounded-lg border border-admin-border bg-admin-surface px-4 py-2.5 text-sm text-admin-text shadow-sm focus:border-admin-primary focus:ring-admin-primary"
+                                                   :value="window.topBarOffsetToLocal(message.showFrom)"
+                                                   @change="message.showFrom = window.topBarFormatOffset($event.target.value)">
+                                            <input type="hidden"
+                                                   :name="'top_bar[messageBar][messages][' + index + '][showFrom]'"
+                                                   :value="message.showFrom || ''">
+                                        </div>
+                                        <div>
+                                            <label class="block font-label text-sm font-medium text-admin-text">Show until</label>
+                                            <input type="datetime-local"
+                                                   class="mt-1 block w-full rounded-lg border border-admin-border bg-admin-surface px-4 py-2.5 text-sm text-admin-text shadow-sm focus:border-admin-primary focus:ring-admin-primary"
+                                                   :value="window.topBarOffsetToLocal(message.showUntil)"
+                                                   @change="message.showUntil = window.topBarFormatOffset($event.target.value)">
+                                            <input type="hidden"
+                                                   :name="'top_bar[messageBar][messages][' + index + '][showUntil]'"
+                                                   :value="message.showUntil || ''">
+                                        </div>
+                                    </div>
+                                    <label class="flex shrink-0 cursor-pointer items-center gap-2">
+                                        <span class="text-sm text-admin-text">External link</span>
+                                        <button type="button"
+                                                role="switch"
+                                                :aria-checked="message.isExternal ? 'true' : 'false'"
+                                                @click="message.isExternal = !message.isExternal"
+                                                :class="message.isExternal ? 'bg-admin-primary' : 'bg-admin-border'"
+                                                class="relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors focus:outline-none focus:ring-2 focus:ring-admin-primary focus:ring-offset-2">
+                                            <span class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition"
+                                                  :class="message.isExternal ? 'translate-x-5' : 'translate-x-0'"></span>
+                                        </button>
+                                        <input type="hidden"
+                                               :name="'top_bar[messageBar][messages][' + index + '][isExternal]'"
+                                               :value="message.isExternal ? 'yes' : 'no'">
+                                    </label>
+                                    <div x-show="!message.isExternal">
+                                        <label class="block font-label text-sm font-medium text-admin-text">Links to:</label>
+                                        <div class="mt-2 flex flex-wrap items-center gap-2">
+                                            <div class="link-container-wrapper min-w-0 flex-1">
+                                                <div class="link-container rounded-lg border border-dashed border-admin-border p-3 text-sm text-admin-muted"
+                                                     :hx-get="'/pages/page_tile?pageId=' + encodeURIComponent(message.pageId || '')"
+                                                     hx-target="this"
+                                                     hx-trigger="load, updateLinkTile"
+                                                     x-init="$nextTick(() => { if (window.htmx) { htmx.process($el); } })">
+                                                    <span x-text="message.pageId ? 'Loading...' : 'No page selected'"></span>
+                                                </div>
+                                            </div>
+                                            <input type="hidden"
+                                                   data-page-id-container
+                                                   :name="'top_bar[messageBar][messages][' + index + '][pageId]'"
+                                                   x-model="message.pageId">
+                                            <button class="rounded-lg border border-admin-border bg-admin-surface px-3 py-1.5 text-sm font-medium text-admin-text hover:bg-admin-surface-muted"
+                                                    type="button"
+                                                    @click="HH.linkPickerReset($event); message.pageId = ''"
+                                                    data-action="link-picker-clear">
+                                                Clear
+                                            </button>
+                                            <button class="rounded-lg border-2 border-transparent bg-admin-primary px-3 py-1.5 text-sm font-medium text-on-primary hover:bg-admin-primary-hover"
+                                                    type="button"
+                                                    @click="HH.linkPickerBrowse($event).then(() => { const input = $event.target.closest('[data-link-picker]').querySelector('[data-page-id-container]'); message.pageId = input ? input.value : ''; })"
+                                                    data-action="link-picker-browse">
+                                                Browse
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div x-show="message.isExternal">
+                                        <input type="text"
+                                               class="block w-full rounded-lg border border-admin-border bg-admin-surface px-4 py-2.5 text-sm text-admin-text shadow-sm focus:border-admin-primary focus:ring-admin-primary"
+                                               :name="'top_bar[messageBar][messages][' + index + '][external]'"
+                                               x-model="message.externalUrl"
+                                               placeholder="https://"
+                                               data-form-item="message-bar-external">
+                                    </div>
+                                </div>
+                                <div class="flex shrink-0 items-center gap-1">
+                                    <button type="button"
+                                            class="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-admin-border bg-admin-surface text-admin-danger hover:bg-admin-danger/10"
+                                            @click="messageBar.messages.splice(index, 1)"
+                                            aria-label="Remove message">
+                                        <span class="material-symbols-outlined text-[18px]" aria-hidden="true">delete</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+
+                <button type="button"
+                        class="flex w-full items-center justify-center gap-1.5 rounded-lg border border-admin-border bg-admin-surface px-4 py-2 text-sm font-medium text-admin-text hover:bg-admin-surface-muted"
+                        @click="messageBar.messages.push({ _key: 'msg-' + Date.now(), text: '', showFrom: '', showUntil: '', isExternal: false, pageId: '', externalUrl: '' })"
+                        data-action="add-message-bar-item">
+                    <span class="material-symbols-outlined text-[18px]" aria-hidden="true">add</span>
+                    Add message
+                </button>
+
+                <div class="grid gap-4 sm:grid-cols-2">
+                    <div>
+                        <label class="block font-label text-sm font-medium text-admin-text" for="topBarMessageAnimation">Animation</label>
+                        <select class="mt-1 block w-full rounded-lg border border-admin-border bg-admin-surface px-4 py-2.5 text-sm text-admin-text shadow-sm focus:border-admin-primary focus:ring-admin-primary"
+                                id="topBarMessageAnimation"
+                                name="top_bar[messageBar][animation]"
+                                x-model="messageBar.animation">
+                            <option value="static">Static</option>
+                            <option value="fade">Fade</option>
+                            <option value="scroll">Scroll</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-label text-sm font-medium text-admin-text" for="topBarMessageScope">Scope</label>
+                        <select class="mt-1 block w-full rounded-lg border border-admin-border bg-admin-surface px-4 py-2.5 text-sm text-admin-text shadow-sm focus:border-admin-primary focus:ring-admin-primary"
+                                id="topBarMessageScope"
+                                name="top_bar[messageBar][scope]"
+                                x-model="messageBar.scope">
+                            <option value="all">All pages</option>
+                            <option value="homepage">Homepage only</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="inline-flex cursor-pointer flex-col items-center gap-1.5" for="topBarMessageBg">
+                            <span class="text-center text-xs font-medium text-admin-muted">Background colour</span>
+                            <input type="color"
+                                   class="h-12 w-12 cursor-pointer rounded-lg border-2 border-admin-border bg-admin-surface p-0.5"
+                                   id="topBarMessageBg"
+                                   name="top_bar[messageBar][backgroundColor]"
+                                   x-model="messageBar.backgroundColor">
+                            <span class="font-mono text-xs uppercase text-admin-muted" x-text="messageBar.backgroundColor"></span>
+                        </label>
+                    </div>
+                    <div>
+                        <label class="inline-flex cursor-pointer flex-col items-center gap-1.5" for="topBarMessageText">
+                            <span class="text-center text-xs font-medium text-admin-muted">Text colour</span>
+                            <input type="color"
+                                   class="h-12 w-12 cursor-pointer rounded-lg border-2 border-admin-border bg-admin-surface p-0.5"
+                                   id="topBarMessageText"
+                                   name="top_bar[messageBar][textColor]"
+                                   x-model="messageBar.textColor">
+                            <span class="font-mono text-xs uppercase text-admin-muted" x-text="messageBar.textColor"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="rounded-xl border border-admin-border bg-admin-surface p-4" data-link-picker>
+                    <label class="flex cursor-pointer items-center justify-between gap-3">
+                        <span class="text-sm text-admin-text">Show bar button</span>
+                        <button type="button"
+                                role="switch"
+                                :aria-checked="messageBar.button.enabled ? 'true' : 'false'"
+                                @click="messageBar.button.enabled = !messageBar.button.enabled"
+                                :class="messageBar.button.enabled ? 'bg-admin-primary' : 'bg-admin-border'"
+                                class="relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors focus:outline-none focus:ring-2 focus:ring-admin-primary focus:ring-offset-2">
+                            <span class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition"
+                                  :class="messageBar.button.enabled ? 'translate-x-5' : 'translate-x-0'"></span>
+                        </button>
+                    </label>
+                    <input type="hidden" name="top_bar[messageBar][button][enabled]" :value="messageBar.button.enabled ? 'yes' : 'no'">
+
+                    <div x-show="messageBar.button.enabled" class="mt-4 space-y-4">
+                        <div>
+                            <label class="block font-label text-sm font-medium text-admin-text" for="topBarMessageButtonLabel">Button label</label>
+                            <input type="text"
+                                   class="mt-1 block w-full rounded-lg border border-admin-border bg-admin-surface px-4 py-2.5 text-sm text-admin-text shadow-sm focus:border-admin-primary focus:ring-admin-primary"
+                                   id="topBarMessageButtonLabel"
+                                   name="top_bar[messageBar][button][label]"
+                                   placeholder="Button label"
+                                   x-model="messageBar.button.label"
+                                   data-form-item="message-bar-button-label">
+                        </div>
+                        <label class="flex cursor-pointer items-center justify-between gap-3">
+                            <span class="text-sm text-admin-text">External link</span>
+                            <button type="button"
+                                    role="switch"
+                                    :aria-checked="messageBar.button.isExternal ? 'true' : 'false'"
+                                    @click="messageBar.button.isExternal = !messageBar.button.isExternal"
+                                    :class="messageBar.button.isExternal ? 'bg-admin-primary' : 'bg-admin-border'"
+                                    class="relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors focus:outline-none focus:ring-2 focus:ring-admin-primary focus:ring-offset-2">
+                                <span class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition"
+                                      :class="messageBar.button.isExternal ? 'translate-x-5' : 'translate-x-0'"></span>
+                            </button>
+                            <input type="hidden"
+                                   name="top_bar[messageBar][button][isExternal]"
+                                   :value="messageBar.button.isExternal ? '1' : '0'">
+                        </label>
+                        <div x-show="!messageBar.button.isExternal">
+                            <label class="block font-label text-sm font-medium text-admin-text">Links to:</label>
+                            <div class="mt-2 flex flex-wrap items-center gap-2">
+                                <div class="link-container-wrapper min-w-0 flex-1">
+                                    <div class="link-container rounded-lg border border-dashed border-admin-border p-3 text-sm text-admin-muted"
+                                         :hx-get="'/pages/page_tile?pageId=' + encodeURIComponent(messageBar.button.pageId || '')"
+                                         hx-target="this"
+                                         hx-trigger="load, updateLinkTile"
+                                         x-init="$nextTick(() => { if (window.htmx) { htmx.process($el); } })">
+                                        <span x-text="messageBar.button.pageId ? 'Loading...' : 'No page selected'"></span>
+                                    </div>
+                                </div>
+                                <input type="hidden"
+                                       data-page-id-container
+                                       name="top_bar[messageBar][button][pageId]"
+                                       x-model="messageBar.button.pageId">
+                                <button class="rounded-lg border border-admin-border bg-admin-surface px-3 py-1.5 text-sm font-medium text-admin-text hover:bg-admin-surface-muted"
+                                        type="button"
+                                        @click="HH.linkPickerReset($event); messageBar.button.pageId = ''"
+                                        data-action="link-picker-clear">
+                                    Clear
+                                </button>
+                                <button class="rounded-lg border-2 border-transparent bg-admin-primary px-3 py-1.5 text-sm font-medium text-on-primary hover:bg-admin-primary-hover"
+                                        type="button"
+                                        @click="HH.linkPickerBrowse($event).then(() => { const input = $event.target.closest('[data-link-picker]').querySelector('[data-page-id-container]'); messageBar.button.pageId = input ? input.value : ''; })"
+                                        data-action="link-picker-browse">
+                                    Browse
+                                </button>
+                            </div>
+                        </div>
+                        <div x-show="messageBar.button.isExternal">
+                            <label class="block font-label text-sm font-medium text-admin-text" for="topBarMessageButtonExternal">External URL</label>
+                            <input type="text"
+                                   class="mt-1 block w-full rounded-lg border border-admin-border bg-admin-surface px-4 py-2.5 text-sm text-admin-text shadow-sm focus:border-admin-primary focus:ring-admin-primary"
+                                   id="topBarMessageButtonExternal"
+                                   name="top_bar[messageBar][button][external]"
+                                   placeholder="https://"
+                                   x-model="messageBar.button.externalUrl"
+                                   data-form-item="message-bar-button-external">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
