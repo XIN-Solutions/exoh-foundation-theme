@@ -12,20 +12,20 @@
     <div class="container">
         <div class="heading">
             {{#unless config.hideTitle}}
-                <h1 class="display-1 h1Color-text h1-all" edit="title">
+                <h1 class="display-1 h1Color-text h1-all" data-item-aos="sequence" edit="title">
                     {{{?? title 'Lorem ipsum dolor sit amet.'}}}
                 </h1>
             {{/unless}}
 
             {{#unless config.hideSubtitle}}
-                <h2 class="h3-all lead h2Color-text h2FontFamily" edit="subtitle">
+                <h2 class="h3-all lead h2Color-text h2FontFamily" data-item-aos="sequence" edit="subtitle">
                     {{{?? subtitle
                           'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas cursus in lectus ut dignissim.'}}}
                 </h2>
             {{/unless}}
 
             {{#unless config.hideButton}}
-                <div class="btns">
+                <div class="btns" data-item-aos="sequence">
                     <a edit="buttonLabel span, buttonUrl @href, buttonTitle @title, buttonClasses @class, buttonRel @rel, buttonTarget @target"
                        class="{{?? buttonClasses 'btn buttonColor-bg'}}"
                        href="{{?? buttonUrl '#'}}"
@@ -42,7 +42,7 @@
         </div>
 
         {{#unless config.hideVideo}}
-            <div class="frame mx-auto">
+            <div class="frame mx-auto" data-item-aos="sequence">
                 <video edit="videoSrc @src, posterSrc @poster"
                        loading="lazy"
                        muted loop controls

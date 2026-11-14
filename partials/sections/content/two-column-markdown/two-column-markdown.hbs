@@ -1,0 +1,50 @@
+{{let . selectedAlignment=(lookup (map left='text-start' center='text-center' right='text-end' justified='text-justify') (?? config.textAlignment 'left'))}}
+{{let . leftClass=(?? (lookup (map 4-8='col-12 col-md-4' 5-7='col-12 col-md-5' 6-6='col-12 col-md-6' 7-5='col-12 col-md-7' 8-4='col-12 col-md-8') (?? config.split '6-6')) 'col-12 col-md-6')}}
+{{let . rightClass=(?? (lookup (map 4-8='col-12 col-md-8' 5-7='col-12 col-md-7' 6-6='col-12 col-md-6' 7-5='col-12 col-md-5' 8-4='col-12 col-md-4') (?? config.split '6-6')) 'col-12 col-md-6')}}
+
+<section
+    class="
+        {{?: config.useAltBackground 'bg--alternate' ''}}
+        spacing--{{?? config.spacing 'comfortable'}}
+        {{?: config.noTopSpacing 'spacing--no-top' ''}}
+        {{?: config.noBottomSpacing 'spacing--no-bottom' ''}}
+    "
+    no-edit="children"
+    allowadd="no"
+    allowdelete="no"
+>
+    <div class="container">
+        {{#if config.markdownLeft}}
+            <div class="row">
+                <div class="{{leftClass}}" data-item-aos="pair-start">
+                    <div class="markdown-text__body {{selectedAlignment}}">
+                        {{{markdown-to-html config.markdownLeft}}}
+                    </div>
+                </div>
+                <div class="{{rightClass}}" data-item-aos="pair-end">
+                    {{#if config.markdownRight}}
+                        <div class="markdown-text__body {{selectedAlignment}}">
+                            {{{markdown-to-html config.markdownRight}}}
+                        </div>
+                    {{/if}}
+                </div>
+            </div>
+        {{else}}
+            {{#if config.markdownRight}}
+                <div class="row">
+                    <div class="{{leftClass}}" data-item-aos="pair-start">
+                    </div>
+                    <div class="{{rightClass}}" data-item-aos="pair-end">
+                        <div class="markdown-text__body {{selectedAlignment}}">
+                            {{{markdown-to-html config.markdownRight}}}
+                        </div>
+                    </div>
+                </div>
+            {{else}}
+                <div class="alert alert-warning" role="alert">
+                    Please enter markdown in at least one column.
+                </div>
+            {{/if}}
+        {{/if}}
+    </div>
+</section>

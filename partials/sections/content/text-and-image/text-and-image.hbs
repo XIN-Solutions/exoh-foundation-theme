@@ -15,14 +15,14 @@
     allowadd="no"
     allowdelete="no"
 >
-    <div class="container">
+    <div class="container overflow-hidden">
         <div class="row wrap">
 
             {{#if isLeft}}
                 {{> imageCol}}
             {{/if}}
 
-            <div class="col-md-7 align-self-center{{#if isLeft}} ps-md-4 ps-lg-5{{/if}}">
+            <div class="col-md-7 align-self-center{{#if isLeft}} ps-md-4 ps-lg-5{{/if}}" data-item-aos="{{#if isLeft}}pair-end{{else}}pair-start{{/if}}">
                 <div class="max-box">
 
                     {{#unless config.hideTitle}}
@@ -67,7 +67,7 @@
 </section>
 
 {{#*inline "imageCol"}}
-    <div class="col-md-5{{#if isRight}} order-first order-md-0{{/if}}">
+    <div class="col-md-5{{#if isRight}} order-first order-md-0{{/if}}" data-item-aos="{{#if isLeft}}pair-start{{else}}pair-end{{/if}}">
         <img
             alt="{{imageAlt}}" loading="lazy" class="{{?? imageClass 'img-fluid'}}"
             src="{{?? imageSrc '/assets/img/empty.png' }}" data-image-hint="width=768,height=480,fit=cover"

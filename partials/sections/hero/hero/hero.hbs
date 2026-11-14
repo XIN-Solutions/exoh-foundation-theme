@@ -21,7 +21,7 @@
                             edit="title, titleId @id, titleClass @class"
                             {{#if titleId}} id="{{titleId}}"{{/if}}
                             class="{{?? titleClass 'heading mb-3 display-4 h1-all'}}"
-                            data-aos="fade-up" data-aos-delay="100"
+                            data-item-aos="sequence"
                         >
                             {{?? title 'Insert title here'}}
                         </h1>
@@ -32,7 +32,7 @@
                             edit="description, descriptionId @id, descriptionClass @class"
                             class="{{?? descriptionClass 'col-lg-8 mx-auto w-100 h2-all h3-all'}}"
                             {{#if descriptionId}} id="{{descriptionId}}"{{/if}}
-                            data-aos="fade-up" data-aos-delay="100"
+                            data-item-aos="sequence"
                         >
                             {{?? description 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas cursus in
                             lectus ut dignissim.'}}
@@ -40,7 +40,7 @@
                     {{/unless}}
 
                     {{#unless config.hideButton}}
-                        <div class="buttons mt-4" data-aos="fade-up" data-aos-delay="300" no-edit>
+                        <div class="buttons mt-4" data-item-aos="sequence" no-edit>
                             <a edit="
                                     buttonUrl @href,
                                     buttonId @id,

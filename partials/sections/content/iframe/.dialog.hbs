@@ -1,0 +1,85 @@
+<form class="config-form"
+      x-data="componentDialog((() => {
+            function sanitiseIframeConfig(c) {
+                const rawUrl = (c.url || '').trim();
+                const url = rawUrl.startsWith('https://') ? rawUrl : '';
+                const allow = (c.allow || '').trim();
+                const parsed = Number.parseInt(c.minHeight, 10);
+                const minHeight = Number.isFinite(parsed) ? Math.min(2000, Math.max(200, parsed)) : 600;
+                const allowedWidths = ['4', '6', '8', '10', '12', 'containerless'];
+                const columnSize = allowedWidths.includes(String(c.columnSize)) ? String(c.columnSize) : '12';
+                return { ...c, url, allow, minHeight: String(minHeight), columnSize };
+            }
+            return {
+                defaultConfig: {
+                    url: '',
+                    minHeight: '600',
+                    allow: '',
+                    columnSize: '12',
+                    useAltBackground: false,
+                    spacing: 'comfortable',
+                    noTopSpacing: false,
+                    noBottomSpacing: false
+                },
+                beforeSetConfig: sanitiseIframeConfig,
+                beforeGetConfig: sanitiseIframeConfig
+            };
+      })())"
+      @set="setConfig"
+      @get="getConfig"
+>
+
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" data-bs-toggle="tab" href="#iframe-component" role="tab">Iframe</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" href="#iframe-layout" role="tab">Layout</a>
+        </li>
+        {{> common/dialogs/basic_nav }}
+    </ul>
+
+    <div class="tab-content">
+        <div class="tab-pane show active" id="iframe-component" role="tabpanel">
+            <div class="mb-3">
+                <label class="form-label">URL</label>
+                <input
+                    type="text"
+                    class="form-control"
+                    x-model="config.url"
+                    placeholder="https://"
+                    :class="{'is-invalid': (config.url || '').trim() && !(config.url || '').trim().startsWith('https://')}"
+                >
+                <div class="invalid-feedback">Enter a full https:// URL</div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Min height</label>
+                <input type="text" class="form-control" x-model="config.minHeight" placeholder="600">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Allow</label>
+                <input type="text" class="form-control" x-model="config.allow">
+                <p class="form-text text-muted mb-0 small">Optional iframe allow value; leave empty unless the embed needs it.</p>
+            </div>
+        </div>
+
+        <div class="tab-pane" id="iframe-layout" role="tabpanel">
+            <div class="mb-3">
+                <label class="form-label">Column size</label>
+                <select class="form-select" x-model="config.columnSize">
+                    <option value="4">4</option>
+                    <option value="6">6</option>
+                    <option value="8">8</option>
+                    <option value="10">10</option>
+                    <option value="12">12</option>
+                    <option value="containerless">Containerless</option>
+                </select>
+            </div>
+        </div>
+
+        {{> common/dialogs/basic_content }}
+    </div>
+
+</form>

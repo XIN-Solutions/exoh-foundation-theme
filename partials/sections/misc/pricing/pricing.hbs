@@ -16,7 +16,7 @@
     <div class="container">
         {{#unless config.hideHeader}}
             <div class="row justify-content-center mb-5">
-                <div class="col-lg-8 text-center">
+                <div class="col-lg-8 text-center" data-item-aos="lead">
                     {{#unless config.hidePretitle}}
                         <p class="text-uppercase small fw-semibold mb-2 tertiaryColor-text" edit="pretitle innerHTML">
                             {{{?? pretitle "Lorem ipsum"}}}
@@ -36,7 +36,7 @@
 
         <div class="row justify-content-center g-4">
             {{#each resolvedPlans}}
-                <div class="col-12 col-md-6 col-lg-4">
+                <div class="col-12 col-md-6 col-lg-4" data-item-aos="grid">
                     <div class="card h-100 shadow-sm pricing-plan-card {{?: highlighted 'pricing-plan-card--highlighted border border-2' ''}}">
                         {{#unless ../config.hideBadge}}
                             {{#if badge}}

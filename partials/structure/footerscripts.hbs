@@ -6,6 +6,7 @@
 
 
 <link rel="stylesheet" href="{{theme.url}}/assets/js/aos.css">
+<link rel="stylesheet" href="{{theme.url}}/assets/css/message-bar.css">
 <noscript>
     <style type="text/css">
         [data-aos] {
@@ -18,6 +19,7 @@
 <script src="{{theme.url}}/assets/js/htmx.min.js"></script>
 <script src="{{theme.url}}/assets/js/aos.js"></script>
 <script src="{{theme.url}}/assets/js/theme.js"></script>
+<script src="{{theme.url}}/assets/js/message-bar.js"></script>
 <script src="{{theme.url}}/assets/libs/swiper/swiper-bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js"></script>
 <script src="{{theme.url}}/assets/js/behaviour.js"></script>
@@ -25,10 +27,81 @@
 {{{siteSettings.bodyScripts}}}
 
 
+<style>
+    [data-aos].aos-animate {
+        transition-delay: var(--aos-delay, 0ms);
+    }
+</style>
 <script>
-        
+
+    (function () {
+        function beltAnchorSelector(section) {
+            var ref = section.getAttribute('data-aos-anchor-ref');
+            if (!ref) {
+                var n = 1;
+                ref = 'belt-' + n;
+                while (document.querySelector('[data-aos-anchor-ref="' + ref + '"]')) {
+                    n += 1;
+                    ref = 'belt-' + n;
+                }
+                section.setAttribute('data-aos-anchor-ref', ref);
+            }
+            return '[data-aos-anchor-ref="' + ref + '"]';
+        }
+
+        function animationsDisabled() {
+            return getComputedStyle(document.documentElement).getPropertyValue('--theme-aos-disabled').trim() === '1';
+        }
+
+        function applyAosItemMotion() {
+            if (animationsDisabled()) {
+                return;
+            }
+            var rootStyles = getComputedStyle(document.documentElement);
+            var duration = parseInt(rootStyles.getPropertyValue('--theme-aos-duration'), 10);
+            var stagger = parseInt(rootStyles.getPropertyValue('--theme-aos-stagger'), 10);
+            if (!isFinite(duration)) {
+                duration = 1000;
+            }
+            if (!isFinite(stagger)) {
+                stagger = 100;
+            }
+            document.querySelectorAll('[data-aos-order]').forEach(function (el) {
+                var order = parseInt(el.getAttribute('data-aos-order'), 10);
+                if (!isFinite(order)) {
+                    order = 0;
+                }
+                el.setAttribute('data-aos-duration', String(duration));
+                el.setAttribute('data-aos-delay', String(order * stagger));
+                el.style.setProperty('--aos-delay', (order * stagger) + 'ms');
+            });
+            document.querySelectorAll('[data-belt-tile][data-aos-order]').forEach(function (el) {
+                var section = el.closest('section');
+                if (!section) {
+                    return;
+                }
+                el.setAttribute('data-aos-anchor', beltAnchorSelector(section));
+            });
+        }
+
+        applyAosItemMotion();
+        document.addEventListener('onSectionChange', function () {
+            applyAosItemMotion();
+            if (typeof AOS === 'undefined') {
+                return;
+            }
+            if (typeof AOS.refreshHard === 'function') {
+                AOS.refreshHard();
+            }
+            else if (typeof AOS.refresh === 'function') {
+                AOS.refresh();
+            }
+        });
+    })();
+
     AOS.init({
-        once: true
+        once: true,
+        disable: getComputedStyle(document.documentElement).getPropertyValue('--theme-aos-disabled').trim() === '1'
     });
 
     if (typeof GLightbox !== 'undefined') {

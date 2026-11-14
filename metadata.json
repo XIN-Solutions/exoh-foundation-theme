@@ -56,15 +56,51 @@
                 "buttonBorderRadius": "default",
                 "imageBorderRadius": "default",
                 "cardShadow": "sm",
+                "cardBorderEnabled": "no",
+                "cardBorderColor": "",
+                "cardBorderWidth": "2px",
                 "buttonColorSource": "tertiary",
                 "buttonColorCustom": "",
                 "menuStylingEnabled": "no",
                 "menuItemColor": "",
+                "menuBackgroundColor": "",
+                "menuItemHoverColor": "",
                 "menuCtaColor": "",
                 "menuCtaTextColor": "",
+                "menuCtaHoverColor": "",
+                "menuCtaHoverTextColor": "",
                 "menuFontFamily": "",
                 "menuFontSize": "",
-                "menuFontWeight": ""
+                "menuFontWeight": "",
+                "messageBarBackgroundColor": "#ffffff",
+                "messageBarTextColor": "#000000",
+                "animationSpeed": "normal"
+            }
+        },
+        {
+            "name": "top_bar",
+            "title": "Top Bar",
+            "pageTypes": [
+                "site"
+            ],
+            "template": "pages/aspects/top_bar.html",
+            "mcpDoc": "pages/aspects/top_bar.mcp.md",
+            "showAfter": "navigation",
+            "defaults": {
+                "enabled": "no",
+                "messageBar": {
+                    "enabled": false,
+                    "animation": "static",
+                    "scope": "all",
+                    "messages": [],
+                    "button": {
+                        "enabled": false,
+                        "label": "",
+                        "isExternal": false,
+                        "pageId": "",
+                        "externalUrl": ""
+                    }
+                }
             }
         }
     ],
@@ -82,6 +118,7 @@
         ],
         "pages": [
             "aspects/styles.mcp.md",
+            "aspects/top_bar.mcp.md",
             "content_page.hbs",
             "editing/blocks.hbs",
             "editing/empty.hbs",
@@ -144,6 +181,10 @@
             "sections/content/icons-and-image/.dialog.hbs",
             "sections/content/icons-and-image/.mcp.md",
             "sections/content/icons-and-image/icons-and-image.hbs",
+            "sections/content/iframe/.content.json",
+            "sections/content/iframe/.dialog.hbs",
+            "sections/content/iframe/.mcp.md",
+            "sections/content/iframe/iframe.hbs",
             "sections/content/info-tiles/.content.json",
             "sections/content/info-tiles/.dialog.hbs",
             "sections/content/info-tiles/.mcp.md",
@@ -172,6 +213,10 @@
             "sections/content/text-and-image/.dialog.hbs",
             "sections/content/text-and-image/.mcp.md",
             "sections/content/text-and-image/text-and-image.hbs",
+            "sections/content/two-column-markdown/.content.json",
+            "sections/content/two-column-markdown/.dialog.hbs",
+            "sections/content/two-column-markdown/.mcp.md",
+            "sections/content/two-column-markdown/two-column-markdown.hbs",
             "sections/hero/.content.json",
             "sections/hero/article-hero/.content.json",
             "sections/hero/article-hero/.dialog.hbs",

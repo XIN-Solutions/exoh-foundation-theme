@@ -13,7 +13,7 @@
         <div class="row">
             <div class="col-md-{{?? config.columnSize '12'}} col-sm-12 mx-auto">
                 {{#if config.video}}
-                    <div class="ratio ratio-16x9">
+                    <div class="ratio ratio-16x9" data-item-aos="sequence">
                         {{#if (eq (?? config.videoType 'youtube') 'vimeo')}}
                             <iframe
                                 src="https://player.vimeo.com/video/{{config.video}}"

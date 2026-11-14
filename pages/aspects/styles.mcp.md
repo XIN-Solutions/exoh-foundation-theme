@@ -69,6 +69,14 @@ Defaults: Open Sans stack; h1 `#212529` / 700 / 48px; h2 `#495057` / 600 / 36px;
 | `paragraphFontSize` | string | `16px` | Body size |
 | `googleFonts` | string (JSON array) | `"[]"` | Serialized list of Google Font families to load |
 
+### Animation
+
+| Field | Type | Default | Allowed values |
+|-------|------|---------|----------------|
+| `animationSpeed` | string | `normal` | `off` (no motion), `slow` (1400ms duration, 180ms stagger), `normal` (1000ms, 100ms), `fast` (600ms, 60ms) |
+
+`slow`, `normal`, and `fast` set scroll-animation **item** timing: elements stamped with `data-aos-order` get that duration and stagger. **Section** animate-on-scroll duration and delay stay on each section’s General tab (`config.aos`, etc.). `off` disables section and item motion, and the message bar stays static. Content stays visible.
+
 ### Components
 
 | Field | Type | Default | Allowed values |
@@ -77,6 +85,9 @@ Defaults: Open Sans stack; h1 `#212529` / 700 / 48px; h2 `#495057` / 600 / 36px;
 | `buttonBorderRadius` | string | `default` | same as card |
 | `imageBorderRadius` | string | `default` | same as card |
 | `cardShadow` | string | `sm` | `none`, `sm`, `md`, `lg` |
+| `cardBorderEnabled` | `"yes"` \| `"no"` | `"no"` | When `"yes"` and `cardBorderColor` is set, bordered card surfaces get a theme border |
+| `cardBorderColor` | string (hex) | `""` | Border colour; omitted unless the switch is on and this is set |
+| `cardBorderWidth` | string | `"2px"` | `1px`, `2px`, or `3px`; other values render as `2px` |
 | `buttonColorSource` | string | `tertiary` | `primary`, `secondary`, `tertiary`, `custom` |
 | `buttonColorCustom` | string (hex) | `""` | Used when `buttonColorSource` is `custom` |
 
@@ -86,13 +97,21 @@ Defaults: Open Sans stack; h1 `#212529` / 700 / 48px; h2 `#495057` / 600 / 36px;
 |-------|------|---------|-------------|
 | `menuStylingEnabled` | `"yes"` \| `"no"` | `"no"` | Apply custom menu colours/fonts |
 | `menuItemColor` | string (hex) | `""` | Nav link colour |
+| `menuBackgroundColor` | string (hex) | `""` | Header / navbar background when menu styling is on; empty means no header fill |
+| `menuItemHoverColor` | string (hex) | `""` | Nav link hover, focus, dropdown hover, and active item colour; empty keeps link colour at 85% opacity on hover |
 | `menuCtaColor` | string (hex) | `""` | CTA button background |
 | `menuCtaTextColor` | string (hex) | `""` | CTA button text |
+| `menuCtaHoverColor` | string (hex) | `""` | CTA hover background and border; empty keeps resting CTA fill on hover |
+| `menuCtaHoverTextColor` | string (hex) | `""` | CTA hover text; empty keeps resting CTA text on hover |
 | `menuFontFamily` | string | `""` | Nav font stack |
 | `menuFontSize` | string | `""` | Nav font size |
 | `menuFontWeight` | string | `""` | Nav font weight |
+| `messageBarBackgroundColor` | string (hex) | `#ffffff` | Message bar background. Edited in the Navigation accordion. Not gated by `menuStylingEnabled` |
+| `messageBarTextColor` | string (hex) | `#000000` | Message bar text. Edited in the Navigation accordion. Not gated by `menuStylingEnabled` |
 
-Empty strings for menu fields mean "use theme default".
+Empty strings for menu fields mean "use theme default" (no custom header background; link hover at 85% opacity when a link colour is set; CTA hover matches resting CTA colours).
+
+Card border radius follows `cardBorderRadius`; the border rule does not override radius, fill, padding, or shadow.
 
 ## Anti-patterns
 

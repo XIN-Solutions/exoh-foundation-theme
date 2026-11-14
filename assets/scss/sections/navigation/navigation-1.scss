@@ -70,8 +70,16 @@
 			line-height: 3rem;
 		}
 		
+		.navbar,
+		#message-bar,
+		.top-nav {
+			padding-left: 1rem;
+			padding-right: 1rem;
+		}
+
 		.navbar {
-			padding: 0 1rem;
+			padding-top: 0;
+			padding-bottom: 0;
 			//background: rgba(var(--bs-body-bg-rgb),.85);
 			
 			.navbar-nav {

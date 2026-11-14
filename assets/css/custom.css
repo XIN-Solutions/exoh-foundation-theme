@@ -77,6 +77,19 @@ nav.navigation-1 {
     z-index: 1000;
 }
 
+.navigation-1 .top-nav {
+    padding-top: 0.3rem;
+    padding-bottom: 0.3rem;
+}
+
+@media screen and (min-width: 767px) {
+    .navigation-1 #message-bar,
+    .navigation-1 .top-nav {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+}
+
 .swiper .swiper-button-prev,
 .swiper .swiper-button-next {
     width: 44px;

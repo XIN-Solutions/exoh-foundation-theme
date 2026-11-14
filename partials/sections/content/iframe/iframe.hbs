@@ -1,0 +1,57 @@
+{{let . embedUrl=(?? config.url ' ')}}
+{{let . frameMin=(between min=200 max=2000 value=(?? config.minHeight 600))}}
+{{let . width=(?? config.columnSize '12')}}
+{{let . widths=(map 4='4' 6='6' 8='8' 10='10' 12='12')}}
+{{let . col=(?? (lookup widths width) '12')}}
+
+<section
+    class="
+        {{?: config.useAltBackground 'bg--alternate' ''}}
+        spacing--{{?? config.spacing 'comfortable'}}
+        {{?: config.noTopSpacing 'spacing--no-top' ''}}
+        {{?: config.noBottomSpacing 'spacing--no-bottom' ''}}
+    "
+    no-edit="children"
+    allowadd="no"
+    allowdelete="no"
+>
+    {{#if (eq width 'containerless')}}
+        {{#if (startsWith embedUrl 'https://')}}
+            <iframe
+                src="{{embedUrl}}"
+                title="Embedded content"
+                width="100%"
+                style="min-height: {{frameMin}}px"
+                loading="lazy"
+                data-item-aos="sequence"
+                {{#if config.allow}}allow="{{config.allow}}"{{/if}}
+            ></iframe>
+        {{else}}
+            <div class="alert alert-warning mb-0" role="alert">
+                Please enter an https URL.
+            </div>
+        {{/if}}
+    {{else}}
+        <div class="container">
+            <div class="row">
+                <div class="col-md-{{col}} col-sm-12 mx-auto">
+                    {{#if (startsWith embedUrl 'https://')}}
+                        <iframe
+                            src="{{embedUrl}}"
+                            title="Embedded content"
+                            width="100%"
+                            style="min-height: {{frameMin}}px"
+                            loading="lazy"
+                            data-item-aos="sequence"
+                            {{#if config.allow}}allow="{{config.allow}}"{{/if}}
+                        ></iframe>
+                    {{else}}
+                        <div class="alert alert-warning mb-0" role="alert">
+                            Please enter an https URL.
+                        </div>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+    {{/if}}
+</section>

@@ -37,4 +37,84 @@
             <p class="form-text text-muted mb-0 small">Adds a light gray background behind this section.</p>
         </div>
     {{/unless}}
+
+    <div class="border rounded p-3 mb-3 bg-light" x-init="config.sectionId ??= ''; config.aos ??= ''; config.aosDuration ??= 1000; config.aosDelay ??= 0; config.itemAosEnabled ??= 'yes'; config.itemAosAxis ??= 'horizontal'">
+        <div class="fw-semibold small mb-3">Animation</div>
+
+        <div class="mb-3">
+            <label class="form-label">Animation type</label>
+            <select class="form-select" x-model="config.aos">
+                <option value="">[none]</option>
+                <optgroup label="Fade">
+                    <option value="fade">Fade</option>
+                    <option value="fade-up">Fade Up</option>
+                    <option value="fade-down">Fade down</option>
+                    <option value="fade-left">Fade left</option>
+                    <option value="fade-right">Fade right</option>
+                    <option value="fade-up-right">Fade up right</option>
+                    <option value="fade-up-left">Fade up left</option>
+                    <option value="fade-down-right">Fade down right</option>
+                    <option value="fade-down-left">Fade down left</option>
+                </optgroup>
+                <optgroup label="Flip">
+                    <option value="flip-up">Flip Up</option>
+                    <option value="flip-down">Flip Down</option>
+                    <option value="flip-left">Flip left</option>
+                    <option value="flip-right">Flip right</option>
+                </optgroup>
+                <optgroup label="Slide">
+                    <option value="slide-up">Slide up</option>
+                    <option value="slide-down">Slide down</option>
+                    <option value="slide-left">Slide left</option>
+                    <option value="slide-right">Slide right</option>
+                </optgroup>
+                <optgroup label="Zoom">
+                    <option value="zoom-in">Zoom in</option>
+                    <option value="zoom-in-up">Zoom in up</option>
+                    <option value="zoom-in-down">Zoom in down</option>
+                    <option value="zoom-in-left">Zoom in left</option>
+                    <option value="zoom-in-right">Zoom in right</option>
+                    <option value="zoom-out">Zoom out</option>
+                    <option value="zoom-out-up">Zoom out up</option>
+                    <option value="zoom-out-down">Zoom out down</option>
+                    <option value="zoom-out-left">Zoom out left</option>
+                    <option value="zoom-out-right">Zoom out right</option>
+                </optgroup>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Duration</label>
+            <input type="range" class="form-range" min="0" max="10000" step="100" x-model.number="config.aosDuration">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Delay</label>
+            <input type="range" class="form-range" min="0" max="10000" step="100" x-model.number="config.aosDelay">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Animate items</label>
+            <select class="form-select" x-model="config.itemAosEnabled">
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Pair motion</label>
+            <select class="form-select" x-model="config.itemAosAxis">
+                <option value="horizontal">Horizontal</option>
+                <option value="vertical">Vertical</option>
+            </select>
+        </div>
+
+        <p class="form-text text-muted mb-0 small">Items follow the theme animation speed. Pair motion applies to two-column layouts. The section animation above also runs when it has a type.</p>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Section ID</label>
+        <input type="text" class="form-control" x-model="config.sectionId">
+        <p class="form-text text-muted mb-0 small">Optional HTML id for this section; leave blank for none.</p>
+    </div>
 </div>

@@ -8,7 +8,7 @@ Intended for marketing and brochure sites: clear hierarchy, one hero per page, a
 
 | `contentType` | Aspects to set | Body sections |
 |---------------|----------------|---------------|
-| `site` | `general`, `seo`, `child_ordering`, `site`, `organisation`, `navigation`, `footer`, `redirects`, `logbook`, `styles` | Ordered blocks edited with **`list_sections`**, **`append_section`**, **`update_section`**, **`insert_section_*`**, **`delete_section`** |
+| `site` | `general`, `seo`, `child_ordering`, `site`, `organisation`, `navigation`, `top_bar`, `footer`, `redirects`, `logbook`, `styles` | Ordered blocks edited with **`list_sections`**, **`append_section`**, **`update_section`**, **`insert_section_*`**, **`delete_section`** |
 | `content_page` | `general`, `seo`, `child_ordering`, `logbook` | Same section tools as `site` |
 
 Create pages with **`create_page`** (use **`page_types_at_root`** or **`page_types_as_children`** to discover allowed types). Set aspects after create with **`update_aspect`**; load field contracts with **`aspect_documentation`** or **`get_aspect`**.
@@ -79,6 +79,7 @@ Recipes list section display names and **`type`** codes for **`append_section`**
 | `site` | `site` page type only | **`get_aspect`** / **`update_aspect`** / **`aspect_documentation`** — site name, logo, global settings |
 | `organisation` | `site` page type only | **`get_aspect`** / **`update_aspect`** / **`aspect_documentation`** — organisation profile linked to the site |
 | `navigation` | `site` page type only | **`get_aspect`** / **`update_aspect`** / **`aspect_documentation`** — primary menu structure and CTA |
+| `top_bar` | `site` page type only | **`get_aspect`** / **`update_aspect`** / **`aspect_documentation`** — contact strip and message bar above navigation (phone/email from `footer`) |
 | `footer` | `site` page type only | **`get_aspect`** / **`update_aspect`** / **`aspect_documentation`** — footer links and columns |
 | `redirects` | `site` page type only | **`get_aspect`** / **`update_aspect`** / **`aspect_documentation`** — URL redirect rules |
 | `logbook` | All public pages | **`get_aspect`** / **`update_aspect`** / **`aspect_documentation`** — page change history and notes |
@@ -131,6 +132,7 @@ Discover all types with **`list_section_types`**. Load per-type field contracts 
 | Icon Banner | `content/icon-banner` | Row of icon + label tiles |
 | Text & Image | `content/text-and-image` | Prose beside an image |
 | Markdown Text | `content/markdown-text` | Rich text body block |
+| Two Column Markdown | `content/two-column-markdown` | Two side-by-side markdown columns |
 | Statements | `content/statements` | Highlighted quote or value statements |
 | Info Tiles | `content/info-tiles` | Card grid for facts or features |
 | Showcase | `content/column-showcase` | Multi-column feature showcase |
@@ -138,6 +140,7 @@ Discover all types with **`list_section_types`**. Load per-type field contracts 
 | Icons & Image | `content/icons-and-image` | Icons grouped with a supporting image |
 | Image Gallery | `content/gallery` | Image grid or carousel |
 | Embedded Video | `content/embedded-video` | Mid-page video embed |
+| Iframe | `content/iframe` | Third-party https embed (forms and similar) |
 
 ### Misc
 
