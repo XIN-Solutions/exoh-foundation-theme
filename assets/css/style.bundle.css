@@ -13357,7 +13357,7 @@ h2, .h2 {
 
 .top-nav {
   font-size: 75%;
-  padding: 0.3rem;
+  padding: 0.3rem 0;
   background-color: var(--bs-body-bg);
   background-color: rgba(var(--bs-tertiary-bg-rgb), 0.5);
   border-bottom: 1px solid rgba(var(--bs-body-color-rgb), 0.05);
