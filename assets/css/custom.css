@@ -4,7 +4,8 @@
 
 
 .is-editing .pe-skip,
-.is-editing [no-edit]:not([no-edit='children']) {
+.is-editing [no-edit]:not([no-edit='children']),
+.is-editing [data-aos].aos-animate[no-edit]:not([no-edit='children']) {
     pointer-events: none !important;
 }
 
@@ -12,17 +13,18 @@
     pointer-events: initial;
 }
 
-.is-editing [no-edit='children'] * {
+.is-editing [no-edit='children'] *,
+.is-editing [no-edit='children'] [data-aos].aos-animate {
     pointer-events: none;
 }
-
-
 
 .is-editing .pe-capture,
 .is-editing [editable],
 .is-editing [edit],
-.is-editing [no-edit='children'] [edit]
-{
+.is-editing [no-edit='children'] [edit],
+.is-editing [no-edit='children'] [data-aos].aos-animate[edit],
+.is-editing [no-edit='children'] [data-aos].aos-animate[editable],
+.is-editing [no-edit='children'] [data-aos].aos-animate.pe-capture {
     pointer-events: initial;
 }
 
