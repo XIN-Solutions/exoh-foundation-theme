@@ -71,9 +71,11 @@
                 if (!isFinite(order)) {
                     order = 0;
                 }
+                var itemDelay = order * stagger;
                 el.setAttribute('data-aos-duration', String(duration));
-                el.setAttribute('data-aos-delay', String(order * stagger));
-                el.style.setProperty('--aos-delay', (order * stagger) + 'ms');
+                el.setAttribute('data-aos-delay', String(itemDelay));
+                el.setAttribute('data-aos-base-delay', String(itemDelay));
+                el.style.setProperty('--aos-delay', itemDelay + 'ms');
             });
             document.querySelectorAll('[data-belt-tile][data-aos-order]').forEach(function (el) {
                 var section = el.closest('section');
@@ -81,6 +83,46 @@
                     return;
                 }
                 el.setAttribute('data-aos-anchor', beltAnchorSelector(section));
+            });
+            var half = Math.floor(stagger / 2);
+            var viewportHeight = window.innerHeight;
+            var sectionIndex = 0;
+            document.querySelectorAll('section').forEach(function (section) {
+                if (!section.querySelector('[data-aos]')) {
+                    return;
+                }
+                var rect = section.getBoundingClientRect();
+                var inView = rect.top < viewportHeight && rect.bottom > 0;
+                var extra = 0;
+                if (inView) {
+                    extra = sectionIndex * half;
+                    sectionIndex += 1;
+                }
+                section.querySelectorAll('[data-aos]').forEach(function (el) {
+                    var base;
+                    if (el.hasAttribute('data-aos-order')) {
+                        base = parseInt(el.getAttribute('data-aos-base-delay'), 10);
+                        if (!isFinite(base)) {
+                            base = 0;
+                        }
+                    }
+                    else {
+                        if (!el.hasAttribute('data-aos-base-delay')) {
+                            var editorDelay = parseInt(el.getAttribute('data-aos-delay'), 10);
+                            if (!isFinite(editorDelay)) {
+                                editorDelay = 0;
+                            }
+                            el.setAttribute('data-aos-base-delay', String(editorDelay));
+                        }
+                        base = parseInt(el.getAttribute('data-aos-base-delay'), 10);
+                        if (!isFinite(base)) {
+                            base = 0;
+                        }
+                    }
+                    var total = base + extra;
+                    el.setAttribute('data-aos-delay', String(total));
+                    el.style.setProperty('--aos-delay', total + 'ms');
+                });
             });
         }
 
