@@ -1,7 +1,6 @@
 (function () {
 
-    const debug = true;
-
+    const debug = false
     
     function beltAnchorSelector(section) {
         var ref = section.getAttribute('data-aos-anchor-ref');
@@ -33,7 +32,7 @@
             debug && console.log("Visibility check on section: ", section);
             var items = section.querySelectorAll('[data-aos-order]');
             if (!items.length) {
-                return;
+                continue;
             }
             var rect = section.getBoundingClientRect();
             var inView = rect.top < viewportHeight && rect.bottom > 0;
@@ -65,7 +64,7 @@
 
             // shoudl be updated to have additional delay.
             items.forEach(function (el) {
-                const base = parseInt(el.getAttribute('data-aos-base-delay'), 10);
+                let base = parseInt(el.getAttribute('data-aos-base-delay'), 10);
                 if (!isFinite(base)) {
                     base = 0;
                 }
